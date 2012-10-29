@@ -1,0 +1,80 @@
+CREATE DATABASE free_room_finder;
+
+USE free_room_finder;
+
+CREATE TABLE 
+
+class table:
+	class_id (reference)
+	class_type VARCHAR(3)
+
+Would hold:
+	'LEC', 'TUT', 'THS', 'LAB', 'WEB', 'FLD'
+
+CREATE TABLE class (class_id ???, class_type VARCHAR(3))
+
+day table:
+	day_id (reference)
+	day CHAR(1)
+
+Would hold:
+	'M', 'T', 'W', 'R', 'F'
+
+CREATE TABLE class (day_id ???, day CHAR(1))
+
+date table:
+	date_id (reference)
+	date DATE
+
+Would hold (since there is going to most likely be a shared start date for most courses)
+
+time table:
+	time_id (reference)
+	time TIME
+	
+Prof table
+	prof_id (reference)
+	course_name VARCHAR(20)
+
+Program table:
+	program_id (reference)
+	program_code VARCHAR(8)
+
+Code table:
+	code_id (reference)
+	course_code VARCHAR(8)
+
+Section table:
+	section_id (reference)
+	course_section VARCHAR(8)
+
+Campus table:
+	campus_id (reference)
+	campus VARCHAR(3)
+
+Course table
+	course_id Unique key
+	course_name VARCHAR(64)
+	crn VARCHAR(8)		(could be used as a unique key as well)
+	capacity INT		(Might be stored in a differernt table)
+	registered INT
+	program_code VARCHAR(8)
+	week1 BOOL
+	week2 BOOL
+	
+Year table:
+	year_reference (reference)
+	year VARCHAR(4)
+
+Term table:
+	term_reference (reference)
+	term VARCHAR(16)
+
+room_numbers table
+	room_reference (reference)
+	room_number VARCHAR(16)
+
+
+CREATE TABLE UA1004 (day CHAR(1), start_time TIME, finish_time TIME, date_start DATE, date_finish DATE, class_type VARCHAR(3), teacher_name VARCHAR(20), week1 BOOL, week2 BOOL, capacity INT, registered INT, term VARCHAR(16), crn VARCHAR(8), course_name VARCHAR(64), program_code VARCHAR(8), course_code VARCHAR(8), course_section VARCHAR(8), campus VARCHAR(3));
+
+day CHAR(1), start_time TIME, finish_time TIME, date_start DATE, date_finish DATE, class_type VARCHAR(3), teacher_name VARCHAR(20), week1 BOOL, week2 BOOL, capacity INT, registered INT, term VARCHAR(16), crn VARCHAR(8), course_name VARCHAR(64), program_code VARCHAR(8), course_code VARCHAR(8), course_section VARCHAR(8), campus VARCHAR(3));

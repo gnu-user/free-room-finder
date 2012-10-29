@@ -1,0 +1,126 @@
+View 1: should show all the courses
+SELECT
+	* 
+FROM 
+	professors AS p,
+	faculties AS f,
+	courses AS c,
+	offerings AS o,
+	rooms AS r,
+	times AS t,
+	times AS t2,
+	dates AS d,
+	dates AS d2,
+	class_type AS ct,
+	semester AS s
+WHERE
+	p.profId = f.profId AND
+	p.profId = o.profId AND
+	p.profId = f.facultyId AND 
+	c.courseId = o.courseId AND
+	f.facultyId = c.facultyId AND
+	r.roomId = o.roomId AND
+	o.start_time = t.timeId AND
+	o.end_time = t2.timeId AND
+	o.start_date = d.dateId AND
+	o.end_date = d2.dateId AND
+	o.typeId = ct.typeId AND
+	o.yearId = s.yearId;
+
+
+View 2: average number of people using the room on a day not at the start of any class
+SELECT
+	AVG(oc.num_people)
+FROM
+	occupied AS oc,
+	rooms AS r,
+	room_requests AS rr
+WHERE
+	oc.roomId = r.roomId AND
+	rr.occupyId = oc.occupyId AND
+	rr.start_time NOT ANY
+	(SELECT
+		start_time
+	FROM
+		offerings AS o
+	WHERE
+		rr.day LIKE o.day AND
+		o.roomId = r.roomId)
+	GROUP BY r.name;
+
+View 3:	Returns all course names that start at specified time (where that time is whether any 2 courses from the same faculty share the same start time regardless of day) 
+SELECT
+	c.name
+FROM
+	courses AS c,
+	offerings AS o,
+	faculties AS f
+WHERE
+	c.facultyId = f.facultyId AND
+	c.coursesId = o.coursesId AND
+	o.start_time = 
+	(SELECT
+		o2.start_time
+	FROM
+		offerings AS o2,
+		courses AS c2,
+		faculties AS f2
+	WHERE
+		c2.facultyId = f2.facultyId AND
+		c2.coursesId = o2.coursesId AND
+		f2.facultyId = f.facultyId);
+View 4:
+SHOULD SHOW ALL THE CLASSES and rooms (even the class that have no room and the room does not have a class)
+SELECT
+	*
+FROM
+	professors AS p,
+	faculties AS f,
+	courses AS c,
+	offerings AS o FULL OUTER JOIN
+	rooms AS r 
+	ON o.roomId = r.roomId FULL OUTER JOIN 
+	times AS s
+	ON s.timeId = o.start_time FULL OUTER JOIN
+	times AS e
+	ON e.timeId = o.end_time FULL OUTER JOIN
+	dates AS s
+	ON s.dateId = o.start_date FULL OUTER JOIN
+	dates AS e
+	ON e.dateId = o.end_date,
+	class_type AS ct,
+	semester AS s
+WHERE
+	p.profId = f.profId AND
+	p.profId = o.profId AND
+	p.profId = f.facultyId AND
+	o.yearId = s.yearId AND
+	o.typeId = ct.typeId;
+
+View 5: get all the prof's that are teaching course for both the MATH faculty and the ENGR faculty
+(SELECT
+	p.name
+FROM
+	professors AS p,
+	offerings AS o,
+	courses AS c,
+	faculties AS f
+WHERE
+	p.profId = o.profId AND
+	c.courseId = o.courseId AND
+	f.facultyId = c.facultyId AND
+	f.name LIKE 'MATH')
+INTERSECT
+(SELECT
+	p.name
+FROM
+	professors AS p,
+	offerings AS o,
+	courses AS c,
+	faculties AS f
+WHERE
+	p.profId = o.profId AND
+	c.courseId = o.courseId AND
+	f.facultyId = c.facultyId AND
+	f.name LIKE 'ENGR');
+	
