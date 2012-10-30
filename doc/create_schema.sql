@@ -93,7 +93,7 @@ campus table
 CREATE TABLE campus
 (
     campusId    INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
-    arc         CHAR(3),
+    acr         CHAR(3),
     name        VARCHAR(64),
     PRIMARY KEY(campusId)
 );
@@ -181,13 +181,17 @@ CREATE TABLE room_requests
 (
     userId      INTEGER UNSIGNED NOT NULL,
     occupyId    INTEGER UNSIGNED NOT NULL,
-    start_time  INTEGER NOT NULL,
-    end_time    INTEGER NOT NULL,
+    start_time  INTEGER UNSIGNED NOT NULL,
+    end_time    INTEGER UNSIGNED NOT NULL,
     date        DATE    NOT NULL,
     num_people  INTEGER UNSIGNED NOT NULL DEFAULT 1,
     FOREIGN KEY(userId) REFERENCES users(userId)
         ON DELETE CASCADE    ON UPDATE CASCADE,
     FOREIGN KEY(occupyId) REFERENCES occupied(occupyId)
+        ON DELETE CASCADE    ON UPDATE CASCADE,
+    FOREIGN KEY(start_time) REFERENCES times(timeId)
+        ON DELETE CASCADE    ON UPDATE CASCADE,
+    FOREIGN KEY(end_time) REFERENCES times(timeId)
         ON DELETE CASCADE    ON UPDATE CASCADE
 );
 
@@ -249,7 +253,7 @@ offerings
     - roomId foreign key        (COULD BE AN ONLINE COURSE)
     - campusId foreign key INTEGER UNSIGNED
     - start_time  INTEGER     UNSIGNED,
-    - finish_time INTEGER     UNSIGNED,
+    - end_time INTEGER     UNSIGNED,
     - start_date foreign key NOT NULL
     - end_date foreign key NOT NULL
     - semesterId      INTEGER     UNSIGNED    NOT NULL,
@@ -266,7 +270,7 @@ CREATE TABLE offerings
     profId      INTEGER     UNSIGNED,
     roomId      INTEGER     UNSIGNED,
     start_time  INTEGER     UNSIGNED,
-    finish_time INTEGER     UNSIGNED,
+    end_time    INTEGER     UNSIGNED,
     start_date  INTEGER     UNSIGNED,
     end_date    INTEGER     UNSIGNED,
     semesterId  INTEGER     UNSIGNED    NOT NULL,
@@ -280,7 +284,7 @@ CREATE TABLE offerings
         ON DELETE SET NULL    ON UPDATE CASCADE,
     FOREIGN KEY(start_time) REFERENCES times(timeId)
         ON DELETE CASCADE    ON UPDATE CASCADE,
-    FOREIGN KEY(finish_time) REFERENCES times(timeId)
+    FOREIGN KEY(end_time) REFERENCES times(timeId)
         ON DELETE CASCADE    ON UPDATE CASCADE,
     FOREIGN KEY(start_date) REFERENCES dates(dateId)
         ON DELETE CASCADE    ON UPDATE CASCADE,
