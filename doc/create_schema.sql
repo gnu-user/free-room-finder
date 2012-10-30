@@ -52,16 +52,16 @@ CREATE TABLE dates
 /*
 semesters table
 ---------------
-    - yearId primary key NOT NULL
+    - semesterId primary key NOT NULL
     - year YEAR(4) NOT NULL     (ie. 2012) 
     - semester VARCHAR(32) NOT NULL     (ie. Winter, Spring/Summer, Summer)
 */
 CREATE TABLE semesters
 (
-    yearId      INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+    semesterId  INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
     year        YEAR(4) NOT NULL,
     semester    VARCHAR(32) NOT NULL,
-    PRIMARY KEY(yearId)
+    PRIMARY KEY(semesterId)
 );
 
 
@@ -109,15 +109,15 @@ users
 */
 CREATE TABLE users
 (
-    userId  INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
-    first_name      VARCHAR(32),
-    last_name       VARCHAR(32),
-    student_id      BLOB,
-    email           VARCHAR(64),
-    username        VARCHAR(32),
-    password        BLOB,
-    reg_date        DATE,
-    last_access     DATE,
+    userId      INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+    first_name  VARCHAR(32),
+    last_name   VARCHAR(32),
+    student_id  BLOB,
+    email       VARCHAR(64),
+    username    VARCHAR(32),
+    password    BLOB,
+    reg_date    DATE,
+    last_access DATE,
     PRIMARY KEY (userId)
 );
 
@@ -242,7 +242,6 @@ offerings
     - typeId      INTEGER     UNSIGNED    NOT NULL,
     - registered INTEGER NOT NULL
     - day CHAR(1) NOT NULL
-    - term VARCHAR(16) NOT NULL
     - week_alt BOOLEAN DEFAULT NULL, identifies whether the class alternates
       weekly, default, NULL indicates that the class occurs each week, TRUE,
       indicates it occurs for week 1, FALSE, indicates it occurs for week 2
@@ -253,7 +252,7 @@ offerings
     - finish_time INTEGER     UNSIGNED,
     - start_date foreign key NOT NULL
     - end_date foreign key NOT NULL
-    - yearId      INTEGER     UNSIGNED    NOT NULL,
+    - semesterId      INTEGER     UNSIGNED    NOT NULL,
 */
 CREATE TABLE offerings
 (
@@ -263,7 +262,6 @@ CREATE TABLE offerings
     typeId      INTEGER     UNSIGNED    NOT NULL,
     registered  INTEGER     UNSIGNED    NOT NULL,
     day         CHAR(1)     NOT NULL,
-    term        VARCHAR(16) NOT NULL,
     week_alt    BOOLEAN     DEFAULT NULL,
     profId      INTEGER     UNSIGNED,
     roomId      INTEGER     UNSIGNED,
@@ -271,7 +269,7 @@ CREATE TABLE offerings
     finish_time INTEGER     UNSIGNED,
     start_date  INTEGER     UNSIGNED,
     end_date    INTEGER     UNSIGNED,
-    yearId      INTEGER     UNSIGNED    NOT NULL,
+    semesterId  INTEGER     UNSIGNED    NOT NULL,
     FOREIGN KEY(courseId) REFERENCES courses(courseId)
         ON DELETE CASCADE    ON UPDATE CASCADE,
     FOREIGN KEY(typeId) REFERENCES class_type(typeId)
@@ -288,6 +286,6 @@ CREATE TABLE offerings
         ON DELETE CASCADE    ON UPDATE CASCADE,
     FOREIGN KEY(end_date) REFERENCES dates(dateId)
         ON DELETE CASCADE    ON UPDATE CASCADE,
-    FOREIGN KEY(yearId) REFERENCES semesters(yearId)
+    FOREIGN KEY(semesterId) REFERENCES semesters(semesterId)
         ON DELETE CASCADE    ON UPDATE CASCADE
 );
