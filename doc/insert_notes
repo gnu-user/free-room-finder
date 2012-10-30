@@ -186,3 +186,4 @@ INSERT INTO offerings (courseId, crn, section, typeId, registered, day, week_alt
 
 INSERT INTO offerings (courseId, crn, section, typeId, registered, day, week_alt, profId, roomId, start_time, finish_time, start_date, end_date, semesterId) VALUES (5, '41058', '001', 3, 180, 'M', NULL, 2, 1, 1, 46, 1, 2, 1);
 
+INSERT INTO offerings (courseId, crn, section, typeId, registered, day, week_alt, profId, roomId, start_time, finish_time, start_date, end_date, semesterId) VALUES (5, '41058', '002', 5, 180, 'W', NULL, 3, NULL, NULL, NULL, 1, 2, 1);
