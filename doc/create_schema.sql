@@ -109,7 +109,7 @@ users
 */
 CREATE TABLE users
 (
-    access_account  INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+    userId  INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
     first_name      VARCHAR(32),
     last_name       VARCHAR(32),
     student_id      BLOB,
@@ -118,7 +118,7 @@ CREATE TABLE users
     password        BLOB,
     reg_date        DATE,
     last_access     DATE,
-    PRIMARY KEY (access_account)
+    PRIMARY KEY (userId)
 );
 
 
@@ -173,7 +173,7 @@ CREATE TABLE occupied
 /*
 room_requests
 -------------
-    - user_id primary key NOT NULL
+    - user_id foreign key NOT NULL
     - occupyId foreign key NOT NULL
     - number_of_people INTEGER NOT NULL
 */
@@ -185,10 +185,9 @@ CREATE TABLE room_requests
     end_time    INTEGER NOT NULL,
     date        DATE    NOT NULL,
     num_people  INTEGER UNSIGNED NOT NULL DEFAULT 1,
-    PRIMARY KEY(userId),
-    FOREIGN KEY(occupyId) REFERENCES occupied(occupyId)
+    FOREIGN KEY(userId) REFERENCES users(userId)
         ON DELETE CASCADE    ON UPDATE CASCADE,
-    FOREIGN KEY(userId) REFERENCES users(access_account)
+    FOREIGN KEY(occupyId) REFERENCES occupied(occupyId)
         ON DELETE CASCADE    ON UPDATE CASCADE
 );
 
