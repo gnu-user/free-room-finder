@@ -267,7 +267,6 @@ CREATE TABLE offerings
     week_alt    BOOLEAN     DEFAULT NULL,
     profId      INTEGER     UNSIGNED,
     roomId      INTEGER     UNSIGNED,
-    campusId    INTEGER     UNSIGNED,
     start_time  INTEGER     UNSIGNED,
     finish_time INTEGER     UNSIGNED,
     start_date  INTEGER     UNSIGNED,
@@ -280,8 +279,6 @@ CREATE TABLE offerings
     FOREIGN KEY(profId) REFERENCES professors(profId)
         ON DELETE SET NULL    ON UPDATE CASCADE,
     FOREIGN KEY(roomId) REFERENCES rooms(roomId)
-        ON DELETE SET NULL    ON UPDATE CASCADE,
-    FOREIGN KEY(campusId) REFERENCES campus(campusId)
         ON DELETE SET NULL    ON UPDATE CASCADE,
     FOREIGN KEY(start_time) REFERENCES times(timeId)
         ON DELETE CASCADE    ON UPDATE CASCADE,
