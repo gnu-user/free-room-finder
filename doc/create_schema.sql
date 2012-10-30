@@ -106,16 +106,6 @@ users
     - userId primary key NOT NULL
     - username VARCHAR(32) NOT NULL
     - password VARCHAR(64) NOT NULL
-
-CREATE TABLE users
-(
-    userId      INTEGER        UNSIGNED    NOT NULL,
-    username    VARCHAR(32)    NOT NULL,
-    password    VARCHAR(64)    NOT NULL,
-    PRIMARY KEY(userId)
-);
-
-OR 
 */
 CREATE TABLE users
 (
@@ -130,8 +120,6 @@ CREATE TABLE users
     last_access     DATE,
     PRIMARY KEY (access_account)
 );
-
-/* Note, this is the same layout as the cs-club users table */
 
 
 
@@ -161,10 +149,6 @@ CREATE TABLE rooms
 
 
 
-/* It might be a good idea to store the day, month separately from the year 
- * since the year will be needed quite often and without the year the day and 
- * month together would be open to more repetition.
- */
 /*
 occupied
 ---------
@@ -188,6 +172,7 @@ CREATE TABLE occupied
 
 /*
 room_requests
+-------------
     - user_id primary key NOT NULL
     - occupyId foreign key NOT NULL
     - number_of_people INTEGER NOT NULL
@@ -202,6 +187,8 @@ CREATE TABLE room_requests
     num_people  INTEGER UNSIGNED NOT NULL DEFAULT 1,
     PRIMARY KEY(userId),
     FOREIGN KEY(occupyId) REFERENCES occupied(occupyId)
+        ON DELETE CASCADE    ON UPDATE CASCADE,
+    FOREIGN KEY(userId) REFERENCES users(access_account)
         ON DELETE CASCADE    ON UPDATE CASCADE
 );
 
@@ -215,26 +202,12 @@ professors
     - profId primary key NOT NULL
     - name VARCHAR(32)
     - facultyId foreign key   prof might not be easily linked
-
-//Does not handle multiple profs in the same course (NEWBIES cant teach their courses)
-
+*/
 CREATE TABLE professors
 (
     profId  INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
     name    VARCHAR(32),
     PRIMARY KEY(profId)
-);
-
-OR
-*/
-CREATE TABLE professors
-(
-    profId      INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
-    name        VARCHAR(32),
-    facultyId   INTEGER UNSIGNED,
-    PRIMARY KEY(profId),
-    FOREIGN KEY (facultyId) REFERENCES faculties(facultyId)
-        ON DELETE SET NULL ON UPDATE CASCADE
 );
 
 
@@ -271,13 +244,14 @@ offerings
     - registered INTEGER NOT NULL
     - day CHAR(1) NOT NULL
     - term VARCHAR(16) NOT NULL
-    - week1  BOOLEAN     NOT NULL    DEFAULT FALSE
-    - week2  BOOLEAN     NOT NULL    DEFAULT FALSE
+    - week_alt BOOLEAN DEFAULT NULL, identifies whether the class alternates
+      weekly, default, NULL indicates that the class occurs each week, TRUE,
+      indicates it occurs for week 1, FALSE, indicates it occurs for week 2
     - profId foreign key        (IF NULL Prof == TBA/UNKNOWN)
     - roomId foreign key        (COULD BE AN ONLINE COURSE)
+    - campusId foreign key INTEGER UNSIGNED
     - start_time  INTEGER     UNSIGNED,
     - finish_time INTEGER     UNSIGNED,
-    - campusId foreign key INTEGER UNSIGNED NOT NULL
     - start_date foreign key NOT NULL
     - end_date foreign key NOT NULL
     - yearId      INTEGER     UNSIGNED    NOT NULL,
@@ -291,13 +265,12 @@ CREATE TABLE offerings
     registered  INTEGER     UNSIGNED    NOT NULL,
     day         CHAR(1)     NOT NULL,
     term        VARCHAR(16) NOT NULL,
-    week1       BOOLEAN     NOT NULL    DEFAULT FALSE,
-    week2       BOOLEAN     NOT NULL    DEFAULT FALSE,
+    week_alt    BOOLEAN     DEFAULT NULL,
     profId      INTEGER     UNSIGNED,
     roomId      INTEGER     UNSIGNED,
+    campusId    INTEGER     UNSIGNED,
     start_time  INTEGER     UNSIGNED,
     finish_time INTEGER     UNSIGNED,
-    campusId    INTEGER     UNSIGNED    NOT NULL,
     start_date  INTEGER     UNSIGNED,
     end_date    INTEGER     UNSIGNED,
     yearId      INTEGER     UNSIGNED    NOT NULL,
@@ -308,6 +281,8 @@ CREATE TABLE offerings
     FOREIGN KEY(profId) REFERENCES professors(profId)
         ON DELETE SET NULL    ON UPDATE CASCADE,
     FOREIGN KEY(roomId) REFERENCES rooms(roomId)
+        ON DELETE SET NULL    ON UPDATE CASCADE,
+    FOREIGN KEY(campusId) REFERENCES campus(campusId)
         ON DELETE SET NULL    ON UPDATE CASCADE,
     FOREIGN KEY(start_time) REFERENCES times(timeId)
         ON DELETE CASCADE    ON UPDATE CASCADE,
@@ -320,22 +295,3 @@ CREATE TABLE offerings
     FOREIGN KEY(yearId) REFERENCES semesters(yearId)
         ON DELETE CASCADE    ON UPDATE CASCADE
 );
-
-/* deletes if course is deleted, set prof to null if deleted, set room to null, 
- * deletes the campus 
- */ 
-
-
-
-/*
-Its tempting to have an abstract "course" and then have an implemented course 
-where the abstract course would be for just the name, facultyId, 
-
-- create a table of all the courses
-- the faculty column ('ENGR') reference the foreign key to an entry in the faculties table
-- faculty code, course code, and course section make up the primary key or crn
-
-
-innoDB specify this when creating the table to improve joining performance vs default
---> For now we are just going to use the default MYSQL engine
-*/

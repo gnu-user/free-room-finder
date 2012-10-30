@@ -75,13 +75,14 @@ offerings
     - registered INTEGER NOT NULL
     - day CHAR(1) NOT NULL
     - term VARCHAR(16) NOT NULL
-    - week1  BOOLEAN     NOT NULL    DEFAULT FALSE
-    - week2  BOOLEAN     NOT NULL    DEFAULT FALSE
+    - week_alt BOOLEAN DEFAULT NULL, identifies whether the class alternates
+      weekly, default, NULL indicates that the class occurs each week, TRUE,
+      indicates it occurs for week 1, FALSE, indicates it occurs for week 2
     - profId foreign key        (IF NULL Prof == TBA/UNKNOWN)
     - roomId foreign key        (COULD BE AN ONLINE COURSE)
+    - campusId foreign key INTEGER UNSIGNED
     - start_time  INTEGER     UNSIGNED,
     - finish_time INTEGER     UNSIGNED,
-    - campusId foreign key INTEGER UNSIGNED NOT NULL
     - start_date foreign key NOT NULL
     - end_date foreign key NOT NULL
     - yearId      INTEGER     UNSIGNED    NOT NULL,
@@ -95,13 +96,12 @@ CREATE TABLE offerings
     registered  INTEGER     UNSIGNED    NOT NULL,
     day         CHAR(1)     NOT NULL,
     term        VARCHAR(16) NOT NULL,
-    week1       BOOLEAN     NOT NULL    DEFAULT FALSE,
-    week2       BOOLEAN     NOT NULL    DEFAULT FALSE,
+    week_alt    BOOLEAN     DEFAULT NULL,
     profId      INTEGER     UNSIGNED,
     roomId      INTEGER     UNSIGNED,
+    campusId    INTEGER     UNSIGNED,
     start_time  INTEGER     UNSIGNED,
     finish_time INTEGER     UNSIGNED,
-    campusId    INTEGER     UNSIGNED    NOT NULL,
     start_date  INTEGER     UNSIGNED,
     end_date    INTEGER     UNSIGNED,
     yearId      INTEGER     UNSIGNED    NOT NULL,
@@ -112,6 +112,8 @@ CREATE TABLE offerings
     FOREIGN KEY(profId) REFERENCES professors(profId)
         ON DELETE SET NULL    ON UPDATE CASCADE,
     FOREIGN KEY(roomId) REFERENCES rooms(roomId)
+        ON DELETE SET NULL    ON UPDATE CASCADE,
+    FOREIGN KEY(campusId) REFERENCES campus(campusId)
         ON DELETE SET NULL    ON UPDATE CASCADE,
     FOREIGN KEY(start_time) REFERENCES times(timeId)
         ON DELETE CASCADE    ON UPDATE CASCADE,
@@ -124,6 +126,7 @@ CREATE TABLE offerings
     FOREIGN KEY(yearId) REFERENCES semesters(yearId)
         ON DELETE CASCADE    ON UPDATE CASCADE
 );
+
 
 
 *deletes if course is deleted, set prof to null if deleted, set room to null, deletes the campus 
@@ -289,6 +292,7 @@ CREATE TABLE users
 
 
 room_requests
+-------------
     - user_id primary key NOT NULL
     - occupyId foreign key NOT NULL
     - number_of_people INTEGER NOT NULL
@@ -301,8 +305,9 @@ CREATE TABLE room_requests
     end_time    INTEGER NOT NULL,
     date        DATE    NOT NULL,
     num_people  INTEGER UNSIGNED NOT NULL DEFAULT 1,
-    PRIMARY KEY(userId),
     FOREIGN KEY(occupyId) REFERENCES occupied(occupyId)
+        ON DELETE CASCADE    ON UPDATE CASCADE
+    FOREIGN KEY(userId) REFERENCES users(access_account)
         ON DELETE CASCADE    ON UPDATE CASCADE
 );
 

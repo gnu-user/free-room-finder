@@ -123,4 +123,37 @@ WHERE
 	c.courseId = o.courseId AND
 	f.facultyId = c.facultyId AND
 	f.name LIKE 'ENGR');
-	
+
+View 6:
+SELECT
+    *
+FROM
+	offerings AS o,
+	rooms AS r,
+	times AS t,
+	times AS t2,
+	dates AS d,
+	dates AS d2,
+	class_type AS ct,
+	semester AS s
+WHERE
+    r.roomId = o.roomId AND
+    o.start_time = t.timeId AND
+    o.finish_time = t2.timeId AND
+    o.start_date = d.dateId AND
+    o.finish_date = d2.dateId AND
+    o.typeId = ct.typeId AND
+    s.yearId = o.yearId AND
+    o.day = 'M' AND
+ORDER BY
+    t.time
+    
+    
+    
+
+
+
+
+
+
+
