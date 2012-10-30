@@ -1,0 +1,188 @@
+/*Faculties:*/
+INSERT INTO faculties (code, name) VALUES ('MATH', 'Mathematics');
+INSERT INTO faculties (code, name) VALUES ('ENGR', 'Engineering');
+INSERT INTO faculties (code, name) VALUES ('CSCI', 'Computer Science');
+INSERT INTO faculties (code, name) VALUES ('PHY', 'Physics');
+INSERT INTO faculties (code, name) VALUES ('BUSI', 'Business');
+INSERT INTO faculties (code, name) VALUES ('STAT', 'Statistics');
+
+/*times:*/
+INSERT INTO times (time) VALUES ('08:10:00');
+INSERT INTO times (time) VALUES ('9:10:00');
+INSERT INTO times (time) VALUES ('10:10:00');
+INSERT INTO times (time) VALUES ('11:10:00');
+INSERT INTO times (time) VALUES ('12:10:00');
+INSERT INTO times (time) VALUES ('13:10:00');
+INSERT INTO times (time) VALUES ('14:10:00');
+INSERT INTO times (time) VALUES ('15:10:00');
+INSERT INTO times (time) VALUES ('16:10:00');
+INSERT INTO times (time) VALUES ('17:10:00');
+INSERT INTO times (time) VALUES ('18:10:00');
+INSERT INTO times (time) VALUES ('19:10:00');
+INSERT INTO times (time) VALUES ('20:10:00');
+INSERT INTO times (time) VALUES ('21:10:00');
+INSERT INTO times (time) VALUES ('08:00:00');
+INSERT INTO times (time) VALUES ('9:00:00');
+INSERT INTO times (time) VALUES ('10:00:00');
+INSERT INTO times (time) VALUES ('11:00:00');
+INSERT INTO times (time) VALUES ('12:00:00');
+INSERT INTO times (time) VALUES ('13:00:00');
+INSERT INTO times (time) VALUES ('14:00:00');
+INSERT INTO times (time) VALUES ('15:00:00');
+INSERT INTO times (time) VALUES ('16:00:00');
+INSERT INTO times (time) VALUES ('17:00:00');
+INSERT INTO times (time) VALUES ('18:00:00');
+INSERT INTO times (time) VALUES ('19:00:00');
+INSERT INTO times (time) VALUES ('20:00:00');
+INSERT INTO times (time) VALUES ('21:00:00');
+INSERT INTO times (time) VALUES ('22:00:00');
+INSERT INTO times (time) VALUES ('8:40:00');
+INSERT INTO times (time) VALUES ('9:40:00');
+INSERT INTO times (time) VALUES ('10:40:00');
+INSERT INTO times (time) VALUES ('11:40:00');
+INSERT INTO times (time) VALUES ('12:40:00');
+INSERT INTO times (time) VALUES ('13:40:00');
+INSERT INTO times (time) VALUES ('14:40:00');
+INSERT INTO times (time) VALUES ('15:40:00');
+INSERT INTO times (time) VALUES ('16:40:00');
+INSERT INTO times (time) VALUES ('17:40:00');
+INSERT INTO times (time) VALUES ('18:40:00');
+INSERT INTO times (time) VALUES ('19:40:00');
+INSERT INTO times (time) VALUES ('20:40:00');
+INSERT INTO times (time) VALUES ('21:40:00');
+INSERT INTO times (time) VALUES ('22:40:00');
+INSERT INTO times (time) VALUES ('8:30:00');
+INSERT INTO times (time) VALUES ('9:30:00');
+INSERT INTO times (time) VALUES ('10:30:00');
+INSERT INTO times (time) VALUES ('11:30:00');
+INSERT INTO times (time) VALUES ('12:30:00');
+INSERT INTO times (time) VALUES ('13:30:00');
+INSERT INTO times (time) VALUES ('14:30:00');
+INSERT INTO times (time) VALUES ('15:30:00');
+INSERT INTO times (time) VALUES ('16:30:00');
+INSERT INTO times (time) VALUES ('17:30:00');
+INSERT INTO times (time) VALUES ('18:30:00');
+INSERT INTO times (time) VALUES ('19:30:00');
+INSERT INTO times (time) VALUES ('20:30:00');
+INSERT INTO times (time) VALUES ('21:30:00');
+
+/*date:*/
+INSERT INTO dates (date) VALUES ('2012-09-06');
+INSERT INTO dates (date) VALUES ('2012-12-05');
+INSERT INTO dates (date) VALUES ('2012-01-10');
+INSERT INTO dates (date) VALUES ('2012-05-12');
+INSERT INTO dates (date) VALUES ('2011-09-05');
+INSERT INTO dates (date) VALUES ('2011-12-04');
+
+/*semesters*/
+INSERT INTO semesters (year, semester) VALUES ('2012', 'Fall');
+INSERT INTO semesters (year, semester) VALUES ('2012', 'Winter');
+INSERT INTO semesters (year, semester) VALUES ('2012', 'Spring/Summer');
+INSERT INTO semesters (year, semester) VALUES ('2011', 'Fall');
+INSERT INTO semesters (year, semester) VALUES ('2011', 'Winter');
+INSERT INTO semesters (year, semester) VALUES ('2011', 'Spring/Summer');
+
+/*class_type*/
+INSERT INTO class_type (acr, type) VALUES ('LEC', 'Lecture');
+INSERT INTO class_type (acr, type) VALUES ('TUT', 'Tutorial');
+INSERT INTO class_type (acr, type) VALUES ('LAB', 'Lab');
+INSERT INTO class_type (acr, type) VALUES ('THS', 'Thesis');
+INSERT INTO class_type (acr, type) VALUES ('WEB', 'Web Course');
+INSERT INTO class_type (acr, type) VALUES ('FLD', 'Field Course');
+
+/*campus*/
+INSERT INTO campus (arc, name) VALUES ('UON', 'UOIT Oshawa North Campus');
+INSERT INTO campus (arc, name) VALUES ('UOD', 'UOIT Oshawa Downtown Campus');
+INSERT INTO campus (arc, name) VALUES ('UOG', 'UOIT Georgia Campus');
+INSERT INTO campus (arc, name) VALUES ('UOF', 'UOIT Faraway Campus');
+INSERT INTO campus (arc, name) VALUES ('UOW', 'UOIT World Wide Campus');
+INSERT INTO campus (arc, name) VALUES ('UOH', 'UOIT Hidden Campus');
+
+/*users
+copy and paste up to before here, does not work if this one is included (might be to large)
+*/
+INSERT INTO users (first_name, last_name, student_id, email, username, password, reg_date, last_access) VALUES ('joseph', 'hero', '1002312344', 'fake@fake.com', 'dataBaseError', 'insecure', '2012-09-01', '2012-10-30');
+
+INSERT INTO users (first_name, last_name, student_id, email, username, password, reg_date, last_access) VALUES ('billy', 'weds', '1002231344', 'bil@fake.com', 'BILLY', 'secure', '2012-09-23', '2012-10-19');
+
+INSERT INTO users (first_name, last_name, student_id, email, username, password, reg_date, last_access) VALUES ('super', 'hero', '1002989344', 'superman@fake.com', 'batman', 'batcave', '2012-10-01', '2012-10-20');
+
+INSERT INTO users (first_name, last_name, student_id, email, username, password, reg_date, last_access) VALUES ('you', 'nu', '1002314323', 'u@fake.com', 'who', 'password', '2012-09-21', '2012-10-30');
+
+INSERT INTO users (first_name, last_name, student_id, email, username, password, reg_date, last_access) VALUES ('gnu', 'user', '1002312044', 'gnu@fake.com', 'gnu_user', 'paranoid', '2012-09-23', '2012-10-13');
+
+INSERT INTO users (first_name, last_name, student_id, email, username, password, reg_date, last_access) VALUES ('tinfoil', 'hat', '1003213098', 'nothere@fake.com', 'anon', '9190342', '2012-08-01', '2012-10-30');
+
+/*rooms*/
+INSERT INTO rooms (name, campusId, room_capacity, power_outlet, ethernet_ports) VALUES ('UA1350', 1, 250, TRUE, TRUE);
+INSERT INTO rooms  (name, campusId, room_capacity, power_outlet, ethernet_ports) VALUES ('UA1240', 1, 75, TRUE, TRUE);
+INSERT INTO rooms  (name, campusId, room_capacity, power_outlet, ethernet_ports) VALUES ('UB2050', 2, 50, TRUE, TRUE);
+INSERT INTO rooms  (name, campusId, room_capacity, power_outlet, ethernet_ports) VALUES ('UB2080', 2, 175, TRUE, TRUE);
+INSERT INTO rooms  (name, campusId, room_capacity, power_outlet, ethernet_ports) VALUES ('UA1220', 1, 150, TRUE, TRUE);
+INSERT INTO rooms  (name, campusId, room_capacity, power_outlet, ethernet_ports) VALUES ('UA2230', 1, 50, TRUE, TRUE);
+
+/*occupied*/
+INSERT INTO occupied (roomId, num_people) VALUES (5, 10);
+INSERT INTO occupied (roomId, num_people) VALUES (6, 20);
+INSERT INTO occupied (roomId, num_people) VALUES (1, 100); 
+INSERT INTO occupied (roomId, num_people) VALUES (3, 1);    
+INSERT INTO occupied (roomId, num_people) VALUES (2, 25);
+INSERT INTO occupied (roomId, num_people) VALUES (4, 50);
+
+/*room_requests*/
+INSERT INTO room_requests (userId, occupyId, start_time, end_time, date, num_people) VALUES (1, 2, '17:00:00', '18:30:00', '2012-11-02', 20);
+INSERT INTO room_requests (userId, occupyId, start_time, end_time, date, num_people) VALUES (1, 3, '15:00:00', '17:00:00', '2012-10-31', 60);
+INSERT INTO room_requests (userId, occupyId, start_time, end_time, date, num_people) VALUES (2, 3, '15:00:00', '17:00:00', '2012-10-31', 40);
+INSERT INTO room_requests (userId, occupyId, start_time, end_time, date, num_people) VALUES (3, 1, '17:00:00', '18:30:00', '2012-11-02', 10);
+INSERT INTO room_requests (userId, occupyId, start_time, end_time, date, num_people)
+VALUES (3, 5, '15:00:00', '17:00:00', '2012-10-31', 5);
+INSERT INTO room_requests (userId, occupyId, start_time, end_time, date, num_people) VALUES (4, 4, '15:00:00', '17:00:00', '2012-10-31', 1);
+INSERT INTO room_requests (userId, occupyId, start_time, end_time, date, num_people)
+VALUES (4, 6, '17:00:00', '18:30:00', '2012-11-02', 20);
+INSERT INTO room_requests (userId, occupyId, start_time, end_time, date, num_people) VALUES (5, 6, '17:00:00', '18:30:00', '2012-11-02', 30);
+INSERT INTO room_requests (userId, occupyId, start_time, end_time, date, num_people)
+VALUES (6, 5, '15:00:00', '17:00:00', '2012-10-31', 20);
+INSERT INTO room_requests (userId, occupyId, start_time, end_time, date, num_people)
+VALUES (3, 5, '15:00:00', '17:00:00', '2012-10-31', 5);
+
+/*professor*/
+INSERT INTO professors (name) VALUES ('Paula Dicato');
+INSERT INTO professors (name) VALUES ('Walid Ibrahim');
+INSERT INTO professors (name) VALUES ('Kamran Sartipi');
+INSERT INTO professors (name) VALUES ('Shahryar Rahnamayan');
+INSERT INTO professors (name) VALUES ('Eyhab Al-Masri');
+INSERT INTO professors (name) VALUES ('Mihai Beligan');
+
+/*courses
+    No class can be on '17:00:00', '18:30:00', '2012-11-02' or 
+    '15:00:00', '17:00:00', '2012-10-31'*/
+INSERT INTO courses (name, course_code, level, facultyId) VALUES ('Stats & Probability for Eng', '2800U', 'Undergraduate', 6); 
+
+INSERT INTO courses (name, course_code, level, facultyId) VALUES ('Data Management Systems', '3700U', 'Undergraduate', 2);
+
+INSERT INTO courses (name, course_code, level, facultyId) VALUES ('Calculus I', '1010U', 'Undergraduate', 1);
+
+INSERT INTO courses (name, course_code, level, facultyId) VALUES ('Discrete Mathematics', '2110U', 'Undergraduate', 2);
+
+INSERT INTO courses (name, course_code, level, facultyId) VALUES ('Calculus II', '1020U', 'Undergraduate', 1);
+
+INSERT INTO courses (name, course_code, level, facultyId) VALUES ('Information Tech for Engineers', '1400U', 'Undergraduate', 1);
+
+
+/*offerings*/
+INSERT INTO offerings (courseId, crn, section, typeId, registered, day, week_alt, profId, roomId, start_time, finish_time, start_date, end_date, semesterId) VALUES (1, '70247', '001', 1, 135, 'T', NULL, 1, 1, 1, 46, 1, 2, 1);
+
+INSERT INTO offerings (courseId, crn, section, typeId, registered, day, week_alt, profId, roomId, start_time, finish_time, start_date, end_date, semesterId) VALUES (1, '70248', '002', 2, 30, 'R', NULL, 6, 6, 32, 19, 1, 2, 1);
+
+INSERT INTO offerings (courseId, crn, section, typeId, registered, day, week_alt, profId, roomId, start_time, finish_time, start_date, end_date, semesterId) VALUES (2, '42578', '001', 1, 30, 'M', NULL, 5, 2, 40, 27, 1, 2, 1);
+
+INSERT INTO offerings (courseId, crn, section, typeId, registered, day, week_alt, profId, roomId, start_time, finish_time, start_date, end_date, semesterId) VALUES (2, '42578', '001', 1, 30, 'R', NULL, 5, 2, 10, 55, 1, 2, 1);
+
+INSERT INTO offerings (courseId, crn, section, typeId, registered, day, week_alt, profId, roomId, start_time, finish_time, start_date, end_date, semesterId) VALUES (3, '40288', '001', 1, 123, 'M', NULL, 6, 4, 5, 50, 1, 2, 1);
+
+INSERT INTO offerings (courseId, crn, section, typeId, registered, day, week_alt, profId, roomId, start_time, finish_time, start_date, end_date, semesterId) VALUES (4, '41063', '001', 1, 72, 'T', NULL, 6, 2, 1, 46, 1, 2, 1);
+
+INSERT INTO offerings (courseId, crn, section, typeId, registered, day, week_alt, profId, roomId, start_time, finish_time, start_date, end_date, semesterId) VALUES (4, '41064', '002', 3, 27, 'T', NULL, 2, 6, 35, 22, 1, 2, 1);
+
+INSERT INTO offerings (courseId, crn, section, typeId, registered, day, week_alt, profId, roomId, start_time, finish_time, start_date, end_date, semesterId) VALUES (5, '41058', '001', 3, 180, 'M', NULL, 2, 1, 1, 46, 1, 2, 1);
+
