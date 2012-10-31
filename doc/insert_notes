@@ -91,12 +91,12 @@ INSERT INTO class_type (acr, type) VALUES ('WEB', 'Web Course');
 INSERT INTO class_type (acr, type) VALUES ('FLD', 'Field Course');
 
 /*campus*/
-INSERT INTO campus (arc, name) VALUES ('UON', 'UOIT Oshawa North Campus');
-INSERT INTO campus (arc, name) VALUES ('UOD', 'UOIT Oshawa Downtown Campus');
-INSERT INTO campus (arc, name) VALUES ('UOG', 'UOIT Georgia Campus');
-INSERT INTO campus (arc, name) VALUES ('UOF', 'UOIT Faraway Campus');
-INSERT INTO campus (arc, name) VALUES ('UOW', 'UOIT World Wide Campus');
-INSERT INTO campus (arc, name) VALUES ('UOH', 'UOIT Hidden Campus');
+INSERT INTO campus (acr, name) VALUES ('UON', 'UOIT Oshawa North Campus');
+INSERT INTO campus (acr, name) VALUES ('UOD', 'UOIT Oshawa Downtown Campus');
+INSERT INTO campus (acr, name) VALUES ('UOG', 'UOIT Georgia Campus');
+INSERT INTO campus (acr, name) VALUES ('UOF', 'UOIT Faraway Campus');
+INSERT INTO campus (acr, name) VALUES ('UOW', 'UOIT World Wide Campus');
+INSERT INTO campus (acr, name) VALUES ('UOH', 'UOIT Hidden Campus');
 
 /*users
 copy and paste up to before here, does not work if this one is included (might be to large)
@@ -170,20 +170,20 @@ INSERT INTO courses (name, course_code, level, facultyId) VALUES ('Information T
 
 
 /*offerings*/
-INSERT INTO offerings (courseId, crn, section, typeId, registered, day, week_alt, profId, roomId, start_time, finish_time, start_date, end_date, semesterId) VALUES (1, '70247', '001', 1, 135, 'T', NULL, 1, 1, 1, 46, 1, 2, 1);
+INSERT INTO offerings (courseId, crn, section, typeId, registered, day, week_alt, profId, roomId, start_time, end_time, start_date, end_date, semesterId) VALUES (1, '70247', '001', 1, 135, 'T', NULL, 1, 1, 1, 46, 1, 2, 1);
 
-INSERT INTO offerings (courseId, crn, section, typeId, registered, day, week_alt, profId, roomId, start_time, finish_time, start_date, end_date, semesterId) VALUES (1, '70248', '002', 2, 30, 'R', NULL, 6, 6, 32, 19, 1, 2, 1);
+INSERT INTO offerings (courseId, crn, section, typeId, registered, day, week_alt, profId, roomId, start_time, end_time, start_date, end_date, semesterId) VALUES (1, '70248', '002', 2, 30, 'R', NULL, 6, 6, 32, 19, 1, 2, 1);
 
-INSERT INTO offerings (courseId, crn, section, typeId, registered, day, week_alt, profId, roomId, start_time, finish_time, start_date, end_date, semesterId) VALUES (2, '42578', '001', 1, 30, 'M', NULL, 5, 2, 40, 27, 1, 2, 1);
+INSERT INTO offerings (courseId, crn, section, typeId, registered, day, week_alt, profId, roomId, start_time, end_time, start_date, end_date, semesterId) VALUES (2, '42578', '001', 1, 30, 'M', NULL, 5, 2, 40, 27, 1, 2, 1);
 
-INSERT INTO offerings (courseId, crn, section, typeId, registered, day, week_alt, profId, roomId, start_time, finish_time, start_date, end_date, semesterId) VALUES (2, '42578', '001', 1, 30, 'R', NULL, 5, 2, 10, 55, 1, 2, 1);
+INSERT INTO offerings (courseId, crn, section, typeId, registered, day, week_alt, profId, roomId, start_time, end_time, start_date, end_date, semesterId) VALUES (2, '42578', '001', 1, 30, 'R', NULL, 5, 2, 10, 55, 1, 2, 1);
 
-INSERT INTO offerings (courseId, crn, section, typeId, registered, day, week_alt, profId, roomId, start_time, finish_time, start_date, end_date, semesterId) VALUES (3, '40288', '001', 1, 123, 'M', NULL, 6, 4, 5, 50, 1, 2, 1);
+INSERT INTO offerings (courseId, crn, section, typeId, registered, day, week_alt, profId, roomId, start_time, end_time, start_date, end_date, semesterId) VALUES (3, '40288', '001', 1, 123, 'M', NULL, 6, 4, 5, 50, 1, 2, 1);
 
-INSERT INTO offerings (courseId, crn, section, typeId, registered, day, week_alt, profId, roomId, start_time, finish_time, start_date, end_date, semesterId) VALUES (4, '41063', '001', 1, 72, 'T', NULL, 6, 2, 1, 46, 1, 2, 1);
+INSERT INTO offerings (courseId, crn, section, typeId, registered, day, week_alt, profId, roomId, start_time, end_time, start_date, end_date, semesterId) VALUES (4, '41063', '001', 1, 72, 'T', NULL, 6, 2, 1, 46, 1, 2, 1);
 
-INSERT INTO offerings (courseId, crn, section, typeId, registered, day, week_alt, profId, roomId, start_time, finish_time, start_date, end_date, semesterId) VALUES (4, '41064', '002', 3, 27, 'T', NULL, 2, 6, 35, 22, 1, 2, 1);
+INSERT INTO offerings (courseId, crn, section, typeId, registered, day, week_alt, profId, roomId, start_time, end_time, start_date, end_date, semesterId) VALUES (4, '41064', '002', 3, 27, 'T', NULL, 2, 6, 35, 22, 1, 2, 1);
 
-INSERT INTO offerings (courseId, crn, section, typeId, registered, day, week_alt, profId, roomId, start_time, finish_time, start_date, end_date, semesterId) VALUES (5, '41058', '001', 3, 180, 'M', NULL, 2, 1, 1, 46, 1, 2, 1);
+INSERT INTO offerings (courseId, crn, section, typeId, registered, day, week_alt, profId, roomId, start_time, end_time, start_date, end_date, semesterId) VALUES (5, '41058', '001', 3, 180, 'M', NULL, 2, 1, 1, 46, 1, 2, 1);
 
-INSERT INTO offerings (courseId, crn, section, typeId, registered, day, week_alt, profId, roomId, start_time, finish_time, start_date, end_date, semesterId) VALUES (5, '41058', '002', 5, 180, 'W', NULL, 3, NULL, NULL, NULL, 1, 2, 1);
+INSERT INTO offerings (courseId, crn, section, typeId, registered, day, week_alt, profId, roomId, start_time, end_time, start_date, end_date, semesterId) VALUES (5, '41058', '002', 5, 180, 'W', NULL, 3, NULL, NULL, NULL, 1, 2, 1);
