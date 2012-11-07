@@ -16,7 +16,6 @@ def connect_db(user, passwd, domain, db_name):
     try:
         con = mdb.connect(domain, user, passwd, db_name)
         return con
-
     except mdb.Error, e:
         print "Error %d: %s" % (e.args[0],e.args[1])
         sys.exit(1)
@@ -56,7 +55,7 @@ def table_exists(con, table):
 
 #insert the room into the database if it is not already there
 def insert_rooms(course_data):
-    roomId = get_room_id(course_data[idx_key][alp_key]['room_number'])
+    room_id = get_room_id(course_data[idx_key][alp_key]['room_number'])
     if roomId == 0:
         campus_id = insert_campus(course_data[idx_key]['campus'])
         try:
@@ -65,9 +64,11 @@ def insert_rooms(course_data):
                             % ( course_data[idx_key][alp_key]['room_number'],
                                 int(campus_id),
                                 int(course_data[idx_key]['capacity']),
-                                None, None
-                              )
+                                None, None ))
             room_id = cur.fetchall()
+        except mdb.Error, e:
+            print "Error %d: %s" % (e.args[0],e.args[1])
+            sys.exit(1)
     return room_id
 
 #Get the room id given the name of the room
@@ -80,9 +81,10 @@ def insert_campus(acr):
     campus_id = get_campus_id(acr)
     if campus_id == 0:
         try:
-            cur.execute("INSERT INTO campus (acr, name) VALUES (%d) " 
-                        % ( acr, campus_acronyms[acr] )
+            cur.execute("INSERT INTO campus (acr, name) VALUES (%d) " % ( acr, campus_acronyms[acr] ))
             campus_id = cur.fetchall()
+        except mdb.Error, e:
+            print "Error %d: %s" % (e.args[0],e.args[1])
     return campus_id
 
 #Get the campus id 
@@ -96,12 +98,18 @@ def insert_time(start_time, finish_tine):
     finish_id = get_time_id(finish_time)
     if start_id == 0:
         try:
-            cur.execute("INSERT INTO times (time) VALUES (%d) " % ( start_time )
+            cur.execute("INSERT INTO times (time) VALUES (%d) " % ( start_time ))
             start_id = cur.fetchall()
+        except mdb.Error, e:
+            print "Error %d: %s" % (e.args[0],e.args[1])
+            sys.exit(1)
     if finish_id == 0:
         try:
-            cur.execute("INSERT INTO times (time) VALUES (%d) " % ( finish_time )
+            cur.execute("INSERT INTO times (time) VALUES (%d) " % ( finish_time ))
             finish_id = cur.fetchall()
+        except mdb.Error, e:
+            print "Error %d: %s" % (e.args[0],e.args[1])
+            sys.exit(1)
     return [start_id, finish_id]
 
 #Get the time id given the time 
@@ -115,12 +123,18 @@ def insert_date(start_date, finish_date):
     finish_id = get_date_id(finish_date)
     if start_id == 0:
         try:
-            cur.execute("INSERT INTO dates (date) VALUES (%d) " % ( start_date )
+            cur.execute("INSERT INTO dates (date) VALUES (%d) " % ( start_date ))
             start_id = cur.fetchall()
+        except mdb.Error, e:
+            print "Error %d: %s" % (e.args[0],e.args[1])
+            sys.exit(1)
     if finish_id == 0:
         try:
-            cur.execute("INSERT INTO dates (date) VALUES (%d) " % ( finish_date )
+            cur.execute("INSERT INTO dates (date) VALUES (%d) " % ( finish_date ))
             finish_id = cur.fetchall()
+        except mdb.Error, e:
+            print "Error %d: %s" % (e.args[0],e.args[1])
+            sys.exit(1)
     return [start_id, finish_id]
 
 #Get the date id given the date
@@ -133,8 +147,11 @@ def insert_faculty(code):
     code_id = get_faculty_id(code)
     if code_id == 0:
         try:
-            cur.execute("INSERT INTO facutlies (date) VALUES (%d) " % ( code )
+            cur.execute("INSERT INTO facutlies (date) VALUES (%d) " % ( code ))
             code_id = cur.fetchall()
+        except mdb.Error, e:
+            print "Error %d: %s" % (e.args[0],e.args[1])
+            sys.exit(1)
     return code_id
 
 #Get the faculty id given the faculty code
@@ -146,10 +163,12 @@ def get_faculty_id(code):
 def insert_semesters(year, semester):
     semester_id = get_semesters_id(code) 
     if semester_id == 0:
-        try:fashion
-            cur.execute("INSERT INTO semesters (year, semester) VALUES (%d, %s) " 
-                        % ( year, semester )
+        try:
+            cur.execute("INSERT INTO semesters (year, semester) VALUES (%d, %s) " % ( year, semester ))
             semester_id = cur.fetchall()
+        except mdb.Error, e:
+            print "Error %d: %s" % (e.args[0],e.args[1])
+            sys.exit(1)
     return semester_id
 
 #Get the semester id given the year and semester
@@ -163,8 +182,11 @@ def insert_class_type(acr):
     class_type_id = get_class_type(acr) 
     if class_type_id == 0:
         try:
-            cur.execute("INSERT INTO class_type (acr, semester) VALUES (%s, %s) " % ( acr, class_types[acr] )
+            cur.execute("INSERT INTO class_type (acr, semester) VALUES (%s, %s) " % ( acr, class_types[acr] ))
             class_type_id = cur.fetchall()
+        except mdb.Error, e:
+            print "Error %d: %s" % (e.args[0],e.args[1])
+            sys.exit(1)
     return class_type_id
 
 #Get the class type given the acr 
@@ -179,6 +201,9 @@ def insert_professor(professor):
         try:
             cur.execute("INSERT INTO professors (name) VALUES (%s) " % ( professor ))
             prof_id = cur.fetchall()
+        except mdb.Error, e:
+            print "Error %d: %s" % (e.args[0],e.args[1])
+            sys.exit(1)
     return prof_id
 
 #Get the professor id given the professor name
@@ -199,6 +224,9 @@ def insert_course(course_data):
                                                     course_data[idx_key]['level'],
                                                     faculty_id))
             course_id = cur.fetchall()
+        except mdb.Error, e:
+            print "Error %d: %s" % (e.args[0],e.args[1])
+            sys.exit(1)
     return course_id
 
 #Get course id given the course name
