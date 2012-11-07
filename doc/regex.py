@@ -1,0 +1,49 @@
+#!/usr/bin/env python
+################################################################################
+# 
+# A module containing all of the compiled regular expression objects used 
+# by the free room to parse the data
+#
+################################################################################
+import re
+
+
+# Matches the course info, groups: course name, CRN, program code, course code, course section
+re_course_info= re.compile(r'(^.*)\s*\-\s*(\d{5})\s*\-\s*([\w]{2,4})\s*(\d{4}[\w]{1})\s*\-*\s*(\d{0,3})')
+
+# Matches course term info, groups: school, term, year
+re_course_term = re.compile(r'^([A-Z]*)\s(\w*)\s(\d{4})')
+
+# Matches the prof name, groups: first name, last name
+re_prof_name = re.compile(r'([A-Z]\w*)[\w\s\.]*([A-Z]\w*)\s\(')
+
+# Matches the campus, group: campus
+re_campus = re.compile(r'UOIT[\s]*\-(Off)*[\s]*([A-Za-z\-\s]*)')
+
+# NOTE THIS REGEX NEEDS TO BE MORE SPECIFIC
+# Matches the course type, group: course type
+re_course_type = re.compile(r'^\s([A-Za-z]*\s)')
+
+# Matches the capacity info such as capacity, registered, remaining
+re_capacity = re.compile(r'^\d{1,3}$')
+
+# Matches the week1 or week2 info, if no week specified room used every week
+re_week_info = re.compile(r'(W1|W2|\&nbsp\;)')
+
+# Matches the course start and end time for room, groups: start time, 
+# start AM/PM, end time, AM/PM end time
+re_course_time = re.compile(r'(\d{1,2}\:\d{2})\s(\w{2})\s+\-\s+(\d{1,2}\:\d{2})\s(\w{2})')
+
+# Matches the course day of the week, group: single char representing day of week
+# (Monday=M, Tuesday=T, Wednesday=W, Thursday=R, Friday=F)
+re_course_day = re.compile(r'^([MTWRF]{1})$')
+
+# Matches the room info, groups: room number (ie. UA1350)
+re_room = re.compile(r'([A-Z]{2,3}\d{1,4})')
+
+# Matches the course start and end time, groups: start month, start day,
+# starting year, ending month, ending day, ending year
+re_course_date = re.compile(r'([A-Z]{1}[a-z]{2,3})\s([0123]{1}\d{1}).*\s(20\d{2})\s\-\s([A-Z]{1}[a-z]{2,3})\s([0123]{1}\d{1}).*\s(20\d{2})')
+
+# Matches the type of class, Lecture, Tutorial, Laboratory, groups: class_type
+re_class_type = re.compile(r'(\s*Lecture\s*|\s*Tutorial\s*|\s*Laboratory\s*|\s*Thesis\s*\/Project\s*|\s*Web\s*Course\s*|\s*Field\s*Placement\s*)')
