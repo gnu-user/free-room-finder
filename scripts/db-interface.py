@@ -442,5 +442,8 @@ insert_professor(con, teacher_name)
 #                finish_time, start_date, finish_date, crn, section, 
 #                registered, day, week1, week2, year, semester)
 
+# Commit all changes to the database before closing connection
+con.commit()
+
 # Finally, close connection to database
 con.close()
