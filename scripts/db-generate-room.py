@@ -12,6 +12,7 @@ from regex import *
 from util import *
 import string
 import sys
+import traceback
 
 ################################################################################
 # 
@@ -88,13 +89,9 @@ def store_course_data(con, course_data):
                 #    create_table_room(con, course_data[idx_key][alp_key]['room_number'])
                 # Insert the data for the current table
                 try:
-                    # HACK: For empty string as some courses have no teacher/TA listed
-                    teacher_name = ''
-                    if 'teacher_name' in course_data[idx_key]:
-                        if len(course_data[idx_key]['teacher_name']) == 2:
+                    if course_data[idx_key]['teacher_name'] is not None \
+                        and len(course_data[idx_key]['teacher_name']) == 2:
                             teacher_name = ' '.join(course_data[idx_key]['teacher_name'])
-                        else:
-                            teacher_name = course_data[idx_key]['teacher_name']
                     
 
                     # Print out 'NONE' in red for anything that's set as None
@@ -109,7 +106,7 @@ def store_course_data(con, course_data):
                     print "COURSE CRN:", course_data[idx_key]['crn']
                     print "PROGRAM CODE:", course_data[idx_key]['program_code']
                     print "COURSE CODE:", course_data[idx_key]['course_code']
-                    print "TEACHER NAME:", teacher_name
+                    print "TEACHER NAME:", course_data[idx_key]['teacher_name']
 
                     print "CAPACITY:", course_data[idx_key]['capacity']
                     print "REGISTERED:", course_data[idx_key]['registered']
@@ -148,8 +145,9 @@ def store_course_data(con, course_data):
                                         course_data[idx_key]['campus']
                                       ))
                     """
-                except e:
-                    print "Error %d: %s" % (e.args[0],e.args[1])
+                except:
+                    #print "Error %d: %s" % (e.args[0],e.args[1])
+                    traceback.print_exc(file=sys.stdout)
                     sys.exit(1)
 
 
@@ -258,26 +256,26 @@ def parse_course_info(course_content, course_data):
             else:
                course_data[idx_key]['campus'] = None 
 
-    # Parse the professors name
-    idx_key = 0
-    for meeting_table in course_content.findAll('table', {'class': "bordertable", 'summary': 
-                            "This table lists the scheduled meeting times and assigned instructors for this class."}):
-        for row in meeting_table.findAll('tr'):
-            for column in row.findAll('td', {'class': "dbdefault"}, True)[7:8]:
-                match = re_prof_name.search(str(column).strip())
-                
-                # Fuck guido I should be able to use this comparison...
-                # if (match.group(1), match.group(2)) is not (None, None):
-                if match.group(1) is not None or match.group(2) is not None:
-                    course_data[idx_key]['teacher_name'] = match.group(1, 2)
+        # Parse the professors name
+        idx_key = 0
+        for meeting_table in course_table.findAll('table', {'class': "bordertable", 'summary': 
+                                "This table lists the scheduled meeting times and assigned instructors for this class."}):
+            # Grab the 2nd <tr> of meetings times table, to get the professors name
+            for row in meeting_table.findAll('tr')[1:2]:
+                for column in row.findAll('td', {'class': "dbdefault"}, True)[7:8]:
+                    match = re_prof_name.search(str(column).strip())
+                    
+                    # Fuck guido I should be able to use this comparison...
+                    # if (match.group(1), match.group(2)) is not (None, None):
+                    if match.group(1) is not None or match.group(2) is not None:
+                        course_data[idx_key]['teacher_name'] = match.group(1, 2)
+                    # professor listed as TBA, None specfied for course
+                    elif match.group(3) is not None:
+                        course_data[idx_key]['teacher_name'] = None
+                    # No professor name listed, None specfied for course
+                    else:
+                        course_data[idx_key]['teacher_name'] = None
                     idx_key += 1
-                # professor listed as TBA, None specfied for course
-                elif match.group(3) is not None:
-                    course_data[idx_key]['teacher_name'] = None
-                    idx_key += 1
-                # No professor name listed, None specfied for course
-                else:
-                    course_data[idx_key]['teacher_name'] = None
 
 
                     
@@ -466,9 +464,9 @@ else:
 
 
 # Get the course data for each faculty and store it in the database
-#for faculty in faculties:
-course_data = get_course_data('ALL', 'AEDT', semester[cur_semester], cur_year)
-store_course_data(con, course_data)
+for faculty in faculties:
+    course_data = get_course_data('ALL', faculty, semester[cur_semester], cur_year)
+    store_course_data(con, course_data)
     
 # Finally, close connection to database
 #con.close()
