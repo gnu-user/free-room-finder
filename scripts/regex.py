@@ -15,7 +15,7 @@ re_course_info= re.compile(r'(^.*)\s*\-\s*(\d{5})\s*\-\s*([\w]{2,4})\s*(\d{4}[\w
 re_course_term = re.compile(r'^([A-Z]*)\s(\w*)\s(\d{4})')
 
 # Matches the prof name, groups: first name, last name
-re_prof_name = re.compile(r'([A-Z]\w*)[\w\s\.]*([A-Z]\w*)\s\(')
+re_prof_name = re.compile(r'([A-Z]\w*|)[\w\s\.]*([A-Z]\w*)\s\(|(TBA)')
 
 # Matches the campus, group: campus
 re_campus = re.compile(r'UOIT[\s]*\-(Off)*[\s]*([A-Za-z\-\s]*)')
@@ -36,14 +36,18 @@ re_course_time = re.compile(r'(\d{1,2}\:\d{2})\s(\w{2})\s+\-\s+(\d{1,2}\:\d{2})\
 
 # Matches the course day of the week, group: single char representing day of week
 # (Monday=M, Tuesday=T, Wednesday=W, Thursday=R, Friday=F)
-re_course_day = re.compile(r'^([MTWRF]{1})$')
+re_course_day = re.compile(r'([MTWRF]{1})')
 
 # Matches the room info, groups: room number (ie. UA1350)
-re_room = re.compile(r'([A-Z]{2,3}\d{1,4})')
+re_room = re.compile(r'\s*?([A-Z]{1,3}\d{1,4})\<\/td\>')
+
+# Matches rooms that do not exist, such as for online courses which can be 
+# labeled "TBA", "Online", "Virtual ONLINE", etc.
+re_room_online = re.compile(r'\s*TBA\s*|\s*Virtual\s*ONLINE\d*|\s*Virtual\s*|\s*Online\s*', re.IGNORECASE)
 
 # Matches the course start and end time, groups: start month, start day,
 # starting year, ending month, ending day, ending year
 re_course_date = re.compile(r'([A-Z]{1}[a-z]{2,3})\s([0123]{1}\d{1}).*\s(20\d{2})\s\-\s([A-Z]{1}[a-z]{2,3})\s([0123]{1}\d{1}).*\s(20\d{2})')
 
 # Matches the type of class, Lecture, Tutorial, Laboratory, groups: class_type
-re_class_type = re.compile(r'(\s*Lecture\s*|\s*Tutorial\s*|\s*Laboratory\s*|\s*Thesis\s*\/Project\s*|\s*Web\s*Course\s*|\s*Field\s*Placement\s*)')
+re_class_type = re.compile(r'(\s*Lecture\s*|\s*Tutorial\s*|\s*Laboratory\s*|\s*Thesis\/Project\s*|\s*Web\sCourse\s*|\s*Seminar\s*|\s*Field\sPlacement\s*)')
