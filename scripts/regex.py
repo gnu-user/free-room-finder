@@ -15,7 +15,8 @@ re_course_info= re.compile(r'(^.*)\s*\-\s*(\d{5})\s*\-\s*([\w]{2,4})\s*(\d{4}[\w
 re_course_term = re.compile(r'^([A-Z]*)\s(\w*)\s(\d{4})')
 
 # Matches the prof name, groups: first name, last name
-re_prof_name = re.compile(r'([A-Z]\w*|)[\w\s\.]*([A-Z]\w*)\s\(|(TBA)')
+#re_prof_name = re.compile(r'([A-Z]\w*|[\w\s\.\'\,\-]*[A-Z]\w*)\s\(|(TBA)')
+re_prof_name = re.compile(r'([a-zA-Z\w\s\.\'\,\-]*?)\s\(|(TBA)')
 
 # Matches the campus, group: campus
 re_campus = re.compile(r'UOIT[\s]*\-(Off)*[\s]*([A-Za-z\-\s]*)')
