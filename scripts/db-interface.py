@@ -347,15 +347,6 @@ def insert_offering(con, course_name, course_code, level, program_code, class_ty
     #Need to get the value of the year and semester
     semester_id = insert_semesters(con, year, semester)
     
-    #print ('course_id', course_id)
-    #print ('type_id', type_id)
-    #print ('prof', prof_id)
-    #print ('room', room_id)
-    #print ('time[0]', time[0])
-    #print ('time[1]', time[1])
-    #print ('date[0]', date[0])
-    #print ('date[1]', date[1])
-    #print ('semester', semester_id)
     if week1:
         #Sets to week 1
         week_alt = 0
@@ -403,14 +394,16 @@ campus_acronyms = { 'UON': 'North Oshawa Campus',
                     'TRN': 'Trent at Oshawa Thornton Campus',
                     'WEB': 'Web Course' }
 
-
 con = None
 user = ''
 passwd = ''
 domain = 'localhost'
 db_name = ''
 
-con = connect_db(user, passwd, domain, db_name)
+#The connect_db is not currently working
+
+#con = connect_db(user, passwd, domain, db_name)
+con = mdb.connect(domain, user, passwd, db_name)
 
 course_name = "Introductory Sociology"
 course_code = "1000U"
@@ -434,7 +427,7 @@ week2 = False
 year = '2012'
 semester = 'Winter'
 
-insert_professor(con, teacher_name)
+#insert_professor(con, teacher_name)
 
 
 #insert_offering(con, course_name, course_code, level, program_code, class_type, 
