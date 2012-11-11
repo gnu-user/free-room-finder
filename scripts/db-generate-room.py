@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 # A script which parses the course entries displayed by the UOIT
 # website http://www.uoit.ca/mycampus/avail_courses.html and stores
 # each of the rooms, times t	ey are used, and other important information
@@ -8,7 +8,8 @@ from urllib import FancyURLopener
 from termcolor import colored
 from datetime import *
 from regex import *
-#from dbinterface import *
+#from db_interface import *
+from acronyms import *
 from util import *
 import string
 import sys
@@ -105,6 +106,7 @@ def store_course_data(con, course_data):
                     print "COURSE CODE:", course_data[idx_key]['course_code']
                     print "COURSE SECTION:", course_data[idx_key]['course_section']
                     print "COURSE TERM:", course_data[idx_key]['term'][0]
+                    print "COURSE LEVEL:", course_data[idx_key]['level']
                     print "TEACHER NAME:", course_data[idx_key]['teacher_name']
                     print "CAMPUS:", course_data[idx_key]['campus']
 
@@ -120,8 +122,21 @@ def store_course_data(con, course_data):
                     print "FINISH DATE:", course_data[idx_key][alp_key]['date_finish']
                     print "CLASS TYPE:", course_data[idx_key][alp_key]['class_type'], "\n"
 
-                    """     
-                    cur = con.cursor()
+
+                    # Insert the data into the database using the database interface
+                    """
+                    insert_offerings(   con,
+                                        course_data[idx_key]['course_name'],
+                                        course_data[idx_key]['course_code'],
+                                        #LEVEL HERE
+                                        course_data[idx_key]['program_code'],
+                                        course_data[idx_key][alp_key]['class_type'],
+                                        course_data[idx_key]['teacher_name'],
+
+
+
+                    """
+                    """
                     cur.execute("INSERT INTO %s VALUES ('%c', '%s', '%s', '%s', '%s', '%s', '%s', %d, " \
                                 "%d, %d, %d, '%s', '%s', '%s', '%s', '%s', '%s', '%s');" \
                                     % ( course_data[idx_key][alp_key]['room_number'], 
@@ -171,7 +186,7 @@ def store_course_data(con, course_data):
 #                                          'week1'        =>  True/False
 #                                          'week2'        =>  True/False
 #                         }
-#                         'teacher_name' =>  ('Judith', 'Grant')
+#                         'teacher_name' =>  'Judith Grant'
 #                         'capacity'     =>  250
 #                         'registered'   =>  236
 #                         'term'         =>  ('Winter', '2012')
@@ -180,6 +195,7 @@ def store_course_data(con, course_data):
 #                         'program_code' =>  'SOCI'
 #                         'course_code'  =>  '1000U'
 #                         'course_secion'=>  '001'
+#                         'level'        =>  'Undergraduate'
 #                         'campus'       =>  'UON/UOD/UOG'
 #                   }
 #    }
@@ -243,6 +259,16 @@ def parse_course_info(course_content, course_data):
                 course_data[idx_key]['term'] = match.group(2, 3)
                 idx_key += 1
                      
+        # Finds all instances of course level (Undergraduate, Graduate, etc.)
+        idx_key = 0
+        for row in course_table.findAll('span', {'class': "fieldlabeltext"}, True, re.compile(r'Levels\:\s')):
+            match = re_course_level.search(str(row.next).strip())
+            if match is not None:
+                course_data[idx_key]['level'] = match.group(1)
+            else:
+                course_data[idx_key]['level'] = None
+            idx_key += 1
+
         # Finds all instances of campus
         idx_key = 0
         for row in course_table.findAll(['span', 'b'], {'class': "fieldlabeltext"}, True, re.compile(r'Campus')):
@@ -414,38 +440,15 @@ passwd = 'test123'
 domain = 'localhost'
 
 
-# Dictionary mapping campus acronyms to the full campus name
-campus_acronyms = { 'UON': 'North Oshawa Campus',
-                    'UOD': 'Downtown Oshawa Campus',
-                    'UOG': 'Campus-Georgian Campus',
-                    'TRN': 'Trent at Oshawa Thornton Campus',
-                    'WEB': 'Web Course' }
-
-# Dictionary mapping class types to acronyms
-class_types =  {'LEC': 'Lecture', 
-                'TUT': 'Tutorial', 
-                'LAB': 'Laboratory', 
-                'THS': 'Thesis/Project',
-                'WEB': 'Web Course',
-                'WRK': 'Work Term',
-                'SEM': 'Seminar',
-                'IND': 'Independent Study',
-                'OTH': 'Other',
-                'FLD': 'Field Placement'}
-
-# Dictionary mapping the semesters to the appropriate post data
-semester = {'winter': '01', 'fall': '09', 'summer': '05'}
-
 # Current month, year semester
 cur_month = datetime.now().month
 cur_year = str(datetime.now().year)     # Year is ALWAYS used as a string
 cur_semester = None
 
 # Dictionary mapping campus querys to the appropriate post data
-campuses = generate_dictionary('campuses', ' ')
-
+#campuses = generate_dictionary('campuses', ' ')
 # Dictionary of faculties mapping faculty acronyms to full faculty name
-faculties = generate_dictionary('faculties', ' - ')
+#faculties = generate_dictionary('faculties', ' - ')
 
 
 # Get the current semester based on the current month, anything from 01 - 04
