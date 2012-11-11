@@ -103,7 +103,7 @@ def store_course_data(con, course_data):
                     print "COURSE CRN:", course_data[idx_key]['crn']
                     print "PROGRAM CODE:", course_data[idx_key]['program_code']
                     print "COURSE CODE:", course_data[idx_key]['course_code']
-                    print "COURSE SECITON:", course_data[idx_key]['course_section']
+                    print "COURSE SECTION:", course_data[idx_key]['course_section']
                     print "COURSE TERM:", course_data[idx_key]['term'][0]
                     print "TEACHER NAME:", course_data[idx_key]['teacher_name']
                     print "CAMPUS:", course_data[idx_key]['campus']
@@ -425,9 +425,12 @@ campus_acronyms = { 'UON': 'North Oshawa Campus',
 class_types =  {'LEC': 'Lecture', 
                 'TUT': 'Tutorial', 
                 'LAB': 'Laboratory', 
-                'THS': 'Thesis/Project', 
+                'THS': 'Thesis/Project',
                 'WEB': 'Web Course',
+                'WRK': 'Work Term',
                 'SEM': 'Seminar',
+                'IND': 'Independent Study',
+                'OTH': 'Other',
                 'FLD': 'Field Placement'}
 
 # Dictionary mapping the semesters to the appropriate post data

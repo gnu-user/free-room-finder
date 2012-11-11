@@ -51,4 +51,4 @@ re_room_online = re.compile(r'\s*TBA\s*|\s*Virtual\s*ONLINE\d*|\s*Virtual\s*|\s*
 re_course_date = re.compile(r'([A-Z]{1}[a-z]{2,3})\s([0123]{1}\d{1}).*\s(20\d{2})\s\-\s([A-Z]{1}[a-z]{2,3})\s([0123]{1}\d{1}).*\s(20\d{2})')
 
 # Matches the type of class, Lecture, Tutorial, Laboratory, groups: class_type
-re_class_type = re.compile(r'(\s*Lecture\s*|\s*Tutorial\s*|\s*Laboratory\s*|\s*Thesis\/Project\s*|\s*Web\sCourse\s*|\s*Seminar\s*|\s*Field\sPlacement\s*)')
+re_class_type = re.compile(r'(\s*Lecture\s*|\s*Tutorial\s*|\s*Laboratory\s*|\s*Thesis\/Project\s*|\s*Web\sCourse\s*|\s*Work\sTerm\s*|\s*Seminar\s*|\s*Other\s*|\s*Independent\sStudy\s*|\s*Field\sPlacement\s*)')
