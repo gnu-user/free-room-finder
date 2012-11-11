@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 ################################################################################
 # 
 # A module containing all of the compiled regular expression objects used 

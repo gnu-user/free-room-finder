@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 ################################################################################
 # 
 # A module containing a collection of useful functions for a variety of tasks
