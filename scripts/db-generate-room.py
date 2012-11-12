@@ -8,7 +8,7 @@ from urllib import FancyURLopener
 from termcolor import colored
 from datetime import *
 from regex import *
-#from db_interface import *
+from dbinterface import *
 from acronyms import *
 from util import *
 import string
@@ -92,6 +92,7 @@ def store_course_data(con, course_data):
                 # Insert the data for the current table
                 try:
                     # Print out 'NONE' in red for anything that's set as None
+                    """
                     for key in course_data[idx_key]:
                         if course_data[idx_key][key] is None:
                             course_data[idx_key][key] = colored('NONE', 'red')
@@ -99,7 +100,7 @@ def store_course_data(con, course_data):
                     for key in course_data[idx_key][alp_key]:
                         if course_data[idx_key][alp_key][key] is None:
                             course_data[idx_key][alp_key][key] = colored('NONE', 'red')
-
+                    """
                     print "COURSE NAME:", course_data[idx_key]['course_name']
                     print "COURSE CRN:", course_data[idx_key]['crn']
                     print "PROGRAM CODE:", course_data[idx_key]['program_code']
@@ -147,7 +148,7 @@ def store_course_data(con, course_data):
                                 }
 
                     # Insert the data into the database using the database interface
-                    insert_offerings(con, offerings)
+                    insert_offering(con, offerings)
 
 
                     """

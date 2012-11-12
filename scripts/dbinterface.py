@@ -114,7 +114,8 @@ def insert_campus(con, campus):
     if campus_id == 0:
         try:
             cur = con.cursor()
-            cur.execute("INSERT INTO campus (acr, name) VALUES ('%s', '%s');" % ( campus, campus_acronyms[campus] ))
+            cur.execute("INSERT INTO campus (acr, name) VALUES ('%s', '%s');" 
+                % ( mdb.escape_string(campus), mdb.escape_string(campus_acronyms[campus] )))
             campus_id = cur.lastrowid
             con.commit()
         except mdb.Error, e:
@@ -131,7 +132,8 @@ def insert_campus(con, campus):
 def get_campus_id(con, campus):
     try:
         cur = con.cursor()
-        cur.execute("SELECT campusID FROM campus WHERE acr LIKE '%s';" % (campus))
+        cur.execute("SELECT campusID FROM campus WHERE acr LIKE '%s';" 
+            % mdb.escape_string((campus)))
         re_id = cur.fetchone()
         if re_id is None:
             return 0
@@ -236,7 +238,8 @@ def insert_faculty(con, faculty):
     if faculty_id == 0:
         try:
             cur = con.cursor()
-            cur.execute("INSERT INTO faculties (code, name) VALUES ('%s', '%s');" % ( faculty, faculties[faculty] ))
+            cur.execute("INSERT INTO faculties (code, name) VALUES ('%s', '%s');" 
+                % ( mdb.escape_string(faculty), mdb.escape_string(faculties[faculty] )))
             faculty_id = cur.lastrowid
             con.commit()
         except mdb.Error, e:
@@ -253,7 +256,8 @@ def insert_faculty(con, faculty):
 def get_faculty_id(con, faculty):
     try:
         cur = con.cursor()
-        cur.execute("SELECT facultyId FROM faculties WHERE code LIKE '%s';" % (faculty))
+        cur.execute("SELECT facultyId FROM faculties WHERE code LIKE '%s';" 
+            % (mdb.escape_string(faculty)))
         re_id = cur.fetchone()
         if re_id is None:
             return 0
@@ -304,7 +308,8 @@ def insert_class_type(con, class_type):
     if class_type_id == 0:
         try:
             cur = con.cursor()
-            cur.execute("INSERT INTO class_type (acr, type) VALUES ('%s', '%s') ;" % ( class_type, class_types[class_type] ))
+            cur.execute("INSERT INTO class_type (acr, type) VALUES ('%s', '%s') ;" 
+                % ( mdb.escape_string(class_type), mdb.escape_string(class_types[class_type] )))
             class_type_id = cur.lastrowid
             con.commit()
         except mdb.Error, e:
@@ -321,7 +326,8 @@ def insert_class_type(con, class_type):
 def get_class_type(con, class_type):
     try:
         cur = con.cursor()
-        cur.execute("SELECT typeId FROM class_type WHERE acr LIKE '%s' ;" % (class_type))
+        cur.execute("SELECT typeId FROM class_type WHERE acr LIKE '%s' ;" 
+            % (mdb.escape_string(class_type)))
         re_id = cur.fetchone()
         if re_id is None:
             return 0
@@ -339,7 +345,8 @@ def insert_professor(con, professor):
     if prof_id == 0:
         try:
             cur = con.cursor()
-            cur.execute("""INSERT INTO professors (name) VALUES ('%s');""" % (professor))
+            cur.execute("""INSERT INTO professors (name) VALUES ('%s');""" 
+                % (mdb.escape_string(professor)))
             prof_id = cur.lastrowid
             con.commit()
         except mdb.Error, e:
@@ -356,7 +363,8 @@ def insert_professor(con, professor):
 def get_prof_id(con, professor):
     try:
         cur = con.cursor()
-        cur.execute("""SELECT profid FROM professors WHERE name LIKE '%s';""" % (professor))
+        cur.execute("""SELECT profid FROM professors WHERE name LIKE '%s';""" 
+            % (mdb.escape_string(professor)))
         re_id = cur.fetchone()
         if re_id is None:
             return 0
@@ -385,7 +393,10 @@ def insert_course(con, name, course_code, level, program_code):
                                 '%s', '%s', 
                                 '%s', %d
                             )""" 
-                            % ( name, course_code, level, faculty_id))
+                            % ( mdb.escape_string(name), 
+                                mdb.escape_string(course_code), 
+                                mdb.escape_string(level), 
+                                faculty_id))
             course_id = cur.lastrowid
             con.commit()
         except mdb.Error, e:
@@ -402,7 +413,8 @@ def insert_course(con, name, course_code, level, program_code):
 def get_course_id(con, name):
     try:
         cur = con.cursor()
-        cur.execute("SELECT courseId FROM courses WHERE name LIKE '%s' " % (name))
+        cur.execute("SELECT courseId FROM courses WHERE name LIKE '%s' " 
+            % mdb.escape_string((name)))
         re_id = cur.fetchone()
         if re_id is None:
             return 0
@@ -568,6 +580,7 @@ def insert_offering(con, offerings):
         print "Error %d: %s" % (e.args[0],e.args[1])
 
 
+"""
 con = None
 user = 'jon'
 passwd = 'test123'
@@ -576,6 +589,11 @@ db_name = 'test'
 
 con = connect_db(user, passwd, domain, db_name)
 
+# Professor with a name that needs to be escaped
+prof_name = "Sue O'Dwyer"
+
+insert_professor(con, prof_name)
+"""
 """
 course_name = "Introductory Sociology"
 course_code = "1000U"
@@ -599,7 +617,7 @@ week2 = False
 year = '2012'
 semester = 'Winter'
 """
-
+"""
 offerings = { 'course_name':      'Introductory Sociology',
               'crn':              '70483',
               'program_code':     'SOCI',
@@ -686,3 +704,4 @@ con.commit()
 
 # Finally, close connection to database
 con.close()
+"""
