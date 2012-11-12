@@ -129,7 +129,7 @@ def get_campus_id(con, campus):
         
 
 #Insert the start and finish times if it is not already in the database
-def insert_time(con, start_time, finish_tine):
+def insert_time(con, start_time, finish_time):
     start_id = get_time_id(con, start_time)
     finish_id = get_time_id(con, finish_time)
     if start_id == 0:
@@ -385,38 +385,54 @@ def get_course_id(con, name):
 ################################################################################
 def insert_offering(con, offerings):
 
-    # Set any offerings that are None as the equivalent NULL type in SQL
-    for item in offerings:
-        if offerings[item] is None:
-            offerings[item] = 'NULL'
-
-    course_id = insert_course(  offerings['con'], 
+    # Get the course id FK
+    course_id = insert_course(  con, 
                                 offerings['course_name'],
                                 offerings['course_code'],
                                 offerings['level'],
                                 offerings['program_code'])
 
-    type_id = insert_class_type(offerings['con'], offerings['class_type'])
-    
-    prof_id = insert_professor(oferings['con'], offerings['teacher_name'])
-    
-    room_id = insert_rooms( offerings['con'], 
-                            offerings['room_number'], 
-                            offerings['campus'], 
-                            offerings['capacity'])
+    # Initialize any potentially NULL foreign keys as NULL
+    prof_id = 'NULL'
+    room_id = 'NULL'
+    time = ['NULL', 'NULL']
+    date = ['NULL', 'NULL']
 
-    time = insert_time( offerings['con'], 
-                        offerings['start_time'], 
-                        offerings['finish_time'])
+    # this should NOT ever be NULL
+    type_id = insert_class_type(con, offerings['class_type'])
 
-    date = insert_date( offerings['con'], 
+
+    # Do not insert/get the FK of items that do not have a teacher name
+    if offerings['teacher_name'] is not None:
+        prof_id = insert_professor(con, offerings['teacher_name'])
+
+    # Do not insert/get the FK of items that do not have a room (such as web courses)
+    if offerings['room_number'] is not None:
+        room_id = insert_rooms( con, 
+                                offerings['room_number'], 
+                                offerings['campus'], 
+                                offerings['capacity'])
+
+    # Do not insert/get the FK of items that do not have a time (such as web courses)
+    if offerings['start_time'] is not None and offerings['finish_time'] is not None:
+        time = insert_time( con, 
+                            offerings['start_time'], 
+                            offerings['finish_time'])
+
+    # Every course should ALWAYS have a start and finish date
+    date = insert_date( con, 
                         offerings['start_date'], 
                         offerings['finish_date'])
 
-    # Need to get the value of the year and semester
-    semester_id = insert_semesters( offerings['con'], 
+    # Get the FK for the the year and semester
+    semester_id = insert_semesters( con, 
                                     offerings['year'], 
                                     offerings['semester'])
+
+    # Set any offerings items that are None as the equivalent NULL type in SQL
+    for item in offerings:
+        if offerings[item] is None:
+            offerings[item] = 'NULL'
     
     #print ('course_id', course_id)
     #print ('type_id', type_id)
@@ -428,12 +444,13 @@ def insert_offering(con, offerings):
     #print ('date[1]', date[1])
     #print ('semester', semester_id)
 
+    # Set the tri-logic value for week_alt (NULL, True, False)
     # Sets to week 1 (True)
-    if week_alt:
-        week_alt = 1
+    if offerings['week_alt']:
+        offerings['week_alt'] = 1
     # Sets to week 2 (False)
-    elif not week_alt:
-        week_alt = 0
+    elif not offerings['week_alt']:
+        offerings['week_alt'] = 0
 
     # TODO FIX HAX put single quotes around values that are not NULL
     if offerings['day'] != 'NULL':
@@ -445,7 +462,7 @@ def insert_offering(con, offerings):
                     (
                         courseId, 
                         crn, 
-                        course_section, 
+                        section, 
                         typeId, 
                         registered, 
                         day, 
@@ -460,15 +477,22 @@ def insert_offering(con, offerings):
                     ) 
                     VALUES 
                     (
-                        %d, '%s', 
-                        '%s', %d,
-                        %d, %s, 
-                        %s, %d, 
-                        %d, %d, 
-                        %d, %d, 
-                        %d, %d
+                        %d,     # courseId
+                        '%s',   # crn
+                        '%s',   # course_section
+                        %d,     # typeId
+                        %d,     # registered
+                        %s,     # day
+                        %s,     # week_alt
+                        %s,     # profId
+                        %s,     # roomId
+                        %s,     # start_time
+                        %s,     # end_time
+                        %s,     # start_date
+                        %s,     # end_date
+                        %d      # semesterId
                     )"""
-                    % ( offerings['course_id'], 
+                    % ( course_id, 
                         offerings['crn'],
                         offerings['course_section'],
                         type_id,
@@ -487,13 +511,14 @@ def insert_offering(con, offerings):
 
 
 con = None
-user = ''
-passwd = ''
+user = 'jon'
+passwd = 'test123'
 domain = 'localhost'
-db_name = ''
+db_name = 'debug'
 
 con = connect_db(user, passwd, domain, db_name)
 
+"""
 course_name = "Introductory Sociology"
 course_code = "1000U"
 level = "Undergraduate"
@@ -515,9 +540,36 @@ week1 = False
 week2 = False
 year = '2012'
 semester = 'Winter'
+"""
 
-insert_professor(con, teacher_name)
+offerings = { 'course_name':      'Introductory Sociology',
+              'crn':              '70483',
+              'program_code':     'SOCI',
+              'course_code':      '1000U',
+              'course_section':   '001',
+              'level':            'Undergraduate',
+              'class_type':       'LEC',
+              'teacher_name':     'Judith Grant',
+              'room_number':      'UA1350', 
+              'campus':           'UON', 
+              'capacity':         250,
+              'registered':       236,
+              'start_time':       '08:10:00',
+              'finish_time':      '10:00:00', 
+              'start_date':       '2012-01-09',
+              'finish_date':      '2012-04-23',
+              'day':              'T',
+              'week_alt':         None,    
+              'year':             '2012',
+              'semester':         'Winter'
+            }
 
+
+# Test inserting the offerings items
+insert_offering(con, offerings)
+
+
+#insert_professor(con, teacher_name)
 
 #insert_offering(con, course_name, course_code, level, program_code, class_type, 
 #                teacher_name, room_number, campus, capacity, start_time,
