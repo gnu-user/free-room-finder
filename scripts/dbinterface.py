@@ -351,15 +351,14 @@ def get_course_id(con, name):
 # filled to
 #
 # The offerings argument is a dictionary with the following parameters
-# offerings = { 'con':              mysqldb connection object,
-#               'course_name':      'Introductory Sociology',
-#               'crn':              '70483'
+# offerings = { 'course_name':      'Introductory Sociology',
+#               'crn':              '70483',
 #               'program_code':     'SOCI',
 #               'course_code':      '1000U',
-#               'course_section':   '001'
+#               'course_section':   '001',
 #               'level':            'Undergraduate',
 #               'class_type':       'LEC',
-#               'teacher_name:      'Mihai Beligan',
+#               'teacher_name':     'Mihai Beligan',
 #               'room_number':      'UA1350', 
 #               'campus':           'UON', 
 #               'capacity':         250,
@@ -368,14 +367,14 @@ def get_course_id(con, name):
 #               'finish_time':      '10:00:00', 
 #               'start_date':       '2012-01-09',
 #               'finish_date':      '2012-04-13',
-#               'day':              'M' 
-#               'week_alt':         'None/True/False'    
-#               'year':             '2012'
+#               'day':              'M',
+#               'week_alt':         'None/True/False',    
+#               'year':             '2012',
 #               'semester':         'Fall'
-#
+#             }
 # 
 ################################################################################
-def insert_offering(offerings):
+def insert_offering(con, offerings):
 
     # Set any offerings that are None as the equivalent NULL type in SQL
     for item in offerings:

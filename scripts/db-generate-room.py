@@ -122,20 +122,34 @@ def store_course_data(con, course_data):
                     print "FINISH DATE:", course_data[idx_key][alp_key]['date_finish']
                     print "CLASS TYPE:", course_data[idx_key][alp_key]['class_type'], "\n"
 
+                    # offerings dictionary containing items to insert into the database
+                    # see the insert_offerings method for a description of the dictionary
+                    offerings = {   'course_name':      course_data[idx_key]['course_name'],
+                                    'crn':              course_data[idx_key]['crn'],
+                                    'program_code':     course_data[idx_key]['program_code'],
+                                    'course_code':      course_data[idx_key]['course_code'],
+                                    'course_section':   course_data[idx_key]['course_section'],
+                                    'level':            course_data[idx_key]['level'],
+                                    'class_type':       course_data[idx_key][alp_key]['class_type'],
+                                    'teacher_name':     course_data[idx_key]['teacher_name'],
+                                    'room_number':      course_data[idx_key][alp_key]['room_number'], 
+                                    'campus':           course_data[idx_key]['campus'], 
+                                    'capacity':         course_data[idx_key]['capacity'],
+                                    'registered':       course_data[idx_key]['registered'],
+                                    'start_time':       course_data[idx_key][alp_key]['start_time'],
+                                    'finish_time':      course_data[idx_key][alp_key]['finish_time'], 
+                                    'start_date':       course_data[idx_key][alp_key]['date_start'],
+                                    'finish_date':      course_data[idx_key][alp_key]['date_finish'],
+                                    'day':              course_data[idx_key][alp_key]['day'], 
+                                    'week_alt':         course_data[idx_key][alp_key]['week_alt'],   
+                                    'year':             course_data[idx_key]['term'][1],
+                                    'semester':         course_data[idx_key]['term'][0]
+                                }
 
                     # Insert the data into the database using the database interface
-                    """
-                    insert_offerings(   con,
-                                        course_data[idx_key]['course_name'],
-                                        course_data[idx_key]['course_code'],
-                                        #LEVEL HERE
-                                        course_data[idx_key]['program_code'],
-                                        course_data[idx_key][alp_key]['class_type'],
-                                        course_data[idx_key]['teacher_name'],
+                    insert_offerings(con, offerings)
 
 
-
-                    """
                     """
                     cur.execute("INSERT INTO %s VALUES ('%c', '%s', '%s', '%s', '%s', '%s', '%s', %d, " \
                                 "%d, %d, %d, '%s', '%s', '%s', '%s', '%s', '%s', '%s');" \
