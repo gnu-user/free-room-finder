@@ -1,0 +1,67 @@
+WAMP setup
+----------
+
+
+1.  First start by following the instructions here to get mysql installed and
+    working on windows.
+
+    https://docs.google.com/document/d/11pHfp4L_oJbWiHk3aDCQAzfhgCAZ5HuoTppzDdAVF1E/edit
+
+2.  Install WAMP 64 bit, PHP 5.3 from the following site:
+
+    http://www.wampserver.com/en/
+
+
+
+ECLIPSE WEB / PHP
+-------------------
+
+1.  First see the section on setting up a WAMP stack on arch linux, then come back here
+
+2. Download the latest 64-bit version of eclipse classic: http://eclipse.org/downloads/
+
+3.	Install eclipse
+
+5.	Launch eclipse
+
+    a) Go to help -> install new software and select juno from the list, then search for the
+        package "eclipse marketplace" and install it, then then it's finshed installing it
+        restart eclipse
+
+    b)  next go to help -> marketplace and install the following plugin
+
+	- eclipse color theme
+	
+    ***- Egit	(when you go to install, DO NOT INSTALL JGIT, it's a POS)
+
+6. After you have got eclipse started install PDT by adding going to the
+   help -> install software menu and adding the following eclipse PDT repository, the release
+   note can be read here: http://eclipse.org/pdt/release-notes/3.1.1/ Then select from the
+   menu "PHP Developer Tools" and install it
+
+    http://download.eclipse.org/tools/pdt/updates/release
+       
+7.  Now, restart eclipse again as root and go to install new software, then select the
+    latest version of eclipse from the drop down menu, and install the following:
+
+    - web developer tools
+
+
+
+
+Further setup
+----------
+
+0.  Now in github for windows clone the project, it will now be in your GitHub/ folder
+
+1.  Now add an alias for the folder called free-room-finder
+
+2.  Next, open eclipse and select file -> New -> project, then in the new list
+    select PHP -> PHP project and client next
+
+3.  Enter a project name, free-room-website, then select "create project at
+    existing location" and select the location of the project you cloned from
+   github then select the option "enable javascript for this project"
+
+4.  Keep clicking next, when prompted to use the php perspective CLICK YES and
+    check off "remember my choice"
