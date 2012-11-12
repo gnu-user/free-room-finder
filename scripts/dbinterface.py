@@ -83,6 +83,7 @@ def insert_rooms(con, room_number, campus, capacity):
                             int(capacity),
                             0, 0))
             room_id = cur.lastrowid
+            con.commit()
         except mdb.Error, e:
             print "Error %d: %s" % (e.args[0],e.args[1])
     
@@ -115,6 +116,7 @@ def insert_campus(con, campus):
             cur = con.cursor()
             cur.execute("INSERT INTO campus (acr, name) VALUES ('%s', '%s');" % ( campus, campus_acronyms[campus] ))
             campus_id = cur.lastrowid
+            con.commit()
         except mdb.Error, e:
             print "Error %d: %s" % (e.args[0],e.args[1])
     
@@ -148,6 +150,7 @@ def insert_time(con, start_time, finish_time):
             cur = con.cursor()
             cur.execute("INSERT INTO times (time) VALUES ('%s');" % ( start_time ))
             start_id = cur.lastrowid
+            con.commit()
         except mdb.Error, e:
             print "Error %d: %s" % (e.args[0],e.args[1])
             
@@ -191,6 +194,7 @@ def insert_date(con, start_date, finish_date):
             cur = con.cursor()
             cur.execute("INSERT INTO dates (date) VALUES ('%s');" % ( start_date ))
             start_id = cur.lastrowid
+            con.commit()
         except mdb.Error, e:
             print "Error %d: %s" % (e.args[0],e.args[1])
             
@@ -199,6 +203,7 @@ def insert_date(con, start_date, finish_date):
             cur = con.cursor()
             cur.execute("INSERT INTO dates (date) VALUES ('%s');" % ( finish_date ))
             finish_id = cur.lastrowid
+            con.commit()
         except mdb.Error, e:
             print "Error %d: %s" % (e.args[0],e.args[1])
 
@@ -232,7 +237,8 @@ def insert_faculty(con, faculty):
         try:
             cur = con.cursor()
             cur.execute("INSERT INTO faculties (code, name) VALUES ('%s', '%s');" % ( faculty, faculties[faculty] ))
-            code_id = cur.lastrowid
+            faculty_id = cur.lastrowid
+            con.commit()
         except mdb.Error, e:
             print "Error %d: %s" % (e.args[0],e.args[1])
     
@@ -259,7 +265,6 @@ def get_faculty_id(con, faculty):
 
 #Insert the semesters and years if they are not already in the database
 def insert_semesters(con, year, semester):
-    semester_id = 0
     semester_id = get_semesters_id(con, year, semester) 
     #print (semester_id)
     if semester_id == 0:
@@ -267,6 +272,7 @@ def insert_semesters(con, year, semester):
             cur = con.cursor()
             cur.execute("INSERT INTO semesters (year, semester) VALUES ('%s', '%s');" % ( year, semester ))
             semester_id = cur.lastrowid
+            con.commit()
         except mdb.Error, e:
             print "Error %d: %s" % (e.args[0],e.args[1])
 
@@ -300,6 +306,7 @@ def insert_class_type(con, class_type):
             cur = con.cursor()
             cur.execute("INSERT INTO class_type (acr, type) VALUES ('%s', '%s') ;" % ( class_type, class_types[class_type] ))
             class_type_id = cur.lastrowid
+            con.commit()
         except mdb.Error, e:
             print "Error %d: %s" % (e.args[0],e.args[1])
     
@@ -329,12 +336,12 @@ def get_class_type(con, class_type):
 # the inevitable conflict where two profs have same first & last name
 def insert_professor(con, professor):
     prof_id = get_prof_id(con, professor)
-    print (prof_id)
     if prof_id == 0:
         try:
             cur = con.cursor()
             cur.execute("""INSERT INTO professors (name) VALUES ('%s');""" % (professor))
             prof_id = cur.lastrowid
+            con.commit()
         except mdb.Error, e:
             print "Error %d: %s" % (e.args[0],e.args[1])
 
@@ -380,6 +387,7 @@ def insert_course(con, name, course_code, level, program_code):
                             )""" 
                             % ( name, course_code, level, faculty_id))
             course_id = cur.lastrowid
+            con.commit()
         except mdb.Error, e:
             print "Error %d: %s" % (e.args[0],e.args[1])
     
@@ -555,6 +563,7 @@ def insert_offering(con, offerings):
                         date[0],
                         date[1],
                         semester_id ))
+        con.commit()
     except mdb.Error, e:
         print "Error %d: %s" % (e.args[0],e.args[1])
 
@@ -563,7 +572,7 @@ con = None
 user = 'jon'
 passwd = 'test123'
 domain = 'localhost'
-db_name = 'debug'
+db_name = 'test'
 
 con = connect_db(user, passwd, domain, db_name)
 
@@ -660,8 +669,9 @@ webcourse = { 'course_name':      'Online Introductory Sociology',
 
 
 # Test inserting the offerings items
+insert_offering(con, offerings)
 insert_offering(con, offerings2)
-#insert_offering(con, webcourse)
+insert_offering(con, webcourse)
 
 
 #insert_professor(con, teacher_name)

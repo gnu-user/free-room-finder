@@ -452,6 +452,7 @@ con = None
 user = 'jon'
 passwd = 'test123'
 domain = 'localhost'
+db_name = 'test'
 
 
 # Current month, year semester
@@ -479,12 +480,17 @@ else:
 # an existing database exists it will be deleted and overwritten
 #con = connect_db(user, passwd, domain, '')
 #create_db(con, cur_semester, cur_year)
-#con = connect_db(user, passwd, domain, cur_semester + str(cur_year))
+
+con = connect_db(user, passwd, domain, db_name)
 
 
 # Get the course data for each faculty and store it in the database
 for faculty in faculties:
     course_data = get_course_data('ALL', faculty, semester[cur_semester], cur_year)
     store_course_data(con, course_data)
+
+# Commit all changes to the database before closing connection
+con.commit()
+
 # Finally, close connection to database
-#con.close()
+con.close()
