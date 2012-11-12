@@ -85,8 +85,13 @@ def insert_rooms(con, room_number, campus, capacity):
             room_id = cur.lastrowid
         except mdb.Error, e:
             print "Error %d: %s" % (e.args[0],e.args[1])
-            
-    return room_id
+    
+    # Hack to handle when it is a tuple
+    if type(room_id) is tuple:
+        return int(room_id[0])
+    else:
+        return int(room_id)
+
 
 #Get the room id given the name of the room
 def get_room_id(con, room_number):
@@ -112,7 +117,13 @@ def insert_campus(con, campus):
             campus_id = cur.lastrowid
         except mdb.Error, e:
             print "Error %d: %s" % (e.args[0],e.args[1])
-    return campus_id
+    
+    # Hack to handle when it is a tuple
+    if type(campus_id) is tuple:
+        return int(campus_id[0])
+    else:
+        return int(campus_id)
+
 
 #Get the campus id 
 def get_campus_id(con, campus):
@@ -147,8 +158,15 @@ def insert_time(con, start_time, finish_time):
             finish_id = cur.lastrowid
         except mdb.Error, e:
             print "Error %d: %s" % (e.args[0],e.args[1])
-            
-    return [start_id, finish_id]
+    
+    # Hack to handle when it is a tuple
+    if type(start_id) is tuple:
+        start_id = int(start_id[0])
+    if type(finish_id) is tuple:
+        finish_id = int(finish_id[0])
+
+    return [int(start_id), int(finish_id)]
+
 
 #Get the time id given the time 
 def get_time_id(con, time):
@@ -183,8 +201,15 @@ def insert_date(con, start_date, finish_date):
             finish_id = cur.lastrowid
         except mdb.Error, e:
             print "Error %d: %s" % (e.args[0],e.args[1])
-            
-    return [start_id, finish_id]
+
+    # Hack to handle when it is a tuple
+    if type(start_id) is tuple:
+        start_id = int(start_id[0])
+    if type(finish_id) is tuple:
+        finish_id = int(finish_id[0])
+
+    return [int(start_id), int(finish_id)]
+
 
 #Get the date id given the date
 def get_date_id(con, date):
@@ -210,8 +235,13 @@ def insert_faculty(con, faculty):
             code_id = cur.lastrowid
         except mdb.Error, e:
             print "Error %d: %s" % (e.args[0],e.args[1])
-            
-    return faculty_id
+    
+    # Hack to handle when it is a tuple
+    if type(faculty_id) is tuple:
+        return int(faculty_id[0])
+    else:
+        return int(faculty_id)
+
 
 #Get the faculty id given the faculty code
 def get_faculty_id(con, faculty):
@@ -239,8 +269,13 @@ def insert_semesters(con, year, semester):
             semester_id = cur.lastrowid
         except mdb.Error, e:
             print "Error %d: %s" % (e.args[0],e.args[1])
-            
-    return semester_id
+
+    # Hack to handle when it is a tuple
+    if type(semester_id) is tuple:
+        return int(semester_id[0])
+    else:
+        return int(semester_id)  
+
 
 #Get the semester id given the year and semester
 def get_semesters_id(con, year, semester):
@@ -267,8 +302,13 @@ def insert_class_type(con, class_type):
             class_type_id = cur.lastrowid
         except mdb.Error, e:
             print "Error %d: %s" % (e.args[0],e.args[1])
-            
-    return class_type_id
+    
+    # Hack to handle when it is a tuple
+    if type(class_type_id) is tuple:
+        return int(class_type_id[0])
+    else:
+        return int(class_type_id)
+
 
 #Get the class type given the acr 
 def get_class_type(con, class_type):
@@ -295,11 +335,15 @@ def insert_professor(con, professor):
             cur = con.cursor()
             cur.execute("""INSERT INTO professors (name) VALUES ('%s');""" % (professor))
             prof_id = cur.lastrowid
-            print (prof_id)
         except mdb.Error, e:
             print "Error %d: %s" % (e.args[0],e.args[1])
-            
-    return prof_id
+
+     # Hack to handle when it is a tuple
+    if type(prof_id) is tuple:
+        return int(prof_id[0])
+    else:
+        return int(prof_id)
+
 
 #Get the professor id given the professor name
 def get_prof_id(con, professor):
@@ -338,8 +382,13 @@ def insert_course(con, name, course_code, level, program_code):
             course_id = cur.lastrowid
         except mdb.Error, e:
             print "Error %d: %s" % (e.args[0],e.args[1])
-            
-    return course_id
+    
+     # Hack to handle when it is a tuple
+    if type(course_id) is tuple:
+        return int(course_id[0])
+    else:
+        return int(course_id)
+
 
 #Get course id given the course name
 def get_course_id(con, name):
@@ -446,10 +495,10 @@ def insert_offering(con, offerings):
 
     # Set the tri-logic value for week_alt (NULL, True, False)
     # Sets to week 1 (True)
-    if offerings['week_alt']:
+    if offerings['week_alt'] is True:
         offerings['week_alt'] = 1
     # Sets to week 2 (False)
-    elif not offerings['week_alt']:
+    elif offerings['week_alt'] is False:
         offerings['week_alt'] = 0
 
     # TODO FIX HAX put single quotes around values that are not NULL
@@ -564,9 +613,55 @@ offerings = { 'course_name':      'Introductory Sociology',
               'semester':         'Winter'
             }
 
+offerings2 = { 'course_name':     'Calculus I',
+              'crn':              '70555',
+              'program_code':     'MATH',
+              'course_code':      '1010U',
+              'course_section':   '001',
+              'level':            'Undergraduate',
+              'class_type':       'LEC',
+              'teacher_name':     'Mihai Beligan',
+              'room_number':      'UP1500', 
+              'campus':           'UON', 
+              'capacity':         150,
+              'registered':       123,
+              'start_time':       '20:10:00',
+              'finish_time':      '22:00:00', 
+              'start_date':       '2012-01-09',
+              'finish_date':      '2012-04-23',
+              'day':              'F',
+              'week_alt':         None,    
+              'year':             '2012',
+              'semester':         'Winter'
+            }
+
+# Since sociology is useless it should have a webcourse
+webcourse = { 'course_name':      'Online Introductory Sociology',
+              'crn':              '12345',
+              'program_code':     'SOCI',
+              'course_code':      '1000U',
+              'course_section':   '002',
+              'level':            'Undergraduate',
+              'class_type':       'WEB',
+              'teacher_name':     None,
+              'room_number':      None, 
+              'campus':           'UON', 
+              'capacity':         250,
+              'registered':       236,
+              'start_time':       None,
+              'finish_time':      None, 
+              'start_date':       '2012-01-09',
+              'finish_date':      '2012-04-23',
+              'day':              None,
+              'week_alt':         None,    
+              'year':             '2012',
+              'semester':         'Winter'
+            }
+
 
 # Test inserting the offerings items
-insert_offering(con, offerings)
+insert_offering(con, offerings2)
+#insert_offering(con, webcourse)
 
 
 #insert_professor(con, teacher_name)
