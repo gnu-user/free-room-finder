@@ -265,7 +265,7 @@ CREATE TABLE offerings
     section     VARCHAR(3)  NOT NULL,
     typeId      INTEGER     UNSIGNED    NOT NULL,
     registered  INTEGER     UNSIGNED    NOT NULL,
-    day         CHAR(1)     NOT NULL,
+    day         CHAR(1),
     week_alt    BOOLEAN     DEFAULT NULL,
     profId      INTEGER     UNSIGNED,
     roomId      INTEGER     UNSIGNED,
