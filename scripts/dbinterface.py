@@ -5,6 +5,7 @@
 #
 ################################################################################
 import MySQLdb as mdb
+from acronyms import *
 
 ################################################################################
 # 
@@ -61,15 +62,26 @@ def table_exists(con, table):
 def insert_rooms(con, room_number, campus, capacity):
     room_id = get_room_id(con, room_number)
     if room_id == 0:
-        campus_id = insert_campus(con, room_number)
+        campus_id = insert_campus(con, campus)
         try:
             cur = con.cursor()
-            cur.execute("""INSERT INTO rooms (name, campusId, room_capacity, 
-                        power_outlet, ethernet_ports) VALUES ('%s', %d, %d, %d, %d);""" 
-                            % ( room_number,
-                                int(campus_id),
-                                int(capacity),
-                                0, 0))
+            cur.execute("""INSERT INTO rooms 
+                        (
+                            name, 
+                            campusId, 
+                            room_capacity, 
+                            power_outlet, 
+                            ethernet_ports
+                        ) 
+                        VALUES 
+                        (
+                            '%s', %d, 
+                            %d, %d, %d
+                        );""" 
+                        % ( room_number,
+                            int(campus_id),
+                            int(capacity),
+                            0, 0))
             room_id = cur.lastrowid
         except mdb.Error, e:
             print "Error %d: %s" % (e.args[0],e.args[1])
@@ -91,12 +103,12 @@ def get_room_id(con, room_number):
         
 
 #Insert the campus if it is not already stored
-def insert_campus(con, acronyms):
-    campus_id = get_campus_id(con, acronyms)
+def insert_campus(con, campus):
+    campus_id = get_campus_id(con, campus)
     if campus_id == 0:
         try:
             cur = con.cursor()
-            cur.execute("INSERT INTO campus (acr, name) VALUES ('%s', '%s');" % ( acronyms, 'North' ))
+            cur.execute("INSERT INTO campus (acr, name) VALUES ('%s', '%s');" % ( campus, campus_acronyms[campus] ))
             campus_id = cur.lastrowid
         except mdb.Error, e:
             print "Error %d: %s" % (e.args[0],e.args[1])
@@ -189,23 +201,23 @@ def get_date_id(con, date):
         
 
 #Insert the faculty into the database if it is not already in the database
-def insert_faculty(con, code):
-    code_id = get_faculty_id(con, code)
-    if code_id == 0:
+def insert_faculty(con, faculty):
+    faculty_id = get_faculty_id(con, faculty)
+    if faculty_id == 0:
         try:
             cur = con.cursor()
-            cur.execute("INSERT INTO faculties (code, name) VALUES ('%s', '%s');" % ( code, "Sociology" ))
+            cur.execute("INSERT INTO faculties (code, name) VALUES ('%s', '%s');" % ( faculty, faculties[faculty] ))
             code_id = cur.lastrowid
         except mdb.Error, e:
             print "Error %d: %s" % (e.args[0],e.args[1])
             
-    return code_id
+    return faculty_id
 
 #Get the faculty id given the faculty code
-def get_faculty_id(con, code):
+def get_faculty_id(con, faculty):
     try:
         cur = con.cursor()
-        cur.execute("SELECT facultyId FROM faculties WHERE code LIKE '%s';" % (code))
+        cur.execute("SELECT facultyId FROM faculties WHERE code LIKE '%s';" % (faculty))
         re_id = cur.fetchone()
         if re_id is None:
             return 0
@@ -246,12 +258,12 @@ def get_semesters_id(con, year, semester):
         
 
 #Insert the class type given the acr if it is not already within the database
-def insert_class_type(con, acronyms):
-    class_type_id = get_class_type(con, acronyms) 
+def insert_class_type(con, class_type):
+    class_type_id = get_class_type(con, class_type) 
     if class_type_id == 0:
         try:
             cur = con.cursor()
-            cur.execute("INSERT INTO class_type (acr, type) VALUES ('%s', '%s') ;" % ( acronyms, 'Lecture' ))
+            cur.execute("INSERT INTO class_type (acr, type) VALUES ('%s', '%s') ;" % ( class_type, class_types[class_type] ))
             class_type_id = cur.lastrowid
         except mdb.Error, e:
             print "Error %d: %s" % (e.args[0],e.args[1])
@@ -259,10 +271,10 @@ def insert_class_type(con, acronyms):
     return class_type_id
 
 #Get the class type given the acr 
-def get_class_type(con, acronyms):
+def get_class_type(con, class_type):
     try:
         cur = con.cursor()
-        cur.execute("SELECT typeId FROM class_type WHERE acr LIKE '%s' ;" % (acronyms))
+        cur.execute("SELECT typeId FROM class_type WHERE acr LIKE '%s' ;" % (class_type))
         re_id = cur.fetchone()
         if re_id is None:
             return 0
@@ -273,13 +285,15 @@ def get_class_type(con, acronyms):
         
 
 #Insert the professor if it is not already in the database
+# TODO if we could ever link professors to faculties this may avoid
+# the inevitable conflict where two profs have same first & last name
 def insert_professor(con, professor):
     prof_id = get_prof_id(con, professor)
     print (prof_id)
     if prof_id == 0:
         try:
             cur = con.cursor()
-            cur.execute("""INSERT INTO professors (name) VALUES ('Judith Grant');""")
+            cur.execute("""INSERT INTO professors (name) VALUES ('%s');""" % (professor))
             prof_id = cur.lastrowid
             print (prof_id)
         except mdb.Error, e:
@@ -302,17 +316,12 @@ def get_prof_id(con, professor):
         
 
 #Insert the course in the database given the database
-# TODO fix this to handle NULL, have to us %s instead '%s'
 def insert_course(con, name, course_code, level, program_code):
     course_id = get_course_id(con, name)
     if course_id == 0:
         faculty_id = insert_faculty(con, program_code)
         try:
             cur = con.cursor()
-            # TODO Need to fix the course data to store the course level
-            # ATM USING HACKS TO DO THIS
-            if level != 'NULL':
-                level = '\'' + level + '\''
             cur.execute("""INSERT INTO courses 
                            (
                                 name, 
@@ -323,7 +332,7 @@ def insert_course(con, name, course_code, level, program_code):
                             VALUES 
                             (
                                 '%s', '%s', 
-                                %s, %d
+                                '%s', %d
                             )""" 
                             % ( name, course_code, level, faculty_id))
             course_id = cur.lastrowid
@@ -433,22 +442,22 @@ def insert_offering(con, offerings):
     try:
         cur = con.cursor()
         cur.execute("""INSERT INTO offerings 
-                        (
-                            courseId, 
-                            crn, 
-                            course_section, 
-                            typeId, 
-                            registered, 
-                            day, 
-                            week_alt, 
-                            profId, 
-                            roomId, 
-                            start_time, 
-                            end_time,
-                            start_date, 
-                            end_date, 
-                            semesterId
-                        ) 
+                    (
+                        courseId, 
+                        crn, 
+                        course_section, 
+                        typeId, 
+                        registered, 
+                        day, 
+                        week_alt, 
+                        profId, 
+                        roomId, 
+                        start_time, 
+                        end_time,
+                        start_date, 
+                        end_date, 
+                        semesterId
+                    ) 
                     VALUES 
                     (
                         %d, '%s', 

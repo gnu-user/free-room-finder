@@ -7,15 +7,15 @@
 ################################################################################
 
 # Dictionary mapping the semesters to the appropriate post data
-semester = {'winter': '01', 
-            'fall': '09', 
-            'summer': '05'}
+semester = { 'winter': '01', 
+             'fall': '09', 
+             'summer': '05' }
 
 # Dictionary mapping campuses to parts of the url search strings
 campuses = { 'ALL': '&sel_camp=dummy&sel_camp=%25',
              'UON': '&sel_camp=UON&sel_camp=%25',
              'UOD': '&sel_camp=UOD&sel_camp=%25',
-             'UOG': '&sel_camp=dummy&sel_camp=UOG%25'}
+             'UOG': '&sel_camp=dummy&sel_camp=UOG%25' }
 
 # Dictionary mapping campus acronyms to the full campus name
 campus_acronyms = { 'UON': 'North Oshawa Campus',
@@ -34,7 +34,7 @@ class_types = { 'LEC': 'Lecture',
                 'SEM': 'Seminar',
                 'IND': 'Independent Study',
                 'OTH': 'Other',
-                'FLD': 'Field Placement'}
+                'FLD': 'Field Placement' }
 
 # Dictionary mapping all of the faculty acronyms to descriptions
 faculties = {   'ALSU': 'Academic Learning & Success',
@@ -68,7 +68,7 @@ faculties = {   'ALSU': 'Academic Learning & Success',
                 'NUCL': 'Nuclear',
                 'NURS': 'Nursing',
                 'PHIL': 'Philosophy',
-                'PHY': 'Physics',
+                'PHY':  'Physics',
                 'POSC': 'Political Science',
                 'PSYC': 'Psychology',
                 'PUBP': 'Public Policy',
@@ -77,4 +77,4 @@ faculties = {   'ALSU': 'Academic Learning & Success',
                 'SCCO': 'Science Co-op Work Term',
                 'SSCI': 'Social Science',
                 'SOCI': 'Sociology',
-                'STAT': 'Statistics'}
+                'STAT': 'Statistics' }
