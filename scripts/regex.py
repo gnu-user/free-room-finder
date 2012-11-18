@@ -43,7 +43,8 @@ re_course_time = re.compile(r'(\d{1,2}\:\d{2})\s(\w{2})\s+\-\s+(\d{1,2}\:\d{2})\
 re_course_day = re.compile(r'([MTWRF]{1})')
 
 # Matches the room info, groups: room number (ie. UA1350)
-re_room = re.compile(r'\s*?([A-Z]{1,3}\d{1,4})\<\/td\>')
+# There are also rooms such as SQSH4, which has 4 chars
+re_room = re.compile(r'\s*?([A-Z]{1,5}\d{1,4})\<\/td\>')
 
 # Matches rooms that do not exist, such as for online courses which can be 
 # labeled "TBA", "Online", "Virtual ONLINE", etc.
