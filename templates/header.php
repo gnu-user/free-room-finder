@@ -1,7 +1,22 @@
 <?php
 /*
- *  UOIT/DC Computer Science Club Elections Website
- *  Copyright (C) 2012 UOIT/DC Computer Science Club
+ *  Free Room Finder Website
+ *
+ *
+ *  Authors -- Crow's Foot Group
+ *  -------------------------------------------------------
+ *
+ *  Jonathan Gillett
+ *  Joseph Heron
+ *  Amit Jain
+ *  Wesley Unwin
+ *  Anthony Jihn
+ * 
+ *
+ *  License
+ *  -------------------------------------------------------
+ *
+ *  Copyright (C) 2012 Crow's Foot Group
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Affero General Public License as
@@ -19,7 +34,7 @@
 
 
 /*
- * The default template for the elections website header, this is for when a user
+ * The default template for the free room finder website header, this is for when a user
  * is not logged in and displays a login menu
  */
 ?>
@@ -35,12 +50,11 @@
     <!-- CSS styles -->
     <link href="css/bootstrap.css" rel="stylesheet">
     <link href="css/bootstrap-responsive.css" rel="stylesheet">
-    <link href="css/sparkbox-select.css" rel="stylesheet">
     <link href="css/custom.css" rel="stylesheet">
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
-      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+      <script src="js/html5shiv.js"></script>
     <![endif]-->
   </head>
   <body>
