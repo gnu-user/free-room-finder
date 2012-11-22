@@ -334,4 +334,108 @@ GROUP BY
 
 /*
 5. Total capacity growth over years plotted with Total registered growth over years
+I cannot take the sum of the reg, and room_cap because if there is a web course it will
+return null for cap thefore it must be done programmatically
+Will return reg > 0 and cap null if it is a web course or something like that...
 */
+SELECT
+    o.registered,
+    r.room_capacity,
+    s.year,
+    s.semester
+FROM 
+    offerings AS o
+    INNER JOIN semesters AS s
+    ON o.semesterId = s.semesterId
+    LEFT JOIN rooms AS r
+    ON o.roomId = r.roomId
+
+/*
+6. Most popular building based on requests SAME AS 3,4
+since i cant find a way to separte the rooms per building (would take regex to do it...)
+*/
+SELECT
+    r.name,
+    SUM(oc.num_people)
+FROM
+    occupied AS oc
+    INNER JOIN rooms AS r 
+    ON oc.roomId = r.roomId
+GROUP BY
+    r.name
+
+/*SELECT SUBSTRING('UA1311', 1, 2);*/
+
+/*
+7. Growth of faculties (reg and cap) per faculty
+not much different from 5 since i cant sum reg/cap if i was to do just reg, then i could...
+*/
+SELECT
+    o.registered,
+    r.room_capacity,
+    f.faculty
+    s.year,
+    s.semester,
+FROM 
+    offerings AS o
+    INNER JOIN faculties AS f
+    ON o.facultyId = f.facultyId
+    INNER JOIN semesters AS s
+    ON o.semesterId = s.semesterId
+    LEFT JOIN rooms AS r
+    ON o.roomId = r.roomId
+
+/*
+8. Prof with greatest # of students limited to 5
+*/
+SELECT
+    SUM(o.registered) AS total_students,
+    p.name
+FROM
+    offerings AS o 
+    INNER JOIN professors AS p
+    ON o.profId = p.profId
+GROUP BY
+    p.name
+ORDER BY 
+    total_students DESC
+LIMIT
+    5;
+
+/*
+9. Prof with the least # of students limited to 5
+*/
+
+SELECT
+    SUM(o.registered) AS total_students,
+    p.name
+FROM
+    offerings AS o 
+    INNER JOIN professors AS p
+    ON o.profId = p.profId
+GROUP BY
+    p.name
+ORDER BY 
+    total_students
+LIMIT
+    5;
+
+/*
+10. largest class enrolment
+*/
+SELECT
+    SUM(o.registered) AS total_students,
+    c.name
+FROM
+    offerings AS o
+    INNER JOIN courses AS c
+    ON o.courseId = c.courseId
+    INNER JOIN class_type AS ct
+    ON o.typeId = ct.typeId
+WHERE
+    ct.acr <> 'LAB' AND
+    ct.acr <> 'TUT'
+GROUP BY
+    c.name
+ORDER BY
+    total_students DESC;
