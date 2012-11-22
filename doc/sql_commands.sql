@@ -31,6 +31,7 @@ WHERE
     With semesters date range clearly defined. Also, limit the calendar to only show up
     to a certain date.
 */
+/* NOT USED BECAUSE IT DOESNT WORK
 SELECT 
     r.name,
     st.time,
@@ -67,9 +68,14 @@ WHERE
     (
         et.time >= {req_start_time} OR
         st.time <= {req_end_time})
+*/
 
+/*
+    query to test to see if there is a slot available
+    NOT USED
+*/
 SELECT
-    *x
+    * 
 FROM
     offerings AS o,
     rooms AS r,
@@ -84,7 +90,7 @@ WHERE
 ORDER BY
     t1.time;
 
-
+/*NOT USED
 SELECT 
     r.name,
     st.time,
@@ -121,11 +127,20 @@ WHERE
     (
         et.time >= '14:00:00' OR
         st.time <= '16:00:00');
+*/
 
+/*
+    Get the room, start time, end time, start date, end date and the total number of
+    people occupying the room 
+    This will retrieve every room on a given day, given semester, given year, given week
+    alt.
+*/
 SELECT 
     r.name,
-    st.time,
-    et.time,
+    st.time AS start_time,
+    et.time AS end_time,
+    sd.date AS start_date,
+    ed.date AS end_date,
     oc.num_people
 FROM 
      offerings AS o INNER JOIN semesters AS s
@@ -151,20 +166,20 @@ WHERE
     s.semester LIKE {given_semester} AND
     (
         o.week_alt IS NULL OR
-        o.week_alt = {given_week_alt}) AND
-    (
-        sd.date >= {given_date} OR
-        ed.date <= {given_date})
+        o.week_alt = {given_week_alt})
 ORDER BY 
     r.name;
 
+/* A workable example of the above query
 SELECT 
     r.name,
     st.time AS start_time,
     et.time AS end_time,
+    sd.date AS start_date,
+    ed.date AS end_date,
     oc.num_people
 FROM 
-     offerings AS o INNER JOIN semesters AS s
+    offerings AS o INNER JOIN semesters AS s
     ON o.semesterId = s.semesterId 
     INNER JOIN dates AS sd
     ON o.start_date = sd.dateId
@@ -187,16 +202,13 @@ WHERE
     s.semester LIKE "Fall" AND
     (
         o.week_alt IS NULL OR
-        o.week_alt = 1) AND
-    (
-        sd.date >= '2012:21:11' OR
-        ed.date <= '2012:21:11')
+        o.week_alt = 1)
 ORDER BY 
     r.name;
+*/
 
 /*
-TODO FIX FIND the room that is name QSH4 and QSH5, there is a bug with ENGBNNN (it returns NGBNNN)
-    same query except it is a right join 
+    All rooms on a certain campus
 */
 SELECT
     r.name
@@ -205,9 +217,121 @@ FROM
     campus AS c ON
     r.campusId = c.campusId
 WHERE
-    c.name LIKE'North Oshawa Campus'
+    c.name LIKE {given_campus}
 ORDER BY 
     r.name;
+
 /*
- Need to check if given a room that slot is available
+    Get all of the rooms, start_time, end_time, date, num_people, and total num_people
+    given a user name.
+*/
+SELECT
+    r.name AS room_number,
+    c.name AS campus,
+    st.time AS start_time,
+    et.time AS end_time,
+    oc.date,
+    rr.num_people AS num_people
+    oc.num_people AS total_num_people
+FROM
+    users AS u INNER JOIN
+    room_requests AS rr ON
+    u.userId = rr.userId
+    INNER JOIN occupied AS oc
+    ON rr.occupyId = oc.occupyId
+    INNER JOIN times AS st
+    ON oc.start_time = st.timeId
+    INNER JOIN times AS et
+    ON oc.end_time = et.timeId
+    INNER JOIN rooms AS r 
+    ON oc.roomId = r.roomId
+    INNER JOIN campus AS c
+    ON r.campusId = c.campusId
+WHERE
+    u.username LIKE {given_username}
+
+
+/*
+    gets the user name given the user name
+*/
+SELECT
+    username
+FROM
+    users
+WHERE
+    username LIKE {given_username}
+
+/*
+    Use for logging
+*/
+SELECT
+    AES_DECRYPT(password, ?) 
+FROM
+    users
+WHERE 
+    username LIKE ?
+
+/*
+insert room request
+*/
+
+/*
+1. cur total num of people
+2. every entry of occupied given current room, current day, current time, total num people in that room
+wants array
+3. Busiest rooms/least available rooms (like 5 entries)
+4. Most requested rooms limited to 5
+5. Total capacity growth over years plotted with Total registered growth over years
+6. Most popular building based on requests
+7. Growth of faculties (reg and cap) per faculty
+8. Prof with greatest # of students
+*/
+
+
+/*
+2. every entry of occupied given current room, current day, current time, total num people in that room
+wants array
+
+Has to have that stupid had to handle thursday == R
+*/
+SELECT
+    SUM(oc.num_people) AS total_num_people
+FROM
+    occupied AS oc
+    INNER JOIN times AS st
+    ON oc.start_time = st.timeId
+    INNER JOIN times AS et
+    ON oc.end_time = et.timeId
+    INNER JOIN rooms AS r 
+    ON oc.roomId = r.roomId
+WHERE
+    r.name = {given_room} AND
+    st.time = {given_time} AND
+    et.time = {given_time} AND
+    (
+        (DAYNAME(oc.date) LIKE {given_day} + '%' AND
+        DAYNAME(oc.date) NOT LIKE 'Thu%') OR
+        DAYNAME(oc.date) NOT LIKE {given_day} AND
+        DAYNAME(oc.date) NOT LIKE 'Thu%'));
+
+
+/*
+3. Busiest rooms/least available rooms (like 5 entries)
+Finds the sum of the total num of people occupying a room each day
+*/
+/* Arent 3 and 4 the same?
+4. Most requested rooms limited to 5
+*/
+SELECT
+    r.name,
+    SUM(oc.num_people)
+FROM
+    occupied AS oc
+    INNER JOIN rooms AS r 
+    ON oc.roomId = r.roomId
+GROUP BY
+    r.name
+
+/*
+5. Total capacity growth over years plotted with Total registered growth over years
 */

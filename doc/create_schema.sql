@@ -171,15 +171,6 @@ CREATE TABLE occupied
 
 
 /*
-MIGHT want to adjust this table to move columns
-start_time, end_time, and date to the occupied table, 
-Reason:
-There will be multiple room_requests entries for the same date and time
-therefore each room_request will have a duplicated date and time linking
-to the same occupied entry. Also changing this would not effect currently
-scraped database since these tables have yet to be filled and really only
-have to do with user interation.
-
 room_requests
 -------------
     - user_id foreign key NOT NULL
