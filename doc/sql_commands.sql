@@ -6,10 +6,9 @@
 #Get all campuses:
 
 SELECT
-    arc,
     name
 FROM 
-    campuses;
+    campus;
 
 
 #current semester and next semester (optional) and current year and next year (if needed and optional)
@@ -143,7 +142,7 @@ SELECT
     ed.date AS end_date,
     oc.num_people
 FROM 
-     offerings AS o INNER JOIN semesters AS s
+    offerings AS o INNER JOIN semesters AS s
     ON o.semesterId = s.semesterId 
     INNER JOIN dates AS sd
     ON o.start_date = sd.dateId
@@ -219,14 +218,14 @@ FROM
 WHERE
     c.name LIKE {given_campus}
 ORDER BY 
-    r.name;
+    r.name, c.name;
 
 /*
     Get all of the rooms, start_time, end_time, date, num_people, and total num_people
     given a user name.
 */
 SELECT
-    r.name AS room_number,
+    r.name,
     c.name AS campus,
     st.time AS start_time,
     et.time AS end_time,
@@ -249,6 +248,8 @@ FROM
     ON r.campusId = c.campusId
 WHERE
     u.username LIKE {given_username}
+ORDER BY
+    oc.date;
 
 
 /*
@@ -404,6 +405,7 @@ LIMIT
 
 /*
 9. Prof with the least # of students limited to 5
+couldnt resist
 */
 
 SELECT
@@ -439,3 +441,10 @@ GROUP BY
     c.name
 ORDER BY
     total_students DESC;
+
+/** 
+ * A query that could be very inseresting but would be a fair bit of work:
+ * Plot the growth of the University by # of rooms available each year on each campus
+ * Could also extrapolate what year each building first "opened" (since no rooms from that building would have been free the previous years)
+
+ */
