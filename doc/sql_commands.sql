@@ -296,6 +296,7 @@ wants array
 Has to have that stupid had to handle thursday == R
 */
 SELECT
+    r.name AS room_number,
     SUM(oc.num_people) AS total_num_people
 FROM
     occupied AS oc
@@ -306,13 +307,13 @@ FROM
     INNER JOIN rooms AS r 
     ON oc.roomId = r.roomId
 WHERE
-    r.name = {given_room} AND
+    r.name LIKE {given_room} AND
     st.time = {given_time} AND
     et.time = {given_time} AND
     (
         (DAYNAME(oc.date) LIKE {given_day} + '%' AND
         DAYNAME(oc.date) NOT LIKE 'Thu%') OR
-        DAYNAME(oc.date) NOT LIKE {given_day} AND
+        DAYNAME(oc.date) NOT LIKE {given_day} + '%' AND
         DAYNAME(oc.date) NOT LIKE 'Thu%'));
 
 
@@ -376,7 +377,7 @@ SELECT
     r.room_capacity,
     f.faculty
     s.year,
-    s.semester,
+    s.semester
 FROM 
     offerings AS o
     INNER JOIN faculties AS f

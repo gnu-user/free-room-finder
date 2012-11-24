@@ -465,148 +465,61 @@ function get_users_rooms($mysqli_free_room, $username)
  *
  * @param mysqli $mysqli_free_room The mysqli connection object for the ucsc elections DB
  * @param $username the username of the user currently logged in.
+ * 
  *
  */
-function username_from_session($mysqli_free_room, $ses_validate, $SESSION_KEY)
+function get_total_occupied($mysqli_free_room, $room, $start_time, $end_time, $day)
 {
-    $validate = trim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, $SESSION_KEY, base64_decode($ses_validate),
-            MCRYPT_MODE_ECB, mcrypt_create_iv(mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256,
-                    MCRYPT_MODE_ECB), MCRYPT_RAND)));
-    
-    $u_name = '';
+    $rooms = array();
     
     /* Get the candidate for the current position from the database */
-    if ($stmt = $mysqli_elections->prepare("SELECT username
-                                                FROM " . $user_table .
-                                                " WHERE username LIKE username" ))
+    if ($stmt = $mysqli_elections->prepare("SELECT r.name AS room_name,
+                                                SUM(oc.num_people) AS total_num_people
+                                                FROM " . $occupy_table . " AS oc
+                                                INNER JOIN " . $time_table . " AS st
+                                                ON oc.start_time = st.timeId
+                                                INNER JOIN " . $time_table . " AS et 
+                                                ON oc.end_time = et.timeId
+                                                INNER JOIN " . $room_table . " AS r 
+                                                ON oc.roomId = r.roomIdd
+                                                WHERE 
+                                                r.name LIKE ? AND
+                                                st.time = ? AND
+                                                et.time = ? AND
+                                                (
+                                                    (DAYNAME(oc.date) LIKE ? + '%' AND
+                                                    DAYNAME(oc.date) NOT LIKE 'Thu%') OR
+                                                    DAYNAME(oc.date) NOT LIKE ? + '%' AND
+                                                    DAYNAME(oc.date) NOT LIKE 'Thu%'))" ))
     {
         /* bind parameters for markers */
-        $stmt->bind_param('s', $validate);
+        $stmt->bind_param('sssss', $room, $start_time, $end_time, $day, $day);
 
         /* execute query */
         $stmt->execute();
 
         /* bind result variables */
-        $stmt->bind_result($u_name);
+        $stmt->bind_result($room);
 
         $stmt->fetch();
 
-        /* close statement */
-        $stmt->close();
-    }
-
-    if (strcasecmp($validate, $u_name) === 0)
-    {
-        return $u_name;
-    }
-
-    return '';
-}
-
-/**
- * Get all of the rooms the user has requested
- *
- * @param mysqli $mysqli_free_room The mysqli connection object for the ucsc elections DB
- * @param $username the username of the user currently logged in.
- *
- */
-function verfiy_login($mysqli_free_room, $username, $password, $AES_KEY)
-{
-    $user_match = '';
-    $pass_match = '';
-    
-    /* Get the username from the database if it exists */
-    if ($stmt = $mysqli_accounts->prepare("SELECT username FROM "
-                                                . user_table . 
-                                                " WHERE username LIKE ?"))
-    {
-        /* bind parameters for markers */
-        $stmt->bind_param('s', $username);
-
-        /* execute query */
-        $stmt->execute();
-
-        /* bind result variables */
-        $stmt->bind_result($user_match);
-
-        /* fetch value */
-        $stmt->fetch();
-
-        /* close statement */
-        $stmt->close();
-    }
-    
-    /* If username found, verify the password provided for that username */
-    if (strcasecmp($username, $user_match) === 0)
-    {
-        
-        if ($stmt = $mysqli_elections->prepare("SELECT AES_DECRYPT(password, ?)
-                                                    FROM " . $user_table .
-                                                    " WHERE username LIKE username" ))
+        while ($stmt->fetch())
         {
-            /* bind parameters for markers */
-            $stmt->bind_param('ss', $AES_KEY, $username);
-
-            /* execute query */
-            $stmt->execute();
-
-            /* bind result variables */
-            $stmt->bind_result($pass_match);
-
-            $stmt->fetch();
-
-            /* close statement */
-            $stmt->close();
+            $rooms[] = $room;
         }
 
-        /* Verify the password, remove the salt from password stored in DB */
-        if(strcmp($password, substr($password, 8)) === 0)
-        {
-            return true;
-        }
-    }
-
-    /* Invalid username or password or both */
-    return false;
-}
-
-function verify_login_session($mysqli_accounts, $ses_validate, $SESSION_KEY)
-{
-    /* Decrypted validate session variable */ 
-    $validate = trim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, $SESSION_KEY, base64_decode($ses_validate), 
-                MCRYPT_MODE_ECB, mcrypt_create_iv(mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, 
-                MCRYPT_MODE_ECB), MCRYPT_RAND)));
-    $user_match = '';
-    
-    /* Get the username from the database if it exists */
-    if ($stmt = $mysqli_accounts->prepare("SELECT username FROM "
-                                                . $user_table . 
-                                                " WHERE username LIKE ?"))
-    {
-        /* bind parameters for markers */
-        $stmt->bind_param('s', $validate);
-    
-        /* execute query */
-        $stmt->execute();
-    
-        /* bind result variables */
-        $stmt->bind_result($user_match);
-    
-        /* fetch value */
-        $stmt->fetch();
-    
         /* close statement */
         $stmt->close();
     }
-    
-    /* If username found, session is valid */
-    if (strcasecmp($validate, $user_match) === 0)  
-    {
-        return true;
-    }
-    
-    /* Session invalid! */  
-    return false;
+
+   /*
+    * Return a 2D array contain:
+    * { 
+    *   { room_name,
+    *     total_num_people}
+    * }
+    */
+    return $rooms;
 }
 
 /**
