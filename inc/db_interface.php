@@ -472,7 +472,7 @@ function get_total_occupied($mysqli_free_room, $room, $start_time, $end_time, $d
 {
     $rooms = array();
     
-    /* Get the candidate for the current position from the database */
+    /* Get the total occupied in a room given a start and end time and the day from the database */
     if ($stmt = $mysqli_elections->prepare("SELECT r.name AS room_name,
                                                 SUM(oc.num_people) AS total_num_people
                                                 FROM " . $occupy_table . " AS oc
@@ -517,6 +517,171 @@ function get_total_occupied($mysqli_free_room, $room, $start_time, $end_time, $d
     * { 
     *   { room_name,
     *     total_num_people}
+    * }
+    */
+    return $rooms;
+}
+
+/**
+ * Get all of the rooms the user has requested
+ *
+ * @param mysqli $mysqli_free_room The mysqli connection object for the ucsc elections DB
+ * @param $username the username of the user currently logged in.
+ * 
+ *
+ */
+function get_total_occupied($mysqli_free_room)
+{
+    $rooms = array();
+    
+    /* Get the total occupied in a a room from the database */
+    if ($stmt = $mysqli_elections->prepare("SELECT r.name AS room_name,
+                                                SUM(oc.num_people) AS total_num_people
+                                                FROM " . $occupy_table . " AS oc
+                                                INNER JOIN " . $room_table . " AS r 
+                                                ON oc.roomId = r.roomIdd
+                                                WHERE 
+                                                r.name
+                                                ORDER BY
+                                                total_num_people DESC" ))
+    {
+
+        /* execute query */
+        $stmt->execute();
+
+        /* bind result variables */
+        $stmt->bind_result($room);
+
+        $stmt->fetch();
+
+        while ($stmt->fetch())
+        {
+            $rooms[] = $room;
+        }
+
+        /* close statement */
+        $stmt->close();
+    }
+
+   /*
+    * Return a 2D array contain:
+    * { 
+    *   { room_name,
+    *     total_num_people}
+    * }
+    */
+    return $rooms;
+}
+
+/**
+ * Get all of the rooms the user has requested
+ *
+ * @param mysqli $mysqli_free_room The mysqli connection object for the ucsc elections DB
+ * @param $username the username of the user currently logged in.
+ * 
+ *
+ */
+function get_total_registered($mysqli_free_room)
+{
+    $rooms = array();
+    
+    /* Get the total occupied in a a room from the database */
+    /*
+   */
+    if ($stmt = $mysqli_elections->prepare("SELECT SUM(o.registered) AS total_registered,
+                                                s.year,
+                                                s.semester
+                                                FROM " . $offering_table . " AS o
+                                                INNER JOIN " . $class_type_table . " AS ct
+                                                ON o.typeId = ct.typeId
+                                                INNER JOIN " . $semester_table . " AS s 
+                                                ON o.semesterId = s.semesterId
+                                                LEFT JOIN " . $room_table . " AS r
+                                                ON o.roomId = r.roomId
+                                                WHERE
+                                                ct.type LIKE 'Lecture'" ))
+    {
+
+        /* execute query */
+        $stmt->execute();
+
+        /* bind result variables */
+        $stmt->bind_result($room);
+
+        $stmt->fetch();
+
+        while ($stmt->fetch())
+        {
+            $rooms[] = $room;
+        }
+
+        /* close statement */
+        $stmt->close();
+    }
+
+   /*
+    * Return a 2D array contain:
+    * { 
+    *   { total_registered,
+    *     year,
+    *     semester}
+    * }
+    */
+    return $rooms;
+}
+
+/**
+ * Get all of the rooms the user has requested
+ *
+ * @param mysqli $mysqli_free_room The mysqli connection object for the ucsc elections DB
+ * @param $username the username of the user currently logged in.
+ * 
+ *
+ */
+function get_total_reg_fac($mysqli_free_room)
+{
+    $rooms = array();
+    
+    /* Get the total occupied in a a room from the database */
+    /*
+   */
+    if ($stmt = $mysqli_elections->prepare("SELECT SUM(o.registered) AS total_registered,
+                                                s.year,
+                                                s.semester
+                                                FROM " . $offering_table . " AS o
+                                                INNER JOIN " . $class_type_table . " AS ct
+                                                ON o.typeId = ct.typeId
+                                                INNER JOIN " . $semester_table . " AS s 
+                                                ON o.semesterId = s.semesterId
+                                                LEFT JOIN " . $room_table . " AS r
+                                                ON o.roomId = r.roomId
+                                                WHERE
+                                                ct.type LIKE 'Lecture'" ))
+    {
+
+        /* execute query */
+        $stmt->execute();
+
+        /* bind result variables */
+        $stmt->bind_result($room);
+
+        $stmt->fetch();
+
+        while ($stmt->fetch())
+        {
+            $rooms[] = $room;
+        }
+
+        /* close statement */
+        $stmt->close();
+    }
+
+   /*
+    * Return a 2D array contain:
+    * { 
+    *   { total_registered,
+    *     year,
+    *     semester}
     * }
     */
     return $rooms;

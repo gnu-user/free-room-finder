@@ -326,13 +326,17 @@ Finds the sum of the total num of people occupying a room each day
 */
 SELECT
     r.name,
-    SUM(oc.num_people)
+    SUM(oc.num_people) AS total_num_people
 FROM
     occupied AS oc
     INNER JOIN rooms AS r 
     ON oc.roomId = r.roomId
 GROUP BY
     r.name
+ORDER BY
+    total_num_people DESC;
+
+
 
 /*
 5. Total capacity growth over years plotted with Total registered growth over years
@@ -341,16 +345,20 @@ return null for cap thefore it must be done programmatically
 Will return reg > 0 and cap null if it is a web course or something like that...
 */
 SELECT
-    o.registered,
-    r.room_capacity,
+    SUM(o.registered) AS total_registered,
     s.year,
     s.semester
 FROM 
     offerings AS o
+    INNER JOIN class_type AS ct
+    ON o.typeId = ct.typeId
     INNER JOIN semesters AS s
     ON o.semesterId = s.semesterId
     LEFT JOIN rooms AS r
     ON o.roomId = r.roomId
+WHERE
+    ct.type LIKE 'Lecture'
+
 
 /*
 6. Most popular building based on requests SAME AS 3,4
@@ -374,8 +382,7 @@ not much different from 5 since i cant sum reg/cap if i was to do just reg, then
 */
 SELECT
     o.registered,
-    r.room_capacity,
-    f.faculty
+    f.faculty,
     s.year,
     s.semester
 FROM 
