@@ -314,7 +314,9 @@ WHERE
         (DAYNAME(oc.date) LIKE {given_day} + '%' AND
         DAYNAME(oc.date) NOT LIKE 'Thu%') OR
         DAYNAME(oc.date) NOT LIKE {given_day} + '%' AND
-        DAYNAME(oc.date) NOT LIKE 'Thu%'));
+        DAYNAME(oc.date) NOT LIKE 'Thu%'
+GROUP BY
+    r.name));
 
 
 /*
@@ -356,8 +358,12 @@ FROM
     ON o.semesterId = s.semesterId
     LEFT JOIN rooms AS r
     ON o.roomId = r.roomId
+GROUP BY
+    s.year,
+    s.semester
 WHERE
-    ct.type LIKE 'Lecture'
+    ct.acr <> 'LAB' AND
+    ct.acr <> 'TUT'
 
 
 /*
@@ -381,7 +387,7 @@ GROUP BY
 not much different from 5 since i cant sum reg/cap if i was to do just reg, then i could...
 */
 SELECT
-    o.registered,
+    SUM(o.registered) AS total_registered,
     f.faculty,
     s.year,
     s.semester
@@ -389,17 +395,28 @@ FROM
     offerings AS o
     INNER JOIN faculties AS f
     ON o.facultyId = f.facultyId
+    INNER JOIN class_type AS ct
+    ON o.classId = ct.classId
     INNER JOIN semesters AS s
     ON o.semesterId = s.semesterId
     LEFT JOIN rooms AS r
     ON o.roomId = r.roomId
+WHERE
+    ct.acr <> 'LAB' AND
+    ct.acr <> 'TUT'
+GROUP BY   
+    f.faculty,
+    s.year,
+    s.semester
+ORDER BY
+    total_students DESC
 
 /*
 8. Prof with greatest # of students limited to 5
 */
 SELECT
-    SUM(o.registered) AS total_students,
-    p.name
+    p.name,
+    SUM(o.registered) AS total_students
 FROM
     offerings AS o 
     INNER JOIN professors AS p
@@ -408,8 +425,6 @@ GROUP BY
     p.name
 ORDER BY 
     total_students DESC
-LIMIT
-    5;
 
 /*
 9. Prof with the least # of students limited to 5
@@ -417,8 +432,8 @@ couldnt resist
 */
 
 SELECT
-    SUM(o.registered) AS total_students,
     p.name
+    SUM(o.registered) AS total_students,
 FROM
     offerings AS o 
     INNER JOIN professors AS p
@@ -426,27 +441,33 @@ FROM
 GROUP BY
     p.name
 ORDER BY 
-    total_students
-LIMIT
-    5;
+    total_students;
 
 /*
 10. largest class enrolment
 */
 SELECT
+    c.name,
     SUM(o.registered) AS total_students,
-    c.name
+    s.year,
+    s.semester
 FROM
     offerings AS o
     INNER JOIN courses AS c
     ON o.courseId = c.courseId
     INNER JOIN class_type AS ct
     ON o.typeId = ct.typeId
+    INNER JOIN semesters AS s
+    ON o.semesterId = s.semesterId
+    LEFT JOIN rooms AS r
+    ON o.roomId = r.roomId
 WHERE
     ct.acr <> 'LAB' AND
     ct.acr <> 'TUT'
 GROUP BY
-    c.name
+    c.name,
+    s.year,
+    s.semester
 ORDER BY
     total_students DESC;
 
