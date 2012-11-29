@@ -147,6 +147,78 @@ function get_year($mysqli_free_room)
 }
 
 /**
+ * Get the rooms that are open given the duration, day, term and campus
+ *
+ * @param mysqli $mysqli_free_room The mysqli connection object for the ucsc elections DB
+ * @param $duration the length of time the user wishes to find free
+ * @param $day is the week day desired, the first letter of the week day name, with Thursday = 'R'
+ * @param $term the term desired **NOTE term = { year, semester}
+ * @param $campus the campus desired, the full campus name
+ *
+ * @return $available the room, start, and end time that are available given the day,
+ * term and campus.
+ */
+function get_room_opens($mysqli_free_room, $duration, $day, $term, $campus)
+{
+    $rooms = get_rooms_taken($mysqli_free_room, $day, $term, $campus);
+    $first_class = array("room"       => $room[0]["room"]
+                         "starttime"  => ""
+                         "endtime"    => "08:00:00"
+                         "startdate"  => ""
+                         "enddate"    => "");
+    $last_class = array("room"       => $room[0]["room"]
+                         "starttime"  => "22:00:00"
+                         "endtime"    => ""
+                         "startdate"  => ""
+                         "enddate"    => "");
+    $available = array( array("room"       => ""
+                              "starttime"  => ""
+                              "endtime"    => "");
+
+    array_unshift($rooms, $first_class);
+    array_push($rooms, $last_class);
+
+    $free = TRUE;
+    $num_rooms = sizeof($rooms);
+
+    foreach($i = 0; $i < $num_rooms; $i++)
+    {
+        if(($rooms[i+1]["start_time"] - $rooms[i]["endtime"]) > $duration
+          && $rooms[i]["room"] === $room[i]["room"])
+        {
+            /* Size is large enough for the requested gap */
+            $available[i] = array("room"       => $rooms[i]["room"]
+                                  "starttime"  => $rooms[i]["endtime"]
+                                  "endtime"    => $rooms[i+1]["start_time"]);
+        }
+    }
+    return $available;
+}
+
+function get_room_opens($mysqli_free_room, $start_time, $end_time, $day, $term, $campus)
+{
+    $rooms = get_rooms_taken($mysqli_free_room, $day, $term, $campus);
+
+    $free = TRUE;
+    foreach($rooms as $room)
+    {
+        /*if($start_time >= $rooms["endtime"] && $end_time >= $rooms["endtime"]
+          || $start_time <= $rooms["starttime"] && $end_time <= $rooms["starttime"])
+        {
+
+        }*/
+        if(!($start_time < $room["endtime"] && $end_time < $room["endtime"]
+          || $start_time <= $room["starttime"] && $end_time <= $room["starttime"]))
+        {
+          /* Room is not free */
+          $free = FALSE;
+          break;
+        }
+    }
+    return $free;
+}
+
+/**
  * Get all rooms that are taken on a certain day. 
  * 
  * This can be used to get the slots available on the day as well as if a certain time slot is 
@@ -158,8 +230,7 @@ function get_year($mysqli_free_room)
  * @param $campus the campus desired, the full campus name
  * 
  * @return $rooms An array containing the all the rooms that are taken from a start time to an
- * end time, start date to end date with the number of people taking the room given the day,
- * term and the campus.
+ * end time, start date to end date given the day, term and the campus.
  */
 function get_rooms_taken($mysqli_free_room, $day, $term, $campus)
 {
@@ -174,17 +245,15 @@ function get_rooms_taken($mysqli_free_room, $day, $term, $campus)
                           "starttime"  => ""
                           "endtime"    => ""
                           "startdate"  => ""
-                          "enddate"    => ""
-                          "num_people" => ""));
-    
+                          "enddate"    => ""));
 
-    /* Get the candidate for the current position from the database */
+
+    /* Get the rooms that are taken from the database */
     if ($stmt = $mysqli_elections->prepare("SELECT r.name,
                                                 st.time AS start_time,
                                                 et.time AS end_time,
                                                 sd.date AS start_date,
-                                                ed.date AS end_date,
-                                                oc.num_people
+                                                ed.date AS end_date
                                                 FROM " . $offering_table . " AS o
                                                 INNER JOIN " . $semester_table . " AS s
                                                 ON o.semesterId = s.semesterId 
@@ -200,8 +269,6 @@ function get_rooms_taken($mysqli_free_room, $day, $term, $campus)
                                                 ON o.roomId = r.roomId
                                                 INNER JOIN " . $campus_table . " AS c 
                                                 ON r.campusId = c.campusId 
-                                                LEFT JOIN " . $occupy_table . " AS oc
-                                                ON r.roomId = oc.roomId
                                                 WHERE 
                                                 o.day LIKE ? AND
                                                 s.year = ? AND 
@@ -211,7 +278,8 @@ function get_rooms_taken($mysqli_free_room, $day, $term, $campus)
                                                     o.week_alt IS NULL OR
                                                     o.week_alt = ?
                                                 ) 
-                                                ORDER BY r.name" ))
+                                                ORDER BY
+                                                r.name" ))
     {
         /* bind parameters for markers */
         $stmt->bind_param('ssss', $day, $term[0], $campus, $term[1]);
@@ -239,8 +307,7 @@ function get_rooms_taken($mysqli_free_room, $day, $term, $campus)
      *    start_time,
      *    end_time,
      *    start_date,
-     *    end_date,
-     *    num_people}
+     *    end_date,}
      * }
      */
     return $rooms;

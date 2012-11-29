@@ -139,8 +139,7 @@ SELECT
     st.time AS start_time,
     et.time AS end_time,
     sd.date AS start_date,
-    ed.date AS end_date,
-    oc.num_people
+    ed.date AS end_date
 FROM 
     offerings AS o INNER JOIN semesters AS s
     ON o.semesterId = s.semesterId 
@@ -156,8 +155,6 @@ FROM
     ON o.roomId = r.roomId
     INNER JOIN campus AS c
     ON r.campusId = c.campusId 
-    LEFT JOIN occupied AS oc
-    ON r.roomId = oc.roomId
 WHERE
     o.day LIKE {given_date} AND
     s.year = {given_year} AND 
