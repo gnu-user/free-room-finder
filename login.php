@@ -15,7 +15,7 @@
 			</form>	
 			
 			<br/>
-			
+			<!-- The register checkbox -->
 			<form action="Register.php" method="POST" class="form-signin">				<!-- TO DO: replace Register.php with actual name of page -->
 				Not a member? ...  <br/>
 				<input id="Register" class="btn btn-primary btn-large" type="submit" value="Register!" />  <br/>
