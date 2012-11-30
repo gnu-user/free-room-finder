@@ -849,6 +849,19 @@ function update_occupied($mysqli_free_room, $username, $occupy_id, $num_people, 
 
 }
 
+/**
+ * Add a room request to the database
+ *
+ * @param mysqli $mysqli_free_room The mysqli connection object for the ucsc elections DB
+ * @param $username the username of the user making the request
+ * @param $room the room the user is requesting
+ * @param $start_time the start time the room is requested for
+ * @param $end_time the end time of the room is requested for
+ * @param $date the date that user requested the room for
+ * @param $num_people the total number of people to attend the request
+ * 
+ * @return $addition true if successful, false otherwise
+ */
 function add_request_occupied($mysqli_free_room, $username, $room, $start_time, $end_time, $date, $num_people)
 {
 
@@ -896,6 +909,14 @@ function add_request_occupied($mysqli_free_room, $username, $room, $start_time, 
     return False;
 }
 
+/**
+ * Get the user's id given their username
+ *
+ * @param mysqli $mysqli_free_room The mysqli connection object for the ucsc elections DB
+ * @param $username the username of the user making the request
+ * 
+ * @return $user_id the user id of the given username
+ */
 function get_user_id($mysqli_free_room, $username)
 {
     $user_id = 0;
@@ -922,6 +943,14 @@ function get_user_id($mysqli_free_room, $username)
     return $user_id;
 }
 
+/**
+ * Get the user's id given their username
+ *
+ * @param mysqli $mysqli_free_room The mysqli connection object for the ucsc elections DB
+ * @param $username the username of the user making the request
+ * 
+ * @return $user_id the user id of the given username
+ */
 function get_room_id($mysqli_free_room, $room)
 {
     $room_id = 0;

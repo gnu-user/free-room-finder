@@ -33,19 +33,14 @@
  */
 
 /*
- * The initial page for the user, if the user is not logged in they will be redirected to this page
- * 
- * 1. If the user is not logged in they will be shown some information about the website.
- * 
- * 2. If the user enters a user name and password
- * 
- * 		a) username will be validated
- * 			i) return an error if the login information is invalid
- * 		b) username is verified to be in the database
- *			i) return an error if the login information is invalid
- *		c) user is redirected to the room_request page
- *
+ *  A simple page that you can modify to test your templates
  */
+include 'templates/header.php';
 
 
+// INCLUDE YOUR PAGE TEMPLATE TO TEST HERE
+
+
+include 'templates/footer.php';
+exit();
 ?>
