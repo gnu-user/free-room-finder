@@ -42,10 +42,10 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>UCSC Elections Website</title>
+    <title>Free Room Finder</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="UOIT/DC Computer Science Club Elections">
-    <meta name="author" content="UOIT/DC Computer Science Club">
+    <meta name="description" content="Free Room Finder">
+    <meta name="author" content="Crow's Foot">
 
     <!-- CSS styles -->
     <link href="css/bootstrap.css" rel="stylesheet">
@@ -62,28 +62,8 @@
       <div class="navbar-inner">
         <div class="container">
           <a class="brand" href="#">
-            UCSC Elections Website
+            Free Room Finder
           </a>
-          <div class="nav-collapse">
-            <ul class="nav pull-right">
-              <li class="divider-vertical"></li>
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                  Sign in
-                  <b class="caret"></b>
-                </a>
-                <div class="dropdown-menu login-dropdown">
-                    <form class="form-horizontal" action="index.php" method="post" accept-charset="UTF-8">
-                    <input id="login_username" class="input-large login-form" required type="text" maxlength="31" pattern="^[A-Za-z][A-Za-z0-9]*(?:_[A-Za-z0-9]+)*$" name="login_username" placeholder="Username" />
-                    <input id="login_password" class="input-large login-form" required type="password" maxlength="31" pattern="^[a-zA-Z0-9\!\$\%\^\&amp;\*\(\)\_\?]{6,31}$" name="login_password" placeholder="Password"/>
-                    <input id="login_remember" class="login-checkbox" type="checkbox" name="login_remember" checked="checked" value="1" />
-                    <label class="string optional" for="login_remember">Remember me</label>
-                    <input id="login_button" class="btn btn-primary" class="login-button" type="submit" name="signin" value="Sign In" />
-                  </form>
-                </div>
-              </li>
-            </ul>
-          </div>
         </div>
       </div>
     </div>

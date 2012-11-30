@@ -389,6 +389,7 @@ function get_users_rooms($mysqli_free_room, $username)
                           "endtime"      => ""
                           "date"         => ""
                           "num_people"   => ""
+                          "request_id"   => ""
                           "total_people" => ""));
     
     /* Get the candidate for the current position from the database */
@@ -398,6 +399,7 @@ function get_users_rooms($mysqli_free_room, $username)
                                                 et.time AS end_time,
                                                 oc.date AS date, 
                                                 rr.num_people AS num_people,
+                                                rr.requestId,
                                                 oc.num_people AS total_num_people
                                                 FROM " . $users . " AS u
                                                 INNER JOIN " . $room_request_table . " AS rr
@@ -444,6 +446,7 @@ function get_users_rooms($mysqli_free_room, $username)
     *     end_time,
     *     date, 
     *     num_people,
+    *     requestId,
     *     total_num_people}
     * }
     */
@@ -749,4 +752,372 @@ function get_busy_prof($mysqli_free_room)
     * }
     */
     return $prof;
+}
+
+/**
+ * Remove the given room requests
+ *
+ * @param mysqli $mysqli_free_room The mysqli connection object for the ucsc elections DB
+ * @param $ids
+ * array(array( request_id => ""
+ *              occupy_id  => "") ) 
+ * 
+ * @return $deleted true if successful, false otherwise
+ */
+function remove_requested($mysqli_free_room, $username, $ids)
+{
+    $num = 0;
+
+    foreach($ids as $index => $id)
+    {
+        
+        if ($stmt = $mysqli_elections->prepare("DELETE FROM " . room_request_table .
+                                               " WHERE requestId = ?" ))
+        {
+
+            /* bind parameters for markers */
+            $stmt->bind_param('d', $id["request_id"]);
+
+            /* execute query */
+            $stmt->execute();
+
+            /* bind result variables */
+            $stmt->bind_result($check);
+
+            $stmt->fetch();
+
+            if($check === 0)
+            {
+                return False;
+            }
+
+            /* close statement */
+            $stmt->close();
+        }
+
+        if(update_occupied($mysqli_free_room, $username, $ids, False))
+        {
+            return False;
+        }
+    }
+    return True;
+}
+
+/**
+ * Update the total number of people in a room
+ *
+ * @param mysqli $mysqli_free_room The mysqli connection object for the ucsc elections DB
+ * @param $occupy_id
+ * @param $addition idicates whether the user's requests are being added or taken away from
+ * the running total
+ * 
+ * @return $deleted true if successful, false otherwise
+ */
+/* TODO change the function to only take the num_people and user passes neg number to take away num_people */
+function update_occupied($mysqli_free_room, $username, $occupy_id, $num_people, $addition)
+{
+
+    if(!$addition)
+    {
+        $num_people *= -1;
+    }
+
+    if ($stmt = $mysqli_elections->prepare("UPDATE " . occupy_table . 
+                                           " SET num_people = num_people + ? WHERE occupyId = ?" ))
+    {
+
+        /* bind parameters for markers */
+        $stmt->bind_param('dd', $num_people, $occupy_id);
+
+        /* execute query */
+        $stmt->execute();
+
+        /* bind result variables */
+        $stmt->bind_result($check);
+
+        $stmt->fetch();
+
+        if($check === 0)
+        {
+            return False;
+        }
+
+        /* close statement */
+        $stmt->close();
+    }
+    return True;
+
+}
+
+/**
+ * Add a room request to the database
+ *
+ * @param mysqli $mysqli_free_room The mysqli connection object for the ucsc elections DB
+ * @param $username the username of the user making the request
+ * @param $room the room the user is requesting
+ * @param $start_time the start time the room is requested for
+ * @param $end_time the end time of the room is requested for
+ * @param $date the date that user requested the room for
+ * @param $num_people the total number of people to attend the request
+ * 
+ * @return $addition true if successful, false otherwise
+ */
+function add_request_occupied($mysqli_free_room, $username, $room, $start_time, $end_time, $date, $num_people)
+{
+
+    /*
+      1. Query the Rooms table for the room's Id given name
+      2. Query the Username table for Id given username
+      3. Query the time table for the given time (x2)
+      4. Query the occupy table if the value already exists
+        a) if exists call 
+          i)update occupied
+          ii) insert the room request
+          iii) need to make sure that the room request has not been made already
+          iv) return success
+        b) else
+          i) insert occupied row given info
+          ii) insert room request given info
+          iii) return success
+    */
+    $user_id = get_user_id($mysqli_free_room, $username);
+    $room_id = get_room_id($mysqli_free_room, $room);
+    $start_id = get_time_id($mysqli_free_room, $start_time);
+    $end_id = get_time_id($mysqli_free_room, $end_time);
+    $occupy_id = get_occupy_id($mysqli_free_room, $room, $start_time, $end_time, $date)["occupy_id"];
+
+    if($occupy_id === NULL)
+    {
+        /* No previous occupied entry matching the given time, date and room */
+        /* Insert the occupied value */
+        $occupy_id = add_occupied($mysqli_free_room, $room_id, $start_id, $end_id, $date, $num_people);
+    }
+    else
+    {
+        
+        /* Update the occupied value */
+        update_occupied($mysqli_free_room, $username, $occupy_id, $num_people, True);
+    }
+
+    /* Add a check if the room request has not already been made */
+    if(get_room_request_id($mysqli_free_room, $occupy_id, $user_id, $num_people) === 0)
+    {
+        add_room_request($mysqli_free_room, $occupy_id, $user_id, $num_people);
+        return True;
+    }
+
+    return False;
+}
+
+/**
+ * Get the user's id given their username
+ *
+ * @param mysqli $mysqli_free_room The mysqli connection object for the ucsc elections DB
+ * @param $username the username of the user making the request
+ * 
+ * @return $user_id the user id of the given username
+ */
+function get_user_id($mysqli_free_room, $username)
+{
+    $user_id = 0;
+    /* Return user_id */
+    if ($stmt = $mysqli_elections->prepare("SELECT userId FROM "
+                                               . user_table . 
+                                               " WHERE username LIKE ?" ))
+    {
+
+        /* bind parameters for markers */
+        $stmt->bind_param('s', $username);
+
+        /* execute query */
+        $stmt->execute();
+
+        /* bind result variables */
+        $stmt->bind_result($user_id);
+
+        $stmt->fetch();
+
+        /* close statement */
+        $stmt->close();
+    }
+    return $user_id;
+}
+
+/**
+ * Get the user's id given their username
+ *
+ * @param mysqli $mysqli_free_room The mysqli connection object for the ucsc elections DB
+ * @param $username the username of the user making the request
+ * 
+ * @return $user_id the user id of the given username
+ */
+function get_room_id($mysqli_free_room, $room)
+{
+    $room_id = 0;
+    /* Return room_id */
+    if ($stmt = $mysqli_elections->prepare("SELECT roomId FROM "
+                                               . room_table . 
+                                               " WHERE name LIKE ?" ))
+    {
+
+        /* bind parameters for markers */
+        $stmt->bind_param('s', $room);
+
+        /* execute query */
+        $stmt->execute();
+
+        /* bind result variables */
+        $stmt->bind_result($room_id);
+
+        $stmt->fetch();
+
+        /* close statement */
+        $stmt->close();
+    }
+    return $room_id;
+}
+
+function get_time_id($mysqli_free_room, $time)
+{
+    $time_id = 0;
+    /* Return time id */
+    if ($stmt = $mysqli_elections->prepare("SELECT timeId FROM "
+                                               . time_table . 
+                                               " WHERE time = ?" ))
+    {
+
+        /* bind parameters for markers */
+        $stmt->bind_param('d', $time);
+
+        /* execute query */
+        $stmt->execute();
+
+        /* bind result variables */
+        $stmt->bind_result($time_id);
+
+        $stmt->fetch();
+
+        /* close statement */
+        $stmt->close();
+    }
+    return $time_id;
+}
+
+function get_occupied($mysqli_free_room, $room, $start_time, $end_time, $date)
+{
+    $occupied = array("occupy_id"  => 0
+                      "num_people" => 0);
+    /* Get the occupied # people or Id, current use is to determine if exists */
+    if ($stmt = $mysqli_elections->prepare("SELECT c.occupyId, c.num_people FROM "
+                                               . occupy_table . " AS o 
+                                               INNER JOIN " . time_table . " AS st
+                                               ON o.start_time = st.timeId
+                                               INNER JOIN " . time_table . " AS et
+                                               ON o.end_time = et.timeId
+                                               INNER JOIN " . room_table . " AS r
+                                               ON o.roomId = r.roomId 
+                                               WHERE
+                                               st.time = ? AND
+                                               et.time = ? AND
+                                               r.name LIKE ? AND
+                                               date = ?" ))
+    {
+
+        /* bind parameters for markers */
+        $stmt->bind_param('ssss', $start_time, $end_time, $room, $date);
+
+        /* execute query */
+        $stmt->execute();
+
+        /* bind result variables */
+        $stmt->bind_result($occupy);
+
+        $stmt->fetch();
+        
+        $occupied[] = $occupy;
+
+        /* close statement */
+        $stmt->close();
+    }
+    return $occupied;
+}
+
+function add_occupied($mysqli_free_room, $room_id, $start_id, $end_id, $date, $num_people)
+{
+    $check = 0;
+    if ($stmt = $mysqli_elections->prepare("INSERT INTO " . occupy_table . 
+                                           " (roomId, start_time, end_time,
+                                            date, num_people) VALUES 
+                                            (?, ?, ?, ?, ?)" ))
+    {
+
+        /* bind parameters for markers */
+        $stmt->bind_param('dddsd', $room_id, $start_id, $end_id, $date, $num_people);
+
+        /* execute query */
+        $stmt->execute();
+
+        /* bind result variables */
+        $stmt->bind_result($check);
+
+        $stmt->fetch();
+
+        /* close statement */
+        $stmt->close();
+    }
+    return $check;
+}
+
+function add_room_request($mysqli_free_room, $occupy_id, $user_id, $num_people)
+{
+    $check = 0;
+    if ($stmt = $mysqli_elections->prepare("INSERT INTO " . occupy_table . 
+                                           " (userId, occupyId, num_people) VALUES 
+                                            (?, ?, ?)" ))
+    {
+
+        /* bind parameters for markers */
+        $stmt->bind_param('dddsd', $occupy_id, $user_id, $num_people);
+
+        /* execute query */
+        $stmt->execute();
+
+        /* bind result variables */
+        $stmt->bind_result($check);
+
+        $stmt->fetch();
+
+        /* close statement */
+        $stmt->close();
+    }
+    return $check;
+}
+
+function get_room_request_id($mysqli_free_room, $occupy_id, $user_id, $num_people)
+{
+    $request_id = 0;
+    /* Get the occupied # people or Id, current use is to determine if exists */
+    if ($stmt = $mysqli_elections->prepare("SELECT requestId FROM "
+                                               . room_requests . "
+                                               WHERE
+                                               occupyId = ? AND
+                                               user_id = ? AND
+                                               num_peopel = ?" ))
+    {
+
+        /* bind parameters for markers */
+        $stmt->bind_param('ddd', $occupy_id, $user_id, $num_people);
+
+        /* execute query */
+        $stmt->execute();
+
+        /* bind result variables */
+        $stmt->bind_result($request_id);
+
+        $stmt->fetch();
+
+        /* close statement */
+        $stmt->close();
+    }
+    return $request_id;
 }

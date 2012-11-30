@@ -162,9 +162,16 @@ CREATE TABLE occupied
 (
     occupyId    INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
     roomId      INTEGER UNSIGNED NOT NULL,
+    start_time  INTEGER UNSIGNED NOT NULL,
+    end_time    INTEGER UNSIGNED NOT NULL,
+    date        DATE    NOT NULL,
     num_people  INTEGER UNSIGNED NOT NULL DEFAULT 0,
     PRIMARY KEY(occupyId),
     FOREIGN KEY(roomId) REFERENCES rooms(roomId)
+        ON DELETE CASCADE    ON UPDATE CASCADE,
+    FOREIGN KEY(start_time) REFERENCES times(timeId)
+        ON DELETE CASCADE    ON UPDATE CASCADE,
+    FOREIGN KEY(end_time) REFERENCES times(timeId)
         ON DELETE CASCADE    ON UPDATE CASCADE
 );
 
@@ -179,19 +186,14 @@ room_requests
 */
 CREATE TABLE room_requests
 (
+    requestId   INTEGER UNSIGNED NOT NULL,
     userId      INTEGER UNSIGNED NOT NULL,
     occupyId    INTEGER UNSIGNED NOT NULL,
-    start_time  INTEGER UNSIGNED NOT NULL,
-    end_time    INTEGER UNSIGNED NOT NULL,
-    date        DATE    NOT NULL,
     num_people  INTEGER UNSIGNED NOT NULL DEFAULT 1,
+    PRIMARY KEY(requestId),
     FOREIGN KEY(userId) REFERENCES users(userId)
         ON DELETE CASCADE    ON UPDATE CASCADE,
     FOREIGN KEY(occupyId) REFERENCES occupied(occupyId)
-        ON DELETE CASCADE    ON UPDATE CASCADE,
-    FOREIGN KEY(start_time) REFERENCES times(timeId)
-        ON DELETE CASCADE    ON UPDATE CASCADE,
-    FOREIGN KEY(end_time) REFERENCES times(timeId)
         ON DELETE CASCADE    ON UPDATE CASCADE
 );
 

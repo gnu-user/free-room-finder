@@ -227,7 +227,8 @@ SELECT
     st.time AS start_time,
     et.time AS end_time,
     oc.date,
-    rr.num_people AS num_people
+    rr.requestId,
+    rr.num_people AS num_people,
     oc.num_people AS total_num_people
 FROM
     users AS u INNER JOIN
