@@ -1,5 +1,5 @@
 <?php
-/*
+/*									NOTE: Still being worked on by Wes
  *  Free Room Finder Website
  *
  *
@@ -32,15 +32,48 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
- *  A simple page that you can modify to test your templates
- */
-include 'templates/header.php';
+//include 'templates/header.php';            //WILL RE-ENABLE HEADER AND FOOTER ONCE THEY'RE ACTUALLY DONE
+
+//include 'templates/footer.php';
 
 
-// INCLUDE YOUR PAGE TEMPLATE TO TEST HERE
-
-
-include 'templates/footer.php';
-exit();
 ?>
+
+
+<html>
+	<head>
+		<title> Welcome to the free-room-finder! </title>
+	</head>
+	
+	<body>
+		<form action="RequestARoom.php" method="POST">            <!-- TO DO: replace RequestARoom.php with actual name of page -->
+			<h1> Please Log in... </h1> <br/>
+			UserName: <input type = "text" id="UserNameTextInput"              /> <br/>
+			Password: <input type = "password" id="PasswordTextInput"          /> <br/>
+			<input id="RememberMeCheckbox" type="checkbox"/> Remember me          <br/>
+			<input id="LoginButton" class="btn btn-primary btn-large" type="submit" value="Login" /> <br/>
+		</form>	
+		
+		<br/>
+		
+		<form action="Register.php" method="POST">				<!-- TO DO: replace Register.php with actual name of page -->
+			Not a member? ...  <br/>
+			<input id="Register" class="btn btn-primary btn-large" type="submit" value="Register!" />  <br/>
+		</form>
+	</body>
+	
+</html>
+
+
+
+
+
+
+
+
+	
+
+
+
+
+
