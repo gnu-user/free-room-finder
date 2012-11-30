@@ -389,6 +389,7 @@ function get_users_rooms($mysqli_free_room, $username)
                           "endtime"      => ""
                           "date"         => ""
                           "num_people"   => ""
+                          "request_id"   => ""
                           "total_people" => ""));
     
     /* Get the candidate for the current position from the database */
@@ -445,6 +446,7 @@ function get_users_rooms($mysqli_free_room, $username)
     *     end_time,
     *     date, 
     *     num_people,
+    *     requestId,
     *     total_num_people}
     * }
     */
@@ -756,21 +758,25 @@ function get_busy_prof($mysqli_free_room)
  * Remove the given room requests
  *
  * @param mysqli $mysqli_free_room The mysqli connection object for the ucsc elections DB
- * @param $request_ids
+ * @param $ids
+ * array(array( request_id => ""
+ *              occupy_id  => "") ) 
  * 
  * @return $deleted true if successful, false otherwise
  */
-function remove_requested($mysqli_free_room, $username, $request_ids, $occupy_ids)
+function remove_requested($mysqli_free_room, $username, $ids)
 {
-    
-    foreach($request_ids as $request_id)
+    $num = 0;
+
+    foreach($ids as $index => $id)
     {
+        
         if ($stmt = $mysqli_elections->prepare("DELETE FROM " . room_request_table .
                                                " WHERE requestId = ?" ))
         {
 
             /* bind parameters for markers */
-            $stmt->bind_param('d', $request_id);
+            $stmt->bind_param('d', $id["request_id"]);
 
             /* execute query */
             $stmt->execute();
@@ -787,7 +793,10 @@ function remove_requested($mysqli_free_room, $username, $request_ids, $occupy_id
             $stmt->close();
         }
 
-        if()
+        if(update_occupied($mysqli_free_room, $username, $ids, False))
+        {
+            return False;
+        }
     }
     return True;
 }
@@ -796,20 +805,45 @@ function remove_requested($mysqli_free_room, $username, $request_ids, $occupy_id
  * Busiest Professors
  *
  * @param mysqli $mysqli_free_room The mysqli connection object for the ucsc elections DB
- * @param $request_ids
+ * @param $ids
+ * array(array( request_id => ""
+ *              occupy_id  => "")
  * 
  * @return $deleted true if successful, false otherwise
  */
-function remove_requested($mysqli_free_room, $username, $request_ids, $occupy_ids)
+function update_occupied($mysqli_free_room, $username, $ids, $addition)
 {
-    foreach($request_ids as $request_id)
+    foreach($ids as $index => $id)
     {
-        if ($stmt = $mysqli_elections->prepare("DELETE FROM " . room_request_table .
+        if ($stmt = $mysqli_elections->prepare("SELECT num_people FROM "
+                                               . room_request_table . 
                                                " WHERE requestId = ?" ))
         {
 
             /* bind parameters for markers */
-            $stmt->bind_param('d', $request_id);
+            $stmt->bind_param('d', $id["request_id"]);
+
+            /* execute query */
+            $stmt->execute();
+
+            /* bind result variables */
+            $stmt->bind_result($num);
+
+            /* close statement */
+            $stmt->close();
+        }
+
+        if(!$addition)
+        {
+            $num *= -1;
+        }
+
+        if ($stmt = $mysqli_elections->prepare("UPDATE " . occupy_table . 
+                                               " SET num_people = num_people + ? WHERE occupyId = ?" ))
+        {
+
+            /* bind parameters for markers */
+            $stmt->bind_param('dd', $num, $id["occupy_id"]);
 
             /* execute query */
             $stmt->execute();
@@ -825,8 +859,6 @@ function remove_requested($mysqli_free_room, $username, $request_ids, $occupy_id
             /* close statement */
             $stmt->close();
         }
-
-        if()
     }
     return True;
 
