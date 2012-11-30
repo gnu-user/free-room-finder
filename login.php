@@ -33,16 +33,19 @@
  */
 
 /*
- * Displays the rooms that the user has requested. The user from this page will also be able to 
- * 'manage' their current requested rooms by removing them. If a user does remove their room
- * request then the database will be updated with the decreased amount of people expected in a
- * particular room.
+ * The initial page for the user, if the user is not logged in they will be redirected to this page
  * 
- * 1. If the user has room requests
+ * 1. If the user is not logged in they will be shown some information about the website.
  * 
- * 		a) Display the room requests
- * 		b) link to room_requests
+ * 2. If the user enters a user name and password
  * 
+ * 		a) username will be validated
+ * 			i) return an error if the login information is invalid
+ * 		b) username is verified to be in the database
+ *			i) return an error if the login information is invalid
+ *		c) user is redirected to the room_request page
+ *
  */
+
 
 ?>
