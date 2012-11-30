@@ -887,12 +887,18 @@ function add_request_occupied($mysqli_free_room, $username, $room, $start_time, 
     }
 
     /* Add a check if the room request has not already been made */
-    add_room_request($mysqli_free_room, $occupy_id, $user_id, $num_people);
-    return True;
+    if(get_room_request_id($mysqli_free_room, $occupy_id, $user_id, $num_people) === 0)
+    {
+        add_room_request($mysqli_free_room, $occupy_id, $user_id, $num_people);
+        return True;
+    }
+
+    return False;
 }
 
 function get_user_id($mysqli_free_room, $username)
 {
+    $user_id = 0;
     /* Return user_id */
     if ($stmt = $mysqli_elections->prepare("SELECT userId FROM "
                                                . user_table . 
@@ -918,8 +924,9 @@ function get_user_id($mysqli_free_room, $username)
 
 function get_room_id($mysqli_free_room, $room)
 {
+    $room_id = 0;
     /* Return room_id */
-  if ($stmt = $mysqli_elections->prepare("SELECT roomId FROM "
+    if ($stmt = $mysqli_elections->prepare("SELECT roomId FROM "
                                                . room_table . 
                                                " WHERE name LIKE ?" ))
     {
@@ -943,6 +950,7 @@ function get_room_id($mysqli_free_room, $room)
 
 function get_time_id($mysqli_free_room, $time)
 {
+    $time_id = 0;
     /* Return time id */
     if ($stmt = $mysqli_elections->prepare("SELECT timeId FROM "
                                                . time_table . 
@@ -971,7 +979,7 @@ function get_occupied($mysqli_free_room, $room, $start_time, $end_time, $date)
     $occupied = array("occupy_id"  => 0
                       "num_people" => 0);
     /* Get the occupied # people or Id, current use is to determine if exists */
-    if ($stmt = $mysqli_elections->prepare("SELECT occupyId, num_people FROM "
+    if ($stmt = $mysqli_elections->prepare("SELECT c.occupyId, c.num_people FROM "
                                                . occupy_table . " AS o 
                                                INNER JOIN " . time_table . " AS st
                                                ON o.start_time = st.timeId
@@ -1007,6 +1015,7 @@ function get_occupied($mysqli_free_room, $room, $start_time, $end_time, $date)
 
 function add_occupied($mysqli_free_room, $room_id, $start_id, $end_id, $date, $num_people)
 {
+    $check = 0;
     if ($stmt = $mysqli_elections->prepare("INSERT INTO " . occupy_table . 
                                            " (roomId, start_time, end_time,
                                             date, num_people) VALUES 
@@ -1032,6 +1041,7 @@ function add_occupied($mysqli_free_room, $room_id, $start_id, $end_id, $date, $n
 
 function add_room_request($mysqli_free_room, $occupy_id, $user_id, $num_people)
 {
+    $check = 0;
     if ($stmt = $mysqli_elections->prepare("INSERT INTO " . occupy_table . 
                                            " (userId, occupyId, num_people) VALUES 
                                             (?, ?, ?)" ))
@@ -1052,4 +1062,33 @@ function add_room_request($mysqli_free_room, $occupy_id, $user_id, $num_people)
         $stmt->close();
     }
     return $check;
+}
+
+function get_room_request_id($mysqli_free_room, $occupy_id, $user_id, $num_people)
+{
+    $request_id = 0;
+    /* Get the occupied # people or Id, current use is to determine if exists */
+    if ($stmt = $mysqli_elections->prepare("SELECT requestId FROM "
+                                               . room_requests . "
+                                               WHERE
+                                               occupyId = ? AND
+                                               user_id = ? AND
+                                               num_peopel = ?" ))
+    {
+
+        /* bind parameters for markers */
+        $stmt->bind_param('ddd', $occupy_id, $user_id, $num_people);
+
+        /* execute query */
+        $stmt->execute();
+
+        /* bind result variables */
+        $stmt->bind_result($request_id);
+
+        $stmt->fetch();
+
+        /* close statement */
+        $stmt->close();
+    }
+    return $request_id;
 }
