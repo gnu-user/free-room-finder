@@ -398,6 +398,7 @@ function get_users_rooms($mysqli_free_room, $username)
                                                 et.time AS end_time,
                                                 oc.date AS date, 
                                                 rr.num_people AS num_people,
+                                                rr.requestId,
                                                 oc.num_people AS total_num_people
                                                 FROM " . $users . " AS u
                                                 INNER JOIN " . $room_request_table . " AS rr
@@ -749,4 +750,84 @@ function get_busy_prof($mysqli_free_room)
     * }
     */
     return $prof;
+}
+
+/**
+ * Remove the given room requests
+ *
+ * @param mysqli $mysqli_free_room The mysqli connection object for the ucsc elections DB
+ * @param $request_ids
+ * 
+ * @return $deleted true if successful, false otherwise
+ */
+function remove_requested($mysqli_free_room, $username, $request_ids, $occupy_ids)
+{
+    
+    foreach($request_ids as $request_id)
+    {
+        if ($stmt = $mysqli_elections->prepare("DELETE FROM " . room_request_table .
+                                               " WHERE requestId = ?" ))
+        {
+
+            /* bind parameters for markers */
+            $stmt->bind_param('d', $request_id);
+
+            /* execute query */
+            $stmt->execute();
+
+            /* bind result variables */
+            $stmt->bind_result($check);
+
+            if($check === 0)
+            {
+                return False;
+            }
+
+            /* close statement */
+            $stmt->close();
+        }
+
+        if()
+    }
+    return True;
+}
+
+/**
+ * Busiest Professors
+ *
+ * @param mysqli $mysqli_free_room The mysqli connection object for the ucsc elections DB
+ * @param $request_ids
+ * 
+ * @return $deleted true if successful, false otherwise
+ */
+function remove_requested($mysqli_free_room, $username, $request_ids, $occupy_ids)
+{
+    foreach($request_ids as $request_id)
+    {
+        if ($stmt = $mysqli_elections->prepare("DELETE FROM " . room_request_table .
+                                               " WHERE requestId = ?" ))
+        {
+
+            /* bind parameters for markers */
+            $stmt->bind_param('d', $request_id);
+
+            /* execute query */
+            $stmt->execute();
+
+            /* bind result variables */
+            $stmt->bind_result($check);
+
+            if($check === 0)
+            {
+                return False;
+            }
+
+            /* close statement */
+            $stmt->close();
+        }
+
+        if()
+    }
+    return True;
+
 }
