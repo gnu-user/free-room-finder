@@ -802,12 +802,14 @@ function remove_requested($mysqli_free_room, $username, $ids)
 }
 
 /**
- * Busiest Professors
+ * Update the total number of people in a room
  *
  * @param mysqli $mysqli_free_room The mysqli connection object for the ucsc elections DB
  * @param $ids
  * array(array( request_id => ""
  *              occupy_id  => "")
+ * @param $addition idicates whether the user's requests are being added or taken away from
+ * the running total
  * 
  * @return $deleted true if successful, false otherwise
  */
@@ -862,4 +864,129 @@ function update_occupied($mysqli_free_room, $username, $ids, $addition)
     }
     return True;
 
+}
+
+function add_request_occupied($mysqli_free_room, $username, $room, $start_time, $end_time, $date, $num_people)
+{
+
+    /*
+      1. Query the Rooms table for the room's Id given name
+      2. Query the Username table for Id given username
+      3. Query the time table for the given time (x2)
+      4. Query the occupy table if the value already exists
+        a) if exists call 
+          i)update occupied
+          ii) insert the room request
+          iii) need to make sure that the room request has not been made already
+          iv) return success
+        b) else
+          i) insert occupied row given info
+          ii) insert room request given info
+          iii) return success
+    */
+    $user_id = get_user_id($mysqli_free_room, $username);
+    $room_id = get_room_id($mysqli_free_room, $room);
+    $start_id = get_time_id($mysqli_free_room, $start_time);
+}
+
+function get_user_id($mysqli_free_room, $username)
+{
+    /* Return user_id */
+    if ($stmt = $mysqli_elections->prepare("SELECT userId FROM "
+                                               . user_table . 
+                                               " WHERE username LIKE ?" ))
+    {
+
+        /* bind parameters for markers */
+        $stmt->bind_param('s', $username);
+
+        /* execute query */
+        $stmt->execute();
+
+        /* bind result variables */
+        $stmt->bind_result($user_id);
+
+        /* close statement */
+        $stmt->close();
+    }
+    return $user_id;
+}
+
+function get_room_id($mysqli_free_room, $room)
+{
+    /* Return room_id */
+  if ($stmt = $mysqli_elections->prepare("SELECT roomId FROM "
+                                               . room_table . 
+                                               " WHERE name LIKE ?" ))
+    {
+
+        /* bind parameters for markers */
+        $stmt->bind_param('s', $room);
+
+        /* execute query */
+        $stmt->execute();
+
+        /* bind result variables */
+        $stmt->bind_result($room_id);
+
+        /* close statement */
+        $stmt->close();
+    }
+    return $room_id;
+}
+
+function get_time_id($mysqli_free_room, $time)
+{
+    /* Return time id */
+    if ($stmt = $mysqli_elections->prepare("SELECT timeId FROM "
+                                               . time_table . 
+                                               " WHERE time = ?" ))
+    {
+
+        /* bind parameters for markers */
+        $stmt->bind_param('d', $time);
+
+        /* execute query */
+        $stmt->execute();
+
+        /* bind result variables */
+        $stmt->bind_result($time_id);
+
+        /* close statement */
+        $stmt->close();
+    }
+    return $time_id;
+}
+
+function get_occupied($mysqli_free_room, $room, $start_time, $end_time, $date)
+{
+    /* Get the occupied # people or Id, current use is to determine if exists */
+    if ($stmt = $mysqli_elections->prepare("SELECT occupyId, num_people FROM "
+                                               . occupy_table . " AS o 
+                                               INNER JOIN " . time_table . " AS st
+                                               ON o.start_time = st.timeId
+                                               INNER JOIN " . time_table . " AS et
+                                               ON o.end_time = et.timeId
+                                               INNER JOIN " . room_table . " AS r
+                                               ON o.roomId = r.roomId 
+                                               WHERE
+                                               st.time = ? AND
+                                               et.time = ? AND
+                                               r.name LIKE ? AND
+                                               date = ?" ))
+    {
+
+        /* bind parameters for markers */
+        $stmt->bind_param('ssss', $start_time, $end_time, $room, $date);
+
+        /* execute query */
+        $stmt->execute();
+
+        /* bind result variables */
+        $stmt->bind_result($time_id);
+
+        /* close statement */
+        $stmt->close();
+    }
+    return $time_id;
 }
