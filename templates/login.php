@@ -33,10 +33,13 @@
 			</div>
 		</div>
 		
+		</br>
+		</br>
+		
 		<!-- 'Not a member...' and register button' -->
 		<div class="control-group">
 			<div class="controls">
-
+				<h3>Not a Member? ... </h3> <button type="submit" id="RegisterButton" name="RegisterButton" class="btn btn-large">Register!</button>
 			</div>
 		</div>			
 			
