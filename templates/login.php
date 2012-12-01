@@ -1,11 +1,14 @@
 
-</br>
-<h1> Welcome to the Free Room Finder! </h1>
-</br></br>
+
 
 <div>
-	<form class="form-horizontal" >
-		<h2> Please sign in... </h2> </br>
+	<br/>
+	<h1> Welcome to the Free Room Finder! </h1>
+	<br/>
+	<br/>
+	
+	<form class="form-horizontal">
+		<h2> Please sign in... </h2> <br />
 		
 		<!-- Username label and textbox -->
 		<div class="control-group">
@@ -22,7 +25,7 @@
 				<input type="password" id="login_password" name="login_password" maxlength="31" pattern="^[a-zA-Z0-9\!\$\%\^\&amp;\*\(\)\_\?]{6,31}$" placeholder="Password">
 			</div>
 		</div>
-
+		
 		<!-- Remember me label and checkbox -->
 		<div class="control-group">
 			<div class="controls">
@@ -33,16 +36,15 @@
 			</div>
 		</div>
 		
-		</br>
-		</br>
+		<br />
+		<br />
 		
 		<!-- 'Not a member...' and register button' -->
 		<div class="control-group">
 			<div class="controls">
 				<h3>Not a Member? ... </h3> <button type="submit" id="RegisterButton" name="RegisterButton" class="btn btn-large">Register!</button>
 			</div>
-		</div>			
-			
+		</div>	
 		
 	</form>
 </div>
