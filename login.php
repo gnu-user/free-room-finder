@@ -37,9 +37,7 @@
  */
 include 'templates/header.php';
 
-
-// INCLUDE YOUR PAGE TEMPLATE TO TEST HERE
-
+include 'templates/login.php';
 
 include 'templates/footer.php';
 exit();
