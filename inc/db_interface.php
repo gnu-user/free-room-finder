@@ -1,6 +1,38 @@
 <?php
+/*
+ *  Free Room Finder Website
+ *
+ *
+ *  Authors -- Crow's Foot Group
+ *  -------------------------------------------------------
+ *
+ *  Jonathan Gillett
+ *  Joseph Heron
+ *  Amit Jain
+ *  Wesley Unwin
+ *  Anthony Jihn
+ *
+ *
+ *  License
+ *  -------------------------------------------------------
+ *
+ *  Copyright (C) 2012 Crow's Foot Group
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
-/**
+/*
  * Contains a collection of the functions that directly interact with the database
  * to provide a convenient database abstraction layer, in the future support could
  * be added to support other databases. At the moment the implementations are
@@ -12,7 +44,7 @@
  */
 
 
-/**
+/*
  * Thought these should be defined. They can be moved if needed they will however
  * be used throughout this file.
  */
@@ -35,7 +67,6 @@ $next = "next";
 $year = "year";
 $semester = "semesters";
 
-//require_once 'election.php';
 
 /**
  * Get all of the campuses where rooms are available.
@@ -1002,6 +1033,7 @@ function get_time_id($mysqli_free_room, $time)
     }
     return $time_id;
 }
+
 
 function get_occupied($mysqli_free_room, $room, $start_time, $end_time, $date)
 {
