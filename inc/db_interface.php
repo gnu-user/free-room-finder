@@ -189,7 +189,7 @@ function get_year($mysqli_free_room)
  * @return $available the room, start, and end time that are available given the day,
  * term and campus.
  */
-function get_room_opens($mysqli_free_room, $duration, $day, $term, $campus)
+function get_room_open_dur($mysqli_free_room, $duration, $day, $term, $campus)
 {
     $rooms = get_rooms_taken($mysqli_free_room, $day, $term, $campus);
     $first_class = array("room"       => $room[0]["room"],
@@ -226,7 +226,7 @@ function get_room_opens($mysqli_free_room, $duration, $day, $term, $campus)
     return $available;
 }
 
-function get_room_opens($mysqli_free_room, $start_time, $end_time, $day, $term, $campus)
+function get_room_open($mysqli_free_room, $start_time, $end_time, $day, $term, $campus)
 {
     $rooms = get_rooms_taken($mysqli_free_room, $day, $term, $campus);
 
@@ -557,7 +557,7 @@ function get_total_occupied($mysqli_free_room, $room, $start_time, $end_time, $d
  * 
  * @return $rooms The room and total number of people expected for that room for all rooms
  */
-function get_total_occupied($mysqli_free_room)
+function get_all_total_occupied($mysqli_free_room)
 {
     $rooms = array( array("room"         => "",
                             "total_people" => ""));
@@ -915,25 +915,25 @@ function add_request_occupied($mysqli_free_room, $username, $room, $start_time, 
     $room_id = get_room_id($mysqli_free_room, $room);
     $start_id = get_time_id($mysqli_free_room, $start_time);
     $end_id = get_time_id($mysqli_free_room, $end_time);
-    $occupy_id = get_occupy_id($mysqli_free_room, $room, $start_time, $end_time, $date)["occupy_id"];
+    $occupy_id = get_occupy_id($mysqli_free_room, $room, $start_time, $end_time, $date);
 
-    if($occupy_id === NULL)
+    if($occupy_id["occupy_id"] === NULL)
     {
         /* No previous occupied entry matching the given time, date and room */
         /* Insert the occupied value */
-        $occupy_id = add_occupied($mysqli_free_room, $room_id, $start_id, $end_id, $date, $num_people);
+        $occupy_id["occupy_id"] = add_occupied($mysqli_free_room, $room_id, $start_id, $end_id, $date, $num_people);
     }
     else
     {
         
         /* Update the occupied value */
-        update_occupied($mysqli_free_room, $username, $occupy_id, $num_people, True);
+        update_occupied($mysqli_free_room, $username, $occupy_id["occupy_id"], $num_people, True);
     }
 
     /* Add a check if the room request has not already been made */
-    if(get_room_request_id($mysqli_free_room, $occupy_id, $user_id, $num_people) === 0)
+    if(get_room_request_id($mysqli_free_room, $occupy_id["occupy_id"], $user_id, $num_people) === 0)
     {
-        add_room_request($mysqli_free_room, $occupy_id, $user_id, $num_people);
+        add_room_request($mysqli_free_room, $occupy_id["occupy_id"], $user_id, $num_people);
         return True;
     }
 
