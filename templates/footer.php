@@ -34,17 +34,15 @@
 
 
 /*
- * The default footer for the elections website, displays copyright and links
- * to the club website, source code, etc.
+ * The default footer for the website, displays copyright, etc.
  */
 ?>
       <footer class="footer">
         <div class="pull-left">
-          <p>Designed and built by the <a target="_blank" href="#">Crow'sFoot</a></p>
+          <p>Designed and built by <a target="_blank" href="#">Crow'sFoot</a></p>
           <p>This website is Open Source, code licensed under the 
           	<a target="_blank" href="http://www.gnu.org/licenses/agpl-3.0.html">GNU Affero General Public License, Version 3</a>
           </p>
-          <p>Contribute to this website, view the source code <a target="_blank" href="https://github.com/UOIT-CSC/elections-website">@github</a>
           <p><strong>&copy; Crow's Foot</strong></p>
         </div>
       </footer>

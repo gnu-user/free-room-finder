@@ -35,7 +35,7 @@
 
 /*
  * The default template for the free room finder website header, this is for when a user
- * is not logged in and displays a login menu
+ * is not logged in
  */
 ?>
 <!DOCTYPE html>
@@ -59,7 +59,7 @@
     <![endif]-->
   </head>
   <body>
-    <div class="navbar navbar-fixed-top">
+    <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container">
           <a class="brand" href="#">
