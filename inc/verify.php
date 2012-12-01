@@ -1,5 +1,6 @@
 <?php
 
+require_once "db_interface.php";
 /**
  * A function which returns a login session string which is the
  * session username encrypted with AES256 and then encoded with base64
