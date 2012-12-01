@@ -89,8 +89,8 @@ function get_year($mysqli_free_room)
      * July - August == Summer
      */
     $semesters = array();
-    $term = array( $current => array($year => 0, $semester => 0), 
-                   $next    => array($year => 0, $semester => 0));
+    $term = array(	$current => array($year => 0, $semester => 0), 
+					$next    => array($year => 0, $semester => 0));
 
     /* The current election year */
     $year = date('Y');
