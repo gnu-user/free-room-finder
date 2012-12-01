@@ -430,8 +430,8 @@ couldnt resist
 */
 
 SELECT
-    p.name
-    SUM(o.registered) AS total_students,
+    p.name,
+    SUM(o.registered) AS total_students
 FROM
     offerings AS o 
     INNER JOIN professors AS p
