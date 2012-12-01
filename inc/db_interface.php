@@ -138,7 +138,7 @@ function get_year($mysqli_free_room)
     /* Get the candidate for the current position from the database */
     if ($stmt = $mysqli_free_room->prepare("SELECT year, semester
                                                 FROM " . $semester_table . 
-                                                "WHERE (year = ? AND 
+                                                " WHERE (year = ? AND 
                                                 semester LIKE ? ) OR
                                                 (year = ? AND 
                                                 semester LIKE ?
@@ -323,7 +323,7 @@ function get_rooms_taken($mysqli_free_room, $day, $term, $campus)
                                                 r.name" ))
     {
         /* bind parameters for markers */
-        $stmt->bind_param('ssss', $day, $term[0], $campus, $term[1]);
+        $stmt->bind_param('ssssd', $day, $term[0], $campus, $term[1], $week_alt);
 
         /* execute query */
         $stmt->execute();
@@ -454,7 +454,7 @@ function get_users_rooms($mysqli_free_room, $username)
                                                 INNER JOIN " . $room_table . " AS r 
                                                 ON oc.roomId = r.roomId
                                                 INNER JOIN " . $campus_table . " AS c 
-                                                ON r.campusId = c.campusId
+                                                ON r.campusId = c.campusId 
                                                 WHERE 
                                                 u.username LIKE username
                                                 ORDER BY oc.date" ))
@@ -518,7 +518,7 @@ function get_total_occupied($mysqli_free_room, $room, $start_time, $end_time, $d
                                                 INNER JOIN " . $time_table . " AS et 
                                                 ON oc.end_time = et.timeId
                                                 INNER JOIN " . $room_table . " AS r 
-                                                ON oc.roomId = r.roomIdd
+                                                ON oc.roomId = r.roomIdd 
                                                 WHERE 
                                                 r.name LIKE ? AND
                                                 st.time = ? AND
@@ -642,7 +642,7 @@ function get_total_registered($mysqli_free_room)
                                                 ON o.roomId = r.roomId
                                                 GROUP BY
                                                 s.year,
-                                                s.semester
+                                                s.semester 
                                                 WHERE
                                                 ct.acr <> 'LAB' AND
                                                 ct.acr <> 'TUT'" ))
@@ -706,7 +706,7 @@ function get_total_reg_fac($mysqli_free_room)
                                                 INNER JOIN " . $semester_table . " AS s 
                                                 ON o.semesterId = s.semesterId
                                                 LEFT JOIN " . $room_table . " AS r
-                                                ON o.roomId = r.roomId
+                                                ON o.roomId = r.roomId 
                                                 WHERE
                                                 ct.acr <> 'LAB' AND
                                                 ct.acr <> 'TUT'
@@ -1149,12 +1149,12 @@ function add_room_request($mysqli_free_room, $occupy_id, $user_id, $num_people)
 
 function get_room_request_id($mysqli_free_room, $occupy_id, $user_id, $num_people)
 {
-    global $room_request_table
+    global $room_request_table;
     $request_id = 0;
     /* Get the occupied # people or Id, current use is to determine if exists */
     if ($stmt = $mysqli_free_room->prepare("SELECT requestId FROM "
-                                               . $room_requests_table . "
-                                               WHERE
+                                               . $room_requests_table .
+                                               " WHERE
                                                occupyId = ? AND
                                                user_id = ? AND
                                                num_peopel = ?" ))
