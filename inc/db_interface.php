@@ -944,10 +944,10 @@ function get_user_id($mysqli_free_room, $username)
 }
 
 /**
- * Get the user's id given their username
+ * Get the room's id given the room name
  *
  * @param mysqli $mysqli_free_room The mysqli connection object for the ucsc elections DB
- * @param $username the username of the user making the request
+ * @param $room the room name 
  * 
  * @return $user_id the user id of the given username
  */
