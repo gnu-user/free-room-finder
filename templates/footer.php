@@ -52,6 +52,14 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="js/jquery-1.8.3.js"></script>
     <script src="js/bootstrap.js"></script>
-    <script src="js/custom.js"></script>
+    <script src="js/bootstrap-datepicker.js"></script>
+    <script>
+      $(function(){
+        $('#dp1').datepicker({
+          format: 'mm-dd-yyyy'
+        });
+      });
+    </script>
+    <!--<script src="js/custom.js"></script>-->
   </body>
 </html>

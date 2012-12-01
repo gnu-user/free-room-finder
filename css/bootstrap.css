@@ -1203,6 +1203,10 @@ textarea::-webkit-input-placeholder {
   width: 530px;
 }
 
+.input-datelarge {
+  width: 256px;
+}
+
 input[class*="span"],
 select[class*="span"],
 textarea[class*="span"],

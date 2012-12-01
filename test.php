@@ -39,7 +39,7 @@ include 'templates/header.php';
 
 
 // INCLUDE YOUR PAGE TEMPLATE TO TEST HERE
-
+include 'templates/request.php';
 
 include 'templates/footer.php';
 exit();

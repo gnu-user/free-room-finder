@@ -43,8 +43,9 @@
  *						'Treasurer'         => ''
  *						);
  */
+
 ?>
-<section id="election-form">
+<section id="request_room">
 	<div class="page-header">
 		<h1>Request Room</h1>
 	</div>
@@ -53,9 +54,9 @@
 			<form class="well form-horizontal" action="index.php" method="post" accept-charset="UTF-8">
 				<fieldset>
 					<div class="control-group">
-			      		<label for="president_elect" class="control-label">Time</label>
+			      		<label for="select_time" class="control-label">Time</label>
 				      	<div class="controls">
-				      		<select id="president_elect" name="president_elect" class="input-xlarge">
+				      		<select id="select_time" name="select_time" class="input-xlarge">
 				      			<option></option>
 				      			<?php 
 		      						echo '<option>' . $candidates['President'][0] . ' (Candidate)' . '</option>';
@@ -65,9 +66,9 @@
 				      	</div>
 		      		</div>
 		      		<div class="control-group">
-			      		<label for="vicepresident_elect" class="control-label">Duration</label>
+			      		<label for="select_duration" class="control-label">Duration</label>
 				      	<div class="controls">
-				      		<select id="vicepresident_elect" name="vicepresident_elect" class="input-xlarge">
+				      		<select id="select_duration" name="select_duration" class="input-xlarge">
 				      			<option></option>
 				      			<?php 
 		      						echo '<option>' . $candidates['Vice President'][0] . ' (Candidate)' . '</option>';
@@ -77,34 +78,16 @@
 				      	</div>
 		      		</div>
 		      		<div class="control-group">
-			      		<label for="coordinator_elect" class="control-label">Date</label>
-				      	<div class="controls">
-				      		<select id="coordinator_elect" name="coordinator_elect" class="input-xlarge">
-				      			<option></option>
-				      			<?php 
-		      						echo '<option>' . $candidates['Coordinator'][0] . ' (Candidate)' . '</option>';
-		      						echo '<option>' . $incumbents['Coordinator'][0] . ' (Incumbent)' . '</option>';
-				      			?>
-				      		</select>
-				      	</div>
+			      		<label for="select_date" class="control-label">Date</label>
+							<div class="controls">
+							<class id="dp3" data-date="12-02-2012" data-date-format="dd-mm-yyyy">
+							<input id="dp1" class="input-datelarge" type="text" value="12-02-2012">
+							</div>
 		      		</div>
 		      		<div class="control-group">
-			      		<label for="treasurer_elect" class="control-label">Semester</label>
+			      		<label for="select_campus" class="control-label">Campus</label>
 				      	<div class="controls">
-				      		<select id="treasurer_elect" name="treasurer_elect" class="input-xlarge">
-				      			<option></option>
-				      			<?php 
-		      						echo '<option>' . $candidates['Treasurer'][0] . ' (Candidate)' . '</option>';
-		      						echo '<option>' . $incumbents['Treasurer'][0] . ' (Incumbent)' . '</option>';
-				      			?>
-				      		</select>
-				      	</div>
-		      		</div>
-
-		      		<div class="control-group">
-			      		<label for="treasurer_elect" class="control-label">Campus</label>
-				      	<div class="controls">
-				      		<select id="treasurer_elect" name="treasurer_elect" class="input-xlarge">
+				      		<select id="select_campus" name="select_campus" class="input-xlarge">
 				      			<option></option>
 				      			<?php 
 		      						echo '<option>' . $candidates['Treasurer'][0] . ' (Candidate)' . '</option>';
@@ -114,9 +97,9 @@
 				      	</div>
 		      		</div>
 		      		<div class="control-group">
-			      		<label for="treasurer_elect" class="control-label">Number of People Using Room</label>
+			      		<label for="select_numberofpeople" class="control-label">Number of People</label>
 				      	<div class="controls">
-				      		<select id="treasurer_elect" name="treasurer_elect" class="input-xlarge">
+				      		<select id="select_numberofpeople" name="select_numberofpeople" class="input-xlarge">
 				      			<option></option>
 				      			<?php 
 		      						echo '<option>' . $candidates['Treasurer'][0] . ' (Candidate)' . '</option>';
