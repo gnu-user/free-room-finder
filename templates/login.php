@@ -45,7 +45,7 @@
 		
 		<!-- Username label and textbox -->
 		<div class="control-group">
-			<label class="control-label" for="inputEmail">User name:</label>				
+			<label class="control-label">User name:</label>				
 			<div class="controls">
 				<input type="text" id="login_username" name="login_username" maxlength="31" pattern="^[A-Za-z][A-Za-z0-9]*(?:_[A-Za-z0-9]+)*$" placeholder="Username">      		
 			</div>

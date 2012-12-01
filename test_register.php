@@ -37,7 +37,7 @@
  */
 include 'templates/header.php';
 
-//include 'templates/FILE_TO_TEST.php';
+include 'templates/register.php';
 
 include 'templates/footer.php';
 exit();
