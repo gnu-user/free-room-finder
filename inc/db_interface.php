@@ -199,7 +199,7 @@ function get_room_open_dur($mysqli_free_room, $duration, $day, $term, $campus)
                          "endtime"    => "08:00:00",
                          "startdate"  => "",
                          "enddate"    => "");
-    $last_class = array("room"       => $rooms[0]["room"],
+    $last_class = array("room"       => "",
                          "starttime"  => "23:00:00",
                          "endtime"    => "",
                          "startdate"  => "",
@@ -213,31 +213,36 @@ function get_room_open_dur($mysqli_free_room, $duration, $day, $term, $campus)
 
     $free = TRUE;
     $prev_room = $rooms[0]["room"];
-    
-    //$num_rooms = sizeof($rooms);
+    $index = 0;
+    $num_rooms = sizeof($rooms);
 
-    //for($i = 0; $i < $num_rooms; $i++)
-   	foreach($rooms as $i => $room)
+    for($i = 0; $i < $num_rooms-1; $i++)
     {
-    	if($room["room"] != $prev_room)
+      if($rooms[$i]["endtime"] != "")
       {
-          array_splice($room, $i, 0, $first_class);
-
+        $i++;
+        $prev_room = $rooms[$i+1]["room"];
       }
-      elseif($rooms[$i+1]["room"] != $prev_room))
+    	if($rooms[$i+1]["room"] != $prev_room)
       {
-          array_splice($room, $i, 0, $last_class);
+          $first_class["room"] = $prev_room;
+          $last_class["room"] = $room[$i+1]["room"];
+          array_splice($rooms, $i, 0, $last_class);
+          array_splice($rooms, $i+1, 0, $first_class);          
+          $num_rooms+=2;
+          $i--;
       }
       else
       {
 
-          if(($rooms[$i+1]["start_time"] - $rooms[$i]["endtime"]) > $duration
-            && $rooms[$i]["room"] === $room[$i]["room"])
+          if(($rooms[$i+1]["starttime"] - $rooms[$i]["endtime"]) > $duration
+            && $rooms[$i]["room"] === $rooms[$i]["room"])
             {
                 /* Size is large enough for the requested gap */
-                $available[$i] = array("room"       => $rooms[$i]["room"],
+                $available[$index] = array("room"       => $rooms[$i]["room"],
                                       "starttime"  => $rooms[$i]["endtime"],
-                                      "endtime"    => $rooms[$i+1]["start_time"]);
+                                      "endtime"    => $rooms[$i+1]["starttime"]);
+                $index++;
             }
       }
     }

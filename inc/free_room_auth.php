@@ -44,9 +44,9 @@
  */
 
 /* Database access */
-$db_user = '';
-$db_pass = '';
-$db_name = '';
+$db_user = 'joseph';
+$db_pass = 'test123';
+$db_name = 'free_test';
 
 /* AES ENCRYPT/DECRYPT KEY */
 $AES_KEY = 'test123';
