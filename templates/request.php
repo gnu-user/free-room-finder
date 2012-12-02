@@ -42,9 +42,9 @@
  * 
  * This template depends on the array $campus being set with the list of available campuses
  * 
- * $campus = array(	'UOIT North Campus',
- *					'UOIT Downtown Campus',
- *					...
+ * $campuses = array(	'UOIT North Campus',
+ *						'UOIT Downtown Campus',
+ *						...
  *					);
  * 
  */
@@ -99,9 +99,11 @@
 				      	<div class="controls">
 				      		<select id="select_campus" name="select_campus" class="input-xlarge">
 				      			<option></option>
-				      			<?php 
-		      						echo '<option>' . $candidates['Treasurer'][0] . ' (Candidate)' . '</option>';
-		      						echo '<option>' . $incumbents['Treasurer'][0] . ' (Incumbent)' . '</option>';
+				      			<?php
+				      				foreach ($campuses as $campus)
+				      				{
+				      					echo '<option>' . $campus . '</option>';
+				      				}
 				      			?>
 				      		</select>
 				      	</div>

@@ -99,7 +99,12 @@ else
 
 /* Valid user has logged in, display request a room page */
 include 'templates/header-user.php';
+
+/* Get the list of all campuses, which are displayed in the request form */
+$campuses = get_all_campus($mysqli_conn);
+
 include 'templates/request.php';
+
 /* Include the footer */
 include 'templates/footer.php';
 exit();
