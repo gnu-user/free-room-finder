@@ -49,6 +49,13 @@
  *                             	"endtime"    => "11:00:00"
  *                             )
  *                       );
+ *                       
+ * If The available array does not contain start and end time (user specified the
+ * start and end time), then the following are needed.
+ * 
+ * $start_time = "10:10:00"
+ * $end_time = "12:00:00"
+ * 
  */
 
 ?>
@@ -106,19 +113,44 @@
               <tbody>
                 <!-- Display the rooms found -->
                 <?php 
-	                foreach ($available as $room)
-	                {
-	                	echo '<tr>';
-	                		echo '<td>';
-	                			echo '<input type="radio" name="group1">';
-	                		echo '</td>';
-	                		echo '<td>' . $room['room'] .'</td>';
-	                		echo '<td>' . $room['starttime'] . '</td>';
-	                		echo '<td>' . $room['endtime'] . '</td>';
-	                		echo '<td>10</td>';
-	                		echo '<td>30</td>';
-	                	echo '</tr>';
-	                }
+                	/* If the available array contains the start and end time then
+                	 * display the start and end time for each room stored in the
+                	 * array, otherwise just display the start and end time provided
+                	 * by the user.
+                	 */
+                	if (isset($available[0]['starttime']) && isset($available[0]['endtime']))
+                	{
+		                foreach ($available as $room)
+		                {
+		                	echo '<tr>';
+		                		echo '<td>';
+		                			echo '<input type="radio" name="group1">';
+		                		echo '</td>';
+		                		echo '<td>' . $room['room'] .'</td>';
+		                		echo '<td>' . $room['starttime'] . '</td>';
+		                		echo '<td>' . $room['endtime'] . '</td>';
+		                		echo '<td>0</td>';
+		                		echo '<td>0</td>';
+		                	echo '</tr>';
+		                }
+                	}
+                	/* Otherwise, display the start and end time provided by the user */
+                	else
+                	{
+                		foreach ($available as $room)
+                		{
+                			echo '<tr>';
+                			echo '<td>';
+                			echo '<input type="radio" name="group1">';
+                			echo '</td>';
+                			echo '<td>' . $room['room'] .'</td>';
+                			echo '<td>' . $start_time . '</td>';
+                			echo '<td>' . $end_time . '</td>';
+                			echo '<td>0</td>';
+                			echo '<td>0</td>';
+                			echo '</tr>';
+                		}
+                	}
                 ?>
               </tbody>
             </table>
