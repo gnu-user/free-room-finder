@@ -1249,3 +1249,4 @@ function get_room_request_id($mysqli_free_room, $occupy_id, $user_id, $num_peopl
     }
     return $request_id;
 }
+?>

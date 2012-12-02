@@ -43,14 +43,14 @@
  * publicly accessible.
  */
 
-
 /* Database access */
-$db_user = 'joseph';
-$db_pass = 'test123';
-$db_name = 'free_test';
+$db_user = '';
+$db_pass = '';
+$db_name = '';
 
 /* AES ENCRYPT/DECRYPT KEY */
 $AES_KEY = 'test123';
 
 /* SESSION ENCRYPT/DECRYPT KEY */
 $SESSION_KEY = 'test123';
+?>

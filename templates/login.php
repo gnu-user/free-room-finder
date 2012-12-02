@@ -40,7 +40,7 @@
 	<br/>
 	<br/>
 	
-	<form class="form-horizontal">
+	<form class="form-horizontal" action="login.php" method="post">
 		<h2> Please sign in... </h2> <br />
 		
 		<!-- Username label and textbox -->

@@ -76,3 +76,4 @@ function validate_password($password)
 		return FALSE;
 	}
 }
+?>
