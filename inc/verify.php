@@ -65,17 +65,18 @@ function generate_session($username, $SESSION_KEY)
  */
 function username_from_session($mysqli_free_room, $ses_validate, $SESSION_KEY)
 {
+	global $user_table;
     /* Decrypted validate session variable */
     $validate = trim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, $SESSION_KEY, base64_decode($ses_validate),
             MCRYPT_MODE_ECB, mcrypt_create_iv(mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256,
                     MCRYPT_MODE_ECB), MCRYPT_RAND)));
     
-    $u_name = '';
+    $username = '';
     
     /* Get the candidate for the current position from the database */
-    if ($stmt = $mysqli_elections->prepare("SELECT username
+    if ($stmt = $mysqli_free_room->prepare("SELECT username
                                                 FROM " . $user_table .
-                                                " WHERE username LIKE username" ))
+                                                " WHERE username LIKE ?" ))
     {
         /* bind parameters for markers */
         $stmt->bind_param('s', $validate);
@@ -84,7 +85,7 @@ function username_from_session($mysqli_free_room, $ses_validate, $SESSION_KEY)
         $stmt->execute();
 
         /* bind result variables */
-        $stmt->bind_result($u_name);
+        $stmt->bind_result($username);
 
         $stmt->fetch();
 
@@ -93,9 +94,9 @@ function username_from_session($mysqli_free_room, $ses_validate, $SESSION_KEY)
     }
 
     /* If username found, session is valid */
-    if (strcasecmp($validate, $u_name) === 0)
+    if (strcasecmp($validate, $username) === 0)
     {
-        return $u_name;
+        return $username;
     }
 
     /* Session invalid! */
@@ -112,14 +113,16 @@ function username_from_session($mysqli_free_room, $ses_validate, $SESSION_KEY)
  * @param string $AES_KEY The AES encrypt/decrypt key for the password
  * @return boolean True if the login information provided is valid
  */
-function verfiy_login($mysqli_free_room, $username, $password, $AES_KEY)
+function verify_login($mysqli_free_room, $username, $password, $AES_KEY)
 {
+	global $user_table;
+	
     $user_match = '';
     $pass_match = '';
     
     /* Get the username from the database if it exists */
-    if ($stmt = $mysqli_accounts->prepare("SELECT username FROM "
-                                                . user_table . 
+    if ($stmt = $mysqli_free_room->prepare("SELECT username FROM "
+                                                . $user_table . 
                                                 " WHERE username LIKE ?"))
     {
         /* bind parameters for markers */
@@ -142,9 +145,9 @@ function verfiy_login($mysqli_free_room, $username, $password, $AES_KEY)
     if (strcasecmp($username, $user_match) === 0)
     {
         
-        if ($stmt = $mysqli_elections->prepare("SELECT AES_DECRYPT(password, ?)
+        if ($stmt = $mysqli_free_room->prepare("SELECT AES_DECRYPT(password, ?)
                                                     FROM " . $user_table .
-                                                    " WHERE username LIKE username" ))
+                                                    " WHERE username LIKE ?" ))
         {
             /* bind parameters for markers */
             $stmt->bind_param('ss', $AES_KEY, $username);
@@ -162,7 +165,7 @@ function verfiy_login($mysqli_free_room, $username, $password, $AES_KEY)
         }
 
         /* Verify the password, remove the salt from password stored in DB */
-        if(strcmp($password, substr($password, 8)) === 0)
+        if(strcasecmp($password, $pass_match) === 0)
         {
             return true;
         }
@@ -183,7 +186,7 @@ function verfiy_login($mysqli_free_room, $username, $password, $AES_KEY)
  * username stored in the database
  *
  */
-function verify_login_session($mysqli_accounts, $ses_validate, $SESSION_KEY)
+function verify_login_session($mysqli_free_room, $ses_validate, $SESSION_KEY)
 {
     /* Decrypted validate session variable */ 
     $validate = trim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, $SESSION_KEY, base64_decode($ses_validate), 
@@ -192,7 +195,7 @@ function verify_login_session($mysqli_accounts, $ses_validate, $SESSION_KEY)
     $user_match = '';
     
     /* Get the username from the database if it exists */
-    if ($stmt = $mysqli_accounts->prepare("SELECT username FROM "
+    if ($stmt = $mysqli_free_room->prepare("SELECT username FROM "
                                                 . $user_table . 
                                                 " WHERE username LIKE ?"))
     {
@@ -232,14 +235,14 @@ function verify_login_session($mysqli_accounts, $ses_validate, $SESSION_KEY)
  * @param string $username The username of the valid user who is logged in
  * @param string $SESSION_KEY The session encrypt/decrypt key
  */
-function set_session_data($mysqli_accounts, $username, $SESSION_KEY)
+function set_session_data($mysqli_free_room, $username, $SESSION_KEY)
 {   
     //TODO Determine the neccessary session data, copied from election_web
     /* Set session info validate is a unique session based on their username */
     $_SESSION['login'] = generate_session($username, $SESSION_KEY);
     
     /* Set the members session information */
-    //$member = get_member($mysqli_accounts, $username);
+    //$member = get_member($mysqli_free_room, $username);
     $_SESSION['username'] = $username;
     //$_SESSION['access_account'] = $member['access_account'];
     //$_SESSION['first_name'] = $member['first_name'];
@@ -281,7 +284,7 @@ function set_login_cookie()
  * @param string $SESSION_KEY The session encrypt/decrypt key
  * @return TRUE If the cookie is a valid login cookie
  */
-function verify_login_cookie($mysqli_accounts, $SESSION_KEY)
+function verify_login_cookie($mysqli_free_room, $SESSION_KEY)
 {
     //TODO verify that this function is valid, copied from election_web
     /* Verify the login cookie is set and that the login is valid */
@@ -291,7 +294,7 @@ function verify_login_cookie($mysqli_accounts, $SESSION_KEY)
         $login_cookie = htmlspecialchars($_COOKIE['login']);
         
         /* Validate the login cookie data, which contains the same data as session */
-        if (verify_login_session($mysqli_accounts, $login_cookie, $SESSION_KEY))
+        if (verify_login_session($mysqli_free_room, $login_cookie, $SESSION_KEY))
         {
             return true;
         }
@@ -299,6 +302,4 @@ function verify_login_cookie($mysqli_accounts, $SESSION_KEY)
     
     return false;
 }
-
-
 ?>
