@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xsc:schema xmlns:xsc="http://www.w3.org/2000/10/XMLSchema-instance">
+    <xsc:element name="BusiestProfs">
+        <xsc:annotation>
+            <xsc:documentation>
+                List of Profs and Student Registered
+            </xsc:documentation>
+        </xsc:annotation>
+        <xsc:complexType>
+            <xsc:sequence maxOccurs="unbounded">
+                <xsc:element name="BusiestProf">
+                    <xsc:complexType>
+                        <xsc:element name="professor" type="xsc:string" />
+                        <xsc:element name="registered_num" type="xsc:number" />
+                    </xsc:complexType>
+                </xsc:element>
+            </xsc:sequence>
+        </xsc:complexType>
+    </xsc:element>
+</xsc:schema>                    
+

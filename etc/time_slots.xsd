@@ -14,7 +14,7 @@
                         <xsc:element name="room" type="xsc:string" />
                         <xsc:element name="campus" type="xsc:string" />
                         <xsc:element name="starttime" type="xsc:time" />
-                        <xsc:element name="duration" type="xsc:number" />
+                        <xsc:element name="endtime" type="xsc:number" />
                         <xsc:element name="date" type="xsc:date" />
                         <xsc:element name="request_num_people" type="xsc:number" />
                     </xsc:complexType>
