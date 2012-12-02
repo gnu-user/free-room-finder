@@ -43,6 +43,7 @@
  * publicly accessible.
  */
 
+
 /* Database access */
 $db_user = 'joseph';
 $db_pass = 'test123';

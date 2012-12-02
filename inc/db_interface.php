@@ -138,7 +138,7 @@ function get_year($mysqli_free_room)
     /* Get the candidate for the current position from the database */
     if ($stmt = $mysqli_free_room->prepare("SELECT year, semester
                                                 FROM " . $semester_table . 
-                                                " WHERE (year = ? AND 
+                                                "WHERE (year = ? AND 
                                                 semester LIKE ? ) OR
                                                 (year = ? AND 
                                                 semester LIKE ?
@@ -545,7 +545,7 @@ function get_total_occupied($mysqli_free_room, $room, $start_time, $end_time, $d
                                                 INNER JOIN " . $time_table . " AS et 
                                                 ON oc.end_time = et.timeId
                                                 INNER JOIN " . $room_table . " AS r 
-                                                ON oc.roomId = r.roomIdd 
+                                                ON oc.roomId = r.roomId
                                                 WHERE 
                                                 r.name LIKE ? AND
                                                 st.time = ? AND
