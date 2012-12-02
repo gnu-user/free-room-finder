@@ -1176,22 +1176,21 @@ function get_time_id($mysqli_conn, $time)
 
 /**
  * TODO document
- * TODO test
  */
 function get_occupied($mysqli_conn, $room, $start_time, $end_time, $date)
 {
-    global $time_table, $room_table;
+    global $occupy_table, $time_table, $room_table;
     $occupied = array("occupy_id"  => 0,
                       "num_people" => 0);
     /* Get the occupied # people or Id, current use is to determine if exists */
-    if ($stmt = $mysqli_conn->prepare("SELECT c.occupyId, c.num_people FROM "
-                                               . occupy_table . " AS o 
+    if ($stmt = $mysqli_conn->prepare("SELECT oc.occupyId, oc.num_people FROM "
+                                               . $occupy_table . " AS oc 
                                                INNER JOIN " . $time_table . " AS st 
-                                               ON o.start_time = st.timeId 
+                                               ON oc.start_time = st.timeId 
                                                INNER JOIN " . $time_table . " AS et 
-                                               ON o.end_time = et.timeId 
+                                               ON oc.end_time = et.timeId 
                                                INNER JOIN " . $room_table . " AS r 
-                                               ON o.roomId = r.roomId 
+                                               ON oc.roomId = r.roomId 
                                                WHERE 
                                                st.time = ? AND 
                                                et.time = ? AND 
@@ -1207,11 +1206,12 @@ function get_occupied($mysqli_conn, $room, $start_time, $end_time, $date)
 
         //TODO FIX
         /* bind result variables */
-        $stmt->bind_result($occupy);
+        $stmt->bind_result($occupy, $num_people);
 
         $stmt->fetch();
         
-        $occupied[] = $occupy;
+        $occupied["occupy_id"] = $occupy;
+        $occupied["num_people"] = $num_people;
 
         /* close statement */
         $stmt->close();
@@ -1221,7 +1221,6 @@ function get_occupied($mysqli_conn, $room, $start_time, $end_time, $date)
 
 /**
  * TODO document
- * TODO test
  */
 function add_occupied($mysqli_conn, $room_id, $start_id, $end_id, $date, $num_people)
 {
@@ -1237,12 +1236,7 @@ function add_occupied($mysqli_conn, $room_id, $start_id, $end_id, $date, $num_pe
         $stmt->bind_param('dddsd', $room_id, $start_id, $end_id, $date, $num_people);
 
         /* execute query */
-        $stmt->execute();
-
-        /* bind result variables */
-        $stmt->bind_result($check);
-
-        $stmt->fetch();
+        $check = $stmt->execute();
 
         /* close statement */
         $stmt->close();
@@ -1252,27 +1246,21 @@ function add_occupied($mysqli_conn, $room_id, $start_id, $end_id, $date, $num_pe
 
 /**
  * TODO document
- * TODO test
  */
 function add_room_request($mysqli_conn, $occupy_id, $user_id, $num_people)
 {
-    global $occupy_table;
+    global $room_request_table;
     $check = 0;
-    if ($stmt = $mysqli_conn->prepare("INSERT INTO " . $occupy_table . 
+    if ($stmt = $mysqli_conn->prepare("INSERT INTO " . $room_request_table . 
                                            " (userId, occupyId, num_people) VALUES 
                                             (?, ?, ?)" ))
     {
 
         /* bind parameters for markers */
-        $stmt->bind_param('dddsd', $occupy_id, $user_id, $num_people);
+        $stmt->bind_param('ddd', $user_id, $occupy_id, $num_people);
 
         /* execute query */
-        $stmt->execute();
-
-        /* bind result variables */
-        $stmt->bind_result($check);
-
-        $stmt->fetch();
+        $check = $stmt->execute();
 
         /* close statement */
         $stmt->close();
@@ -1282,7 +1270,6 @@ function add_room_request($mysqli_conn, $occupy_id, $user_id, $num_people)
 
 /**
  * TODO document
- * TODO test
  */
 function get_room_request_id($mysqli_conn, $occupy_id, $user_id, $num_people)
 {
@@ -1290,11 +1277,11 @@ function get_room_request_id($mysqli_conn, $occupy_id, $user_id, $num_people)
     $request_id = 0;
     /* Get the occupied # people or Id, current use is to determine if exists */
     if ($stmt = $mysqli_conn->prepare("SELECT requestId FROM "
-                                               . $room_requests_table .
+                                               . $room_request_table .
                                                " WHERE 
                                                occupyId = ? AND 
-                                               user_id = ? AND 
-                                               num_peopel = ?" ))
+                                               userId = ? AND 
+                                               num_people = ?" ))
     {
 
         /* bind parameters for markers */
@@ -1304,9 +1291,11 @@ function get_room_request_id($mysqli_conn, $occupy_id, $user_id, $num_people)
         $stmt->execute();
 
         /* bind result variables */
-        $stmt->bind_result($request_id);
+        $stmt->bind_result($value);
 
         $stmt->fetch();
+
+        $request_id = $value;
 
         /* close statement */
         $stmt->close();
