@@ -58,12 +58,12 @@ function generate_session($username, $SESSION_KEY)
  * 
  * NOTE: This method is primarily used to get the username from a valid login cookie
  *
- * @param mysqli $mysqli_accounts The mysqli connection object for the ucsc accounts DB
+ * @param mysqli $mysqli_conn The mysqli connection object for the ucsc accounts DB
  * @param string $ses_validate The session data to validate
  * @param string $SESSION_KEY The session encrypt/decrypt key
  * @return string The username stored in the session login/cookie
  */
-function username_from_session($mysqli_free_room, $ses_validate, $SESSION_KEY)
+function username_from_session($mysqli_conn, $ses_validate, $SESSION_KEY)
 {
 	global $user_table;
     /* Decrypted validate session variable */
@@ -74,7 +74,7 @@ function username_from_session($mysqli_free_room, $ses_validate, $SESSION_KEY)
     $username = '';
     
     /* Get the candidate for the current position from the database */
-    if ($stmt = $mysqli_free_room->prepare("SELECT username
+    if ($stmt = $mysqli_conn->prepare("SELECT username
                                                 FROM " . $user_table .
                                                 " WHERE username LIKE ?" ))
     {
@@ -107,13 +107,13 @@ function username_from_session($mysqli_free_room, $ses_validate, $SESSION_KEY)
  * A function which verifies the login information provided by the user
  * returns true if the login username and password provided are valid
  * 
- * @param mysqli $mysqli_accounts The mysqli connection object for the ucsc accounts DB
+ * @param mysqli $mysqli_conn The mysqli connection object for the ucsc accounts DB
  * @param string $username The username of the person logging in
  * @param string $password The password of the person logging in
  * @param string $AES_KEY The AES encrypt/decrypt key for the password
  * @return boolean True if the login information provided is valid
  */
-function verify_login($mysqli_free_room, $username, $password, $AES_KEY)
+function verify_login($mysqli_conn, $username, $password, $AES_KEY)
 {
 	global $user_table;
 	
@@ -121,7 +121,7 @@ function verify_login($mysqli_free_room, $username, $password, $AES_KEY)
     $pass_match = '';
     
     /* Get the username from the database if it exists */
-    if ($stmt = $mysqli_free_room->prepare("SELECT username FROM "
+    if ($stmt = $mysqli_conn->prepare("SELECT username FROM "
                                                 . $user_table . 
                                                 " WHERE username LIKE ?"))
     {
@@ -145,7 +145,7 @@ function verify_login($mysqli_free_room, $username, $password, $AES_KEY)
     if (strcasecmp($username, $user_match) === 0)
     {
         
-        if ($stmt = $mysqli_free_room->prepare("SELECT AES_DECRYPT(password, ?)
+        if ($stmt = $mysqli_conn->prepare("SELECT AES_DECRYPT(password, ?)
                                                     FROM " . $user_table .
                                                     " WHERE username LIKE ?" ))
         {
@@ -179,14 +179,14 @@ function verify_login($mysqli_free_room, $username, $password, $AES_KEY)
  * A function which validates the session by decrypting the validate session
  * variable and comparing it to the username session variable
  * 
- * @param mysqli $mysqli_accounts The mysqli connection object for the ucsc accounts DB
+ * @param mysqli $mysqli_conn The mysqli connection object for the ucsc accounts DB
  * @param string $ses_validate The session data to validate
  * @param string $SESSION_KEY The session encrypt/decrypt key
  * @return boolean true if the decrypted validate session variable matches the
  * username stored in the database
  *
  */
-function verify_login_session($mysqli_free_room, $ses_validate, $SESSION_KEY)
+function verify_login_session($mysqli_conn, $ses_validate, $SESSION_KEY)
 {
 	global $user_table;
 	
@@ -197,7 +197,7 @@ function verify_login_session($mysqli_free_room, $ses_validate, $SESSION_KEY)
     $user_match = '';
     
     /* Get the username from the database if it exists */
-    if ($stmt = $mysqli_free_room->prepare("SELECT username FROM "
+    if ($stmt = $mysqli_conn->prepare("SELECT username FROM "
                                                 . $user_table . 
                                                 " WHERE username LIKE ?"))
     {
@@ -233,11 +233,11 @@ function verify_login_session($mysqli_free_room, $ses_validate, $SESSION_KEY)
  * validation session variable, the username, access_account, and fullname
  * of the user.
  *
- * @param mysqli $mysqli_accounts The mysqli connection object for the ucsc accounts DB
+ * @param mysqli $mysqli_conn The mysqli connection object for the ucsc accounts DB
  * @param string $username The username of the valid user who is logged in
  * @param string $SESSION_KEY The session encrypt/decrypt key
  */
-function set_session_data($mysqli_free_room, $username, $SESSION_KEY)
+function set_session_data($mysqli_conn, $username, $SESSION_KEY)
 {   
     //TODO Determine the neccessary session data, copied from election_web
     /* Set session info validate is a unique session based on their username */
@@ -282,11 +282,11 @@ function set_login_cookie()
  * login information set in the cookie is valid for the user, if it
  * is then the user is logged in.
  *
- * @param mysqli $mysqli_accounts The mysqli connection object for the ucsc accounts DB
+ * @param mysqli $mysqli_conn The mysqli connection object for the ucsc accounts DB
  * @param string $SESSION_KEY The session encrypt/decrypt key
  * @return TRUE If the cookie is a valid login cookie
  */
-function verify_login_cookie($mysqli_free_room, $SESSION_KEY)
+function verify_login_cookie($mysqli_conn, $SESSION_KEY)
 {
     //TODO verify that this function is valid, copied from election_web
     /* Verify the login cookie is set and that the login is valid */
@@ -296,7 +296,7 @@ function verify_login_cookie($mysqli_free_room, $SESSION_KEY)
         $login_cookie = htmlspecialchars($_COOKIE['login']);
         
         /* Validate the login cookie data, which contains the same data as session */
-        if (verify_login_session($mysqli_free_room, $login_cookie, $SESSION_KEY))
+        if (verify_login_session($mysqli_conn, $login_cookie, $SESSION_KEY))
         {
             return true;
         }

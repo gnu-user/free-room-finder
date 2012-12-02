@@ -71,7 +71,7 @@ $election_vote = array( 'President' => 'Bob Cajun',
 $nominate_myself = array('President', 'Coordinator');
 
 /* Connect to the databases */
-$mysqli_accounts = new mysqli("localhost", $db_user, $db_pass, $db_acc_name);
+$mysqli_conn = new mysqli("localhost", $db_user, $db_pass, $db_acc_name);
 $mysqli_elections = new mysqli("localhost", $db_user, $db_pass, $db_elec_name);
 
 /* check connection */
@@ -143,9 +143,9 @@ if (mysqli_connect_errno()) {
  * 1. User is not logged in, display one of the templates if the nomination/election
  * 	  period is open/closed with info about the Computer Science Club
  */
-if (verify_login_cookie($mysqli_accounts, $SESSION_KEY) === false
+if (verify_login_cookie($mysqli_conn, $SESSION_KEY) === false
 	&& (!isset($_SESSION['login'])
-	|| verify_login_session($mysqli_accounts, $_SESSION['login'], $SESSION_KEY) === false)
+	|| verify_login_session($mysqli_conn, $_SESSION['login'], $SESSION_KEY) === false)
 	&& !isset($_POST['login_username'])
 	&& !isset($_POST['login_password'])
 	&& !isset($_POST['accept_rules']))
@@ -173,22 +173,22 @@ if (verify_login_cookie($mysqli_accounts, $SESSION_KEY) === false
 	}
 }
 /* 2. User is not logged in and has submitted their login information */
-elseif (verify_login_cookie($mysqli_accounts, $SESSION_KEY) === false
+elseif (verify_login_cookie($mysqli_conn, $SESSION_KEY) === false
 		&& (!isset($_SESSION['login'])
-		|| verify_login_session($mysqli_accounts, $_SESSION['login'], $SESSION_KEY) === false)
+		|| verify_login_session($mysqli_conn, $_SESSION['login'], $SESSION_KEY) === false)
 		&& isset($_POST['login_username'])
 		&& isset($_POST['login_password']))
 {
 	/* a) If the login information is valid and they entered the correct username/password  */
 	if (validate_username($_POST['login_username']) && validate_password($_POST['login_password'])
-		&& verify_login($mysqli_accounts, $_POST['login_username'] , $_POST['login_password'], $AES_KEY))
+		&& verify_login($mysqli_conn, $_POST['login_username'] , $_POST['login_password'], $AES_KEY))
 	{
 		/* i)	If they are already a member and have logged in to the election website
 		 * 		before then sign them in
 		 */
-		if (is_member($mysqli_accounts, $mysqli_elections, $_POST['login_username']))
+		if (is_member($mysqli_conn, $mysqli_elections, $_POST['login_username']))
 		{
-			set_session_data($mysqli_accounts, $_POST['login_username'], $SESSION_KEY);
+			set_session_data($mysqli_conn, $_POST['login_username'], $SESSION_KEY);
 			
 			if ($_POST['login_remember'] == 1)
 			{
@@ -222,8 +222,8 @@ elseif (verify_login_cookie($mysqli_accounts, $SESSION_KEY) === false
 	}
 }
 /* 3. User is logged in and has clicked the Sign Out button */
-elseif ((verify_login_cookie($mysqli_accounts, $SESSION_KEY)
-		|| verify_login_session($mysqli_accounts, $_SESSION['login'], $SESSION_KEY))
+elseif ((verify_login_cookie($mysqli_conn, $SESSION_KEY)
+		|| verify_login_session($mysqli_conn, $_SESSION['login'], $SESSION_KEY))
 		&& isset($_POST['signout']))
 {
 	session_unset();
@@ -248,8 +248,8 @@ elseif (isset($_SESSION['login_username']) && isset($_SESSION['login_password'])
 	/* a) If the user accepted the terms and conditions they are allowed to login and vote */
 	if ($_POST['accept_rules'] == 1)
 	{
-		add_member($mysqli_accounts, $mysqli_elections, $login_username);
-		set_session_data($mysqli_accounts, $login_username, $SESSION_KEY);
+		add_member($mysqli_conn, $mysqli_elections, $login_username);
+		set_session_data($mysqli_conn, $login_username, $SESSION_KEY);
 			
 		if ($login_remember == 1)
 		{
@@ -263,8 +263,8 @@ elseif (isset($_SESSION['login_username']) && isset($_SESSION['login_password'])
 /* 5. User has a valid login cookie set / has logged into the site with valid account
  *    and the post data for NOMINATION voting is SET
  */
-elseif ((verify_login_cookie($mysqli_accounts, $SESSION_KEY)
-		|| verify_login_session($mysqli_accounts, $_SESSION['login'], $SESSION_KEY))
+elseif ((verify_login_cookie($mysqli_conn, $SESSION_KEY)
+		|| verify_login_session($mysqli_conn, $_SESSION['login'], $SESSION_KEY))
 		&& isset($_POST['nomination_vote']))
 {
 	
@@ -333,8 +333,8 @@ elseif ((verify_login_cookie($mysqli_accounts, $SESSION_KEY)
 /* 6. User has a valid login cookie set / has logged into the site with valid account
  * 	  and the post data for ELECTION voting is SET
 */
-elseif ((verify_login_cookie($mysqli_accounts, $SESSION_KEY)
-		|| verify_login_session($mysqli_accounts, $_SESSION['login'], $SESSION_KEY))
+elseif ((verify_login_cookie($mysqli_conn, $SESSION_KEY)
+		|| verify_login_session($mysqli_conn, $_SESSION['login'], $SESSION_KEY))
 		&& isset($_POST['election_vote']))
 {
 	/* An array mapping the positions to the election nominee */
@@ -381,21 +381,21 @@ elseif ((verify_login_cookie($mysqli_accounts, $SESSION_KEY)
 	}
 }
 /* 7. User has a valid login cookie set / has logged into the site with valid account */
-elseif (verify_login_cookie($mysqli_accounts, $SESSION_KEY)
-		|| verify_login_session($mysqli_accounts, $_SESSION['login'], $SESSION_KEY))
+elseif (verify_login_cookie($mysqli_conn, $SESSION_KEY)
+		|| verify_login_session($mysqli_conn, $_SESSION['login'], $SESSION_KEY))
 {
 	
 	/* FIX, forgot to account for when user has login cookie set but there is no session
 	 * data, have to retrieve username from cookie and then set the session data
 	 */
-	if (verify_login_cookie($mysqli_accounts, $SESSION_KEY))
+	if (verify_login_cookie($mysqli_conn, $SESSION_KEY))
 	{
 		/* Get the login cookie data */
 		$login_cookie = htmlspecialchars($_COOKIE['login']);
 	
 		/* Get the username from login cookie data and set session info */
-		$username = username_from_session($mysqli_accounts, $login_cookie, $SESSION_KEY);
-		set_session_data($mysqli_accounts, $username, $SESSION_KEY);
+		$username = username_from_session($mysqli_conn, $login_cookie, $SESSION_KEY);
+		set_session_data($mysqli_conn, $username, $SESSION_KEY);
 	}
 	
 	include 'templates/header-member.php';
@@ -453,9 +453,9 @@ $username = 'gnu_user';
 */
 
 /* Get the member information for the user logged in */
-//$member = add_member($mysqli_accounts, $mysqli_elections, $username);
+//$member = add_member($mysqli_conn, $mysqli_elections, $username);
 
-//$member_info = get_member($mysqli_accounts, $username);
+//$member_info = get_member($mysqli_conn, $username);
 
 /* Nominate myself for president */
 //nominate_self($mysqli_elections, $member['access_account'], $nominate_myself);
@@ -512,7 +512,7 @@ if ($temp == TRUE)
 }*/
 
 /* close connection */
-$mysqli_accounts->close();
+$mysqli_conn->close();
 $mysqli_elections->close();
 
 
