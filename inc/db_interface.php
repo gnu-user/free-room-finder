@@ -1044,7 +1044,7 @@ function get_user_id($mysqli_free_room, $username)
     return $user_id;
 }
 
-/** TODO test
+/**
  * Get the room's id given the room name
  *
  * @param mysqli $mysqli_free_room The mysqli connection object for the ucsc elections DB
@@ -1081,7 +1081,6 @@ function get_room_id($mysqli_free_room, $room)
 
 /**
  * TODO document
- * TODO test
  */
 function get_time_id($mysqli_free_room, $time)
 {
@@ -1094,7 +1093,7 @@ function get_time_id($mysqli_free_room, $time)
     {
 
         /* bind parameters for markers */
-        $stmt->bind_param('d', $time);
+        $stmt->bind_param('s', $time);
 
         /* execute query */
         $stmt->execute();
