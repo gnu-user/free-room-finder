@@ -43,9 +43,10 @@
  * publicly accessible.
  */
 
+
 /* Database access */
-$db_user = 'root';
-$db_pass = 'igal3dm4c';
+$db_user = 'joseph';
+$db_pass = 'test123';
 $db_name = 'free_test';
 
 /* AES ENCRYPT/DECRYPT KEY */
