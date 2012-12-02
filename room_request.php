@@ -32,6 +32,10 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+require_once "inc/free_room_auth.php";
+require_once "inc/db_interface.php";
+require_once "inc/validate.php";
+require_once "inc/verify.php";
 
  /*
  * The page that will allow the user to enter the information about the room they
@@ -39,7 +43,7 @@
  * This can be either the start time and duration, or the start time and end time,
  * or just the duration. Also the date and campus will need to be entered as well.
  * 
- * 1. If the user is not logged or their session is invalid
+ * 1. If the user is not logged in or their session is invalid
  * 
  * 		a) Redirect the user to the login page
  * 
@@ -47,15 +51,56 @@
  * 
  * 		a) Show the form for entering a room request.
  *
- * 3. If the user has submitted data (post data)
- * 
- * 		a) validate the post data
- * 			i) return an error if the submitted data is invalid
- * 
- * 		b) parse the post data and redirect to the results page
- * 
  */
 
+/* Connect to the database */
+$mysqli_conn = new mysqli("localhost", $db_user, $db_pass, $db_name);
+
+/* check connection */
+if (mysqli_connect_errno()) {
+	printf("Connect failed: %s\n", mysqli_connect_error());
+	exit();
+}
+
+/* 1. If the user is not logged in or their session is invalid */
+if (verify_login_cookie($mysqli_conn, $SESSION_KEY) === false
+	&& (!isset($_SESSION['login'])
+	|| verify_login_session($mysqli_conn, $_SESSION['login'], $SESSION_KEY) === false))
+{
+	/* Redirect the user to the login page */
+	header('Location: login.php');
+}
+
+/* User has a valid login cookie set / has logged into the site with valid account */
+elseif (verify_login_cookie($mysqli_conn, $SESSION_KEY)
+		|| verify_login_session($mysqli_conn, $_SESSION['login'], $SESSION_KEY))
+{
+	/* FIX, forgot to account for when user has login cookie set but there is no session
+	 * data, have to retrieve username from cookie and then set the session data
+	*/
+	if (verify_login_cookie($mysqli_conn, $SESSION_KEY))
+	{
+		/* Get the login cookie data */
+		$login_cookie = htmlspecialchars($_COOKIE['login']);
+
+		/* Get the username from login cookie data and set session info */
+		$username = username_from_session($mysqli_conn, $login_cookie, $SESSION_KEY);
+		set_session_data($mysqli_conn, $username, $SESSION_KEY);
+	}
+}
+
+/* Invalid cookie or session data/etc.. */
+else
+{
+	/* Redirect the user to the login page */
+	header('Location: login.php');
+}
 
 
+/* Valid user has logged in, display request a room page */
+include 'templates/header-user.php';
+include 'templates/request.php';
+/* Include the footer */
+include 'templates/footer.php';
+exit();
 ?>
