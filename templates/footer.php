@@ -55,8 +55,8 @@
     <script src="js/bootstrap-datepicker.js"></script>
     <script>
       $(function(){
-        $('#dp1').datepicker({
-          format: 'mm-dd-yyyy'
+        $('#select_date').datepicker({
+          format: 'yyyy-mm-dd'
         });
       });
     </script>

@@ -1,7 +1,22 @@
 <?php
 /*
- *  UOIT/DC Computer Science Club Elections Website
- *  Copyright (C) 2012 UOIT/DC Computer Science Club
+ *  Free Room Finder Website
+ *
+ *
+ *  Authors -- Crow's Foot Group
+ *  -------------------------------------------------------
+ *
+ *  Jonathan Gillett
+ *  Joseph Heron
+ *  Amit Jain
+ *  Wesley Unwin
+ *  Anthony Jihn
+ * 
+ *
+ *  License
+ *  -------------------------------------------------------
+ *
+ *  Copyright (C) 2012 Crow's Foot Group
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Affero General Public License as
@@ -19,29 +34,19 @@
 
 
 /*
- * The final election voting form, displays a form with the list of candidates and
- * incumbents for each position.
+ * The room request/search form, used to search for an available room on campus
  * 
  * 
  * DEPENDENCIES
  * ------------
  * 
- * This template depends on the arrays $candidates and incumbents containing the positions
- * and the nominee for each position
+ * This template depends on the array $campus being set with the list of available campuses
  * 
- * An array mapping the positions to the incumbent
- * $candidates = array(	'President'         => '',
- *						'Vice President'    => '',
- *						'Coordinator'       => '',
- *						'Treasurer'         => ''
- *					   );
- *	
- * An array mapping the positions to the incumbent
- * $incumbents = array( 'President'         => '',
- *						'Vice President'    => '',
- *						'Coordinator'       => '',
- *						'Treasurer'         => ''
- *						);
+ * $campus = array(	'UOIT North Campus',
+ *					'UOIT Downtown Campus',
+ *					...
+ *					);
+ * 
  */
 
 ?>
@@ -51,7 +56,7 @@
 	</div>
 	<div class="row">
 		<div class="span8">
-			<form class="well form-horizontal" action="index.php" method="post" accept-charset="UTF-8">
+			<form class="well form-horizontal" action="room_results.php" method="post" accept-charset="UTF-8">
 				<fieldset>
 					<div class="control-group">
 			      		<label for="select_time" class="control-label">Time</label>
@@ -80,8 +85,13 @@
 		      		<div class="control-group">
 			      		<label for="select_date" class="control-label">Date</label>
 							<div class="controls">
-							<class id="dp3" data-date="12-02-2012" data-date-format="dd-mm-yyyy">
-							<input id="dp1" class="input-datelarge" type="text" value="12-02-2012">
+							<class id="dp3" data-date-format="yyyy-mm-dd">
+							<!--  Set the current date -->
+							<?php
+								date_default_timezone_set('America/Toronto');
+								$cur_date = date('Y-m-d');
+								echo '<input id="select_date" name="select_date"class="input-datelarge" type="text" value="'. $cur_date .'">';
+ 							?>
 							</div>
 		      		</div>
 		      		<div class="control-group">
@@ -97,9 +107,9 @@
 				      	</div>
 		      		</div>
 		      		<div class="control-group">
-			      		<label for="select_numberofpeople" class="control-label">Number of People</label>
+			      		<label for="select_num_people" class="control-label">Number of People</label>
 				      	<div class="controls">
-				      		<select id="select_numberofpeople" name="select_numberofpeople" class="input-xlarge">
+				      		<select id="select_num_people" name="select_num_people" class="input-xlarge">
 				      			<option></option>
 				      			<?php 
 		      						echo '<option>' . $candidates['Treasurer'][0] . ' (Candidate)' . '</option>';
@@ -110,7 +120,7 @@
 		      		</div>
 
 		      		<div class="form-actions">
-		            	<button class="btn btn-primary" type="submit" name="election_vote" value="Submit Vote">Search</button>
+		            	<button class="btn btn-primary" type="submit" name="search_room" value="Search">Search</button>
 		          </div>
 				</fieldset>
 			</form>
