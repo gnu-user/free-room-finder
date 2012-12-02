@@ -1,7 +1,22 @@
 <?php
 /*
- *  UOIT/DC Computer Science Club Elections Website
- *  Copyright (C) 2012 UOIT/DC Computer Science Club
+ *  Free Room Finder Website
+ *
+ *
+ *  Authors -- Crow's Foot Group
+ *  -------------------------------------------------------
+ *
+ *  Jonathan Gillett
+ *  Joseph Heron
+ *  Amit Jain
+ *  Wesley Unwin
+ *  Anthony Jihn
+ * 
+ *
+ *  License
+ *  -------------------------------------------------------
+ *
+ *  Copyright (C) 2012 Crow's Foot Group
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Affero General Public License as
@@ -19,29 +34,21 @@
 
 
 /*
- * The final election voting form, displays a form with the list of candidates and
- * incumbents for each position.
+ * Displays the results, a list of the rooms found that are available during the
+ * time/duration specified.
  * 
  * 
  * DEPENDENCIES
  * ------------
  * 
- * This template depends on the arrays $candidates and incumbents containing the positions
- * and the nominee for each position
+ * This template depends on the $available array containing the room, start, and end 
+ * time that are available for the day.
  * 
- * An array mapping the positions to the incumbent
- * $candidates = array(	'President'         => '',
- *						'Vice President'    => '',
- *						'Coordinator'       => '',
- *						'Treasurer'         => ''
- *					   );
- *	
- * An array mapping the positions to the incumbent
- * $incumbents = array( 'President'         => '',
- *						'Vice President'    => '',
- *						'Coordinator'       => '',
- *						'Treasurer'         => ''
- *						);
+ *    $available = array( array("room"       => "UA1350",
+ *                            	"starttime"  => "10:10:00",
+ *                             	"endtime"    => "11:00:00"
+ *                             )
+ *                       );
  */
 
 ?>
@@ -84,78 +91,39 @@
 				      		<input type="text" placeholder="4" disabled>
 				      	</div>
 		      		</div>
-
-
-
-
-          <h3>Rooms Found </h3>
+          <h3>Rooms Found</h3>
             <table class="table table-striped">
               <thead>
                 <tr>
                   <th width=50px>Select</th>	
                   <th width=50px>Room</th>
-                  <th width=50px>Time</th>
+                  <th width=50px>Start Time</th>
+                  <th width=50px>End Time</th>
                   <th width=100px>Estimated <br>Number of People</th>
                   <th width=100px>Average <br>Number of People</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-	                  <td>
-						<input type="radio" name="group1"> 
-	                  </td>
-	                  <td>UA1120</td>
-	                  <td>
-				      		14:10
-	                  </td>
-	                  <td>
-				      		10
-	                  </td>
-	                  <td>30</td>
-                </tr>
-                <tr>
-	                  <td>
-						<input type="radio" name="group1"> 
-	                  </td>
-	                  <td>UA2220</td>
-	                  <td>
-				      		14:10
-	                  </td>
-	                  <td>
-				      		20
-	                  </td>
-	                  <td>30</td>
-                </tr>
-                <tr>
-	                  <td>
-						<input type="radio" name="group1" value="choco"> 
-	                  </td>
-	                  <td>J102</td>
-	                  <td>
-				      		15:10
-	                  </td>
-	                  <td>
-				      		30
-	                  </td>
-	                  <td>30</td>
-                </tr>      
-                <tr>
-	                  <td>
-						<input type="radio" name="group1" value="choco"> 
-	                  </td>
-	                  <td>UA3120</td>
-	                  <td>
-				      		15:10
-	                  </td>
-	                  <td>
-				      		10
-	                  </td>
-	                  <td>30</td>
-                </tr>
+                <!-- Display the rooms found -->
+                <?php 
+	                foreach ($available as $room)
+	                {
+	                	echo '<tr>';
+	                		echo '<td>';
+	                			echo '<input type="radio" name="group1">';
+	                		echo '</td>';
+	                		echo '<td>' . $room['room'] .'</td>';
+	                		echo '<td>' . $room['starttime'] . '</td>';
+	                		echo '<td>' . $room['endtime'] . '</td>';
+	                		echo '<td>10</td>';
+	                		echo '<td>30</td>';
+	                	echo '</tr>';
+	                }
+                ?>
               </tbody>
             </table>
 		      		<div class="form-actions">
-		            	<button class="btn btn-primary" type="submit" name="book_room" value="Submit Vote">Submit/Book</button>
+		            	<button class="btn btn-primary" type="submit" name="book_room" value="Book Room">Book Room</button>
 		          </div>
 				</fieldset>
 			</form>
