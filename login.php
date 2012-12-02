@@ -47,6 +47,21 @@ if (mysqli_connect_errno()) {
 	exit();
 }
 
+/* 0. Check if the user is logged in and has clicked the Sign Out button */
+if (isset($_POST['signout']))
+{
+	session_unset();
+
+	/* Overwrite the login cookie as NULL if it exists */
+	if (isset($_COOKIE['login']))
+	{
+		setcookie('login', NULL, time()+1);
+	}
+
+	/* Refresh the page */
+	header('Location: '.$_SERVER['REQUEST_URI']);
+}
+
 /* 1. User is not logged in and has submitted their login information */
 if (verify_login_cookie($mysqli_conn, $SESSION_KEY) === false
 	&& (!isset($_SESSION['login'])
