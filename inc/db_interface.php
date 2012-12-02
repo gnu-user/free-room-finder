@@ -102,7 +102,7 @@ function get_all_campus($mysqli_free_room)
     return $campuses;
 }
 
-/**
+/** TODO fix to work
  * Get the current term and the next term (in year, semester)
  *
  * @param mysqli $mysqli_free_room The mysqli connection object for the ucsc elections DB
@@ -178,7 +178,7 @@ function get_year($mysqli_free_room)
     return $terms;
 }
 
-/**
+/** TODO fix
  * Get the rooms that are open given the duration, day, term and campus
  *
  * @param mysqli $mysqli_free_room The mysqli connection object for the ucsc elections DB
@@ -249,6 +249,9 @@ function get_room_open_dur($mysqli_free_room, $duration, $day, $term, $campus)
     return $available;
 }
 
+/**
+ * TODO document
+ */
 function get_room_open($mysqli_free_room, $start_time, $end_time, $day, $term, $campus)
 {
     $rooms = get_rooms_taken($mysqli_free_room, $day, $term, $campus);
@@ -353,7 +356,7 @@ function get_rooms_taken($mysqli_free_room, $day, $term, $campus)
 
         /* bind result variables */
         $stmt->bind_result($room, $start_t, $end_t, $start_d, $end_d);
-		$i = 0;
+		    $i = 0;
         while ($stmt->fetch())
         {
             //TODO verify that this works
@@ -438,7 +441,7 @@ function get_rooms($mysqli_free_room, $campus)
     return $rooms;
 }
 
-/**
+/** TODO test
  * Get all of the rooms the user has requested
  *
  * @param mysqli $mysqli_free_room The mysqli connection object for the ucsc elections DB
@@ -492,12 +495,20 @@ function get_users_rooms($mysqli_free_room, $username)
         $stmt->execute();
 
         /* bind result variables */
-        $stmt->bind_result($room);
-
+        $stmt->bind_result($room, $campus, $start_t, $end_t, $date, $num_people, $request_id, $total_num_people);
+        $i = 0;
         while ($stmt->fetch())
         {
             //TODO verify that this is valid
-            $rooms[] = $room;
+            $rooms[$i]["room"] = $room;
+            $rooms[$i]["campus"] = $campus;
+            $rooms[$i]["starttime"] = $start_t;
+            $rooms[$i]["endtime"] = $end_t;
+            $rooms[$i]["date"] = $date;
+            $rooms[$i]["num_people"] = $num_people;
+            $rooms[$i]["request_id"] = $request_id;
+            $rooms[$i]["total_people"] = $total_num_people;
+            $i++;
         }
 
         /* close statement */
@@ -520,11 +531,11 @@ function get_users_rooms($mysqli_free_room, $username)
     return $rooms;
 }
 
-/**
+/** TODO test
  * Get all of the rooms the user has requested
  *
  * @param mysqli $mysqli_free_room The mysqli connection object for the ucsc elections DB
- * @param $username the username of the user currently logged in.
+ * @param 
  * 
  * @return $rooms The room and total number of people expected for that room given the
  * room, start time, end time and the date.
@@ -564,12 +575,14 @@ function get_total_occupied($mysqli_free_room, $room, $start_time, $end_time, $d
         $stmt->execute();
 
         /* bind result variables */
-        $stmt->bind_result($room);
-
+        $stmt->bind_result($room, $total_num);
+        $i = 0;
         while ($stmt->fetch())
         {
             //TODO verify that this is valid
-            $rooms[] = $room;
+            $rooms[$i]["room"] = $room;
+            $rooms[$i]["total_people"] = $total_num;
+            $i++;
         }
 
         /* close statement */
@@ -586,7 +599,7 @@ function get_total_occupied($mysqli_free_room, $room, $start_time, $end_time, $d
     return $rooms;
 }
 
-/**
+/** TODO test
  * Get all of the rooms the user has requested
  *
  * @param mysqli $mysqli_free_room The mysqli connection object for the ucsc elections DB
@@ -614,12 +627,15 @@ function get_all_total_occupied($mysqli_free_room)
         $stmt->execute();
 
         /* bind result variables */
-        $stmt->bind_result($room);
+        $stmt->bind_result($room, $total_num);
 
+        $i = 0;
         while ($stmt->fetch())
         {
             //TODO verify that this is valid
-            $rooms[] = $room;
+            $rooms[$i]["room"] = $room;
+            $rooms[$i]["total_people"] = $total_num;
+            $i++;
         }
 
         /* close statement */
@@ -649,7 +665,7 @@ function get_all_total_occupied($mysqli_free_room)
 function get_total_registered($mysqli_free_room)
 {
     global $offering_table, $class_type_table, $semester_table, $room_table;
-    $rooms = array( array("registered"   => "",
+    $reg = array( array("registered"   => "",
                           "year"         => "",
                           "semester"     => ""));
     
@@ -664,23 +680,27 @@ function get_total_registered($mysqli_free_room)
                                                 ON o.semesterId = s.semesterId 
                                                 LEFT JOIN " . $room_table . " AS r 
                                                 ON o.roomId = r.roomId 
-                                                GROUP BY s.year,
-                                                s.semester 
                                                 WHERE 
                                                 ct.acr <> 'LAB' AND 
-                                                ct.acr <> 'TUT'" ))
+                                                ct.acr <> 'TUT'
+    											                      GROUP BY s.year,
+                                                s.semester " ))
     {
 
         /* execute query */
         $stmt->execute();
 
         /* bind result variables */
-        $stmt->bind_result($room);
+        $stmt->bind_result($register, $year, $semester);
 
+        $i = 0;
         while ($stmt->fetch())
         {
             //TODO verify that this is valid
-            $rooms[] = $room;
+            $reg[$i]["registered"] = $register;
+            $reg[$i]["year"] = $year;
+            $reg[$i]["semester"] = $semester;
+            $i++;
         }
 
         /* close statement */
@@ -695,7 +715,7 @@ function get_total_registered($mysqli_free_room)
     *     semester}
     * }
     */
-    return $rooms;
+    return $reg;
 }
 
 /**
@@ -710,7 +730,7 @@ function get_total_registered($mysqli_free_room)
  */
 function get_total_reg_fac($mysqli_free_room)
 {
-    global $offering_table, $faculty_table, $class_type_table, $semester_table, $room_table;
+    global $offering_table, $course_table, $faculty_table, $class_type_table, $semester_table, $room_table;
     $reg = array( array("registered"   => "",
                         "faculty"      => "",
                         "year"         => "",
@@ -718,12 +738,14 @@ function get_total_reg_fac($mysqli_free_room)
     
     /* Get the total registered per faculty per semester per year from the database */
     if ($stmt = $mysqli_free_room->prepare("SELECT SUM(o.registered) AS total_registered, 
-                                                f.faculty, 
+                                                f.name, 
                                                 s.year, 
                                                 s.semester 
                                                 FROM " . $offering_table . " AS o 
+                                                INNER JOIN " . $course_table . " AS c 
+                                                ON o.courseId = c.courseId 
                                                 INNER JOIN " . $faculty_table . " AS f 
-                                                ON o.facultyId = f.facultyId 
+                                                ON c.facultyId = f.facultyId 
                                                 INNER JOIN " . $class_type_table . " AS ct 
                                                 ON o.typeId = ct.typeId 
                                                 INNER JOIN " . $semester_table . " AS s 
@@ -734,23 +756,28 @@ function get_total_reg_fac($mysqli_free_room)
                                                 ct.acr <> 'LAB' AND 
                                                 ct.acr <> 'TUT' 
                                                 GROUP BY 
-                                                f.faculty, 
+                                                f.name, 
                                                 s.year, 
                                                 s.semester 
                                                 ORDER BY 
-                                                total_students DESC" ))
+                                                total_registered DESC" ))
     {
 
         /* execute query */
         $stmt->execute();
 
         /* bind result variables */
-        $stmt->bind_result($register);
+        $stmt->bind_result($register, $faculty, $year, $semester);
 
+        $i = 0;
         while ($stmt->fetch())
         {
             //TODO verify that this is valid
-            $reg[] = $register;
+            $reg[$i]["registered"] = $register;
+            $reg[$i]["faculty"] = $faculty;
+            $reg[$i]["year"] = $year;
+            $reg[$i]["semester"] = $semester;
+            $i++;
         }
 
         /* close statement */
@@ -788,7 +815,7 @@ function get_busy_prof($mysqli_free_room)
     if ($stmt = $mysqli_free_room->prepare("SELECT p.name, 
                                                 SUM(o.registered) AS total_students 
                                                 FROM " . $offering_table . " AS o 
-                                                INNER JOIN " . $professor_table . " AS o 
+                                                INNER JOIN " . $professor_table . " AS p
                                                 ON o.profId = p.profId 
                                                 GROUP BY 
                                                 p.name 
@@ -800,12 +827,15 @@ function get_busy_prof($mysqli_free_room)
         $stmt->execute();
 
         /* bind result variables */
-        $stmt->bind_result($professor);
+        $stmt->bind_result($professor, $student_num);
 
+		    $i = 0;
         while ($stmt->fetch())
         {
             //TODO verify that this is valid
-            $prof[] = $professor;
+            $prof[$i]["professor"] = $professor;
+            $prof[$i]["student_num"] = $student_num;
+            $i++;
         }
 
         /* close statement */
@@ -823,7 +853,7 @@ function get_busy_prof($mysqli_free_room)
     return $prof;
 }
 
-/**
+/** TODO test
  * Remove the given room requests
  *
  * @param mysqli $mysqli_free_room The mysqli connection object for the ucsc elections DB
@@ -873,7 +903,7 @@ function remove_requested($mysqli_free_room, $username, $ids)
     return True;
 }
 
-/**
+/** TODO test
  * Update the total number of people in a room
  *
  * @param mysqli $mysqli_free_room The mysqli connection object for the ucsc elections DB
@@ -919,7 +949,7 @@ function update_occupied($mysqli_free_room, $username, $occupy_id, $num_people, 
 
 }
 
-/**
+/** TODO test
  * Add a room request to the database
  *
  * @param mysqli $mysqli_free_room The mysqli connection object for the ucsc elections DB
@@ -979,7 +1009,7 @@ function add_request_occupied($mysqli_free_room, $username, $room, $start_time, 
     return False;
 }
 
-/**
+/** TODO test
  * Get the user's id given their username
  *
  * @param mysqli $mysqli_free_room The mysqli connection object for the ucsc elections DB
@@ -1014,7 +1044,7 @@ function get_user_id($mysqli_free_room, $username)
     return $user_id;
 }
 
-/**
+/** TODO test
  * Get the room's id given the room name
  *
  * @param mysqli $mysqli_free_room The mysqli connection object for the ucsc elections DB
@@ -1049,6 +1079,10 @@ function get_room_id($mysqli_free_room, $room)
     return $room_id;
 }
 
+/**
+ * TODO document
+ * TODO test
+ */
 function get_time_id($mysqli_free_room, $time)
 {
     global $time_table;
@@ -1076,7 +1110,10 @@ function get_time_id($mysqli_free_room, $time)
     return $time_id;
 }
 
-
+/**
+ * TODO document
+ * TODO test
+ */
 function get_occupied($mysqli_free_room, $room, $start_time, $end_time, $date)
 {
     global $time_table, $room_table;
@@ -1104,6 +1141,7 @@ function get_occupied($mysqli_free_room, $room, $start_time, $end_time, $date)
         /* execute query */
         $stmt->execute();
 
+        //TODO FIX
         /* bind result variables */
         $stmt->bind_result($occupy);
 
@@ -1117,6 +1155,10 @@ function get_occupied($mysqli_free_room, $room, $start_time, $end_time, $date)
     return $occupied;
 }
 
+/**
+ * TODO document
+ * TODO test
+ */
 function add_occupied($mysqli_free_room, $room_id, $start_id, $end_id, $date, $num_people)
 {
     global $occupy_table;
@@ -1144,6 +1186,10 @@ function add_occupied($mysqli_free_room, $room_id, $start_id, $end_id, $date, $n
     return $check;
 }
 
+/**
+ * TODO document
+ * TODO test
+ */
 function add_room_request($mysqli_free_room, $occupy_id, $user_id, $num_people)
 {
     global $occupy_table;
@@ -1170,6 +1216,10 @@ function add_room_request($mysqli_free_room, $occupy_id, $user_id, $num_people)
     return $check;
 }
 
+/**
+ * TODO document
+ * TODO test
+ */
 function get_room_request_id($mysqli_free_room, $occupy_id, $user_id, $num_people)
 {
     global $room_request_table;

@@ -210,7 +210,7 @@ FROM
     campus AS c ON
     r.campusId = c.campusId
 WHERE
-    c.name LIKE {given_campus}
+    c.name LIKE "North Oshawa Campus"
 ORDER BY 
     r.name, c.name;
 
@@ -383,15 +383,17 @@ not much different from 5 since i cant sum reg/cap if i was to do just reg, then
 */
 SELECT
     SUM(o.registered) AS total_registered,
-    f.faculty,
+    f.name,
     s.year,
     s.semester
 FROM 
     offerings AS o
+    INNER JOIN courses AS c
+    ON o.courseId = c.courseId
     INNER JOIN faculties AS f
-    ON o.facultyId = f.facultyId
+    ON c.facultyId = f.facultyId
     INNER JOIN class_type AS ct
-    ON o.classId = ct.classId
+    ON o.typeId = ct.typeId
     INNER JOIN semesters AS s
     ON o.semesterId = s.semesterId
     LEFT JOIN rooms AS r
@@ -400,11 +402,11 @@ WHERE
     ct.acr <> 'LAB' AND
     ct.acr <> 'TUT'
 GROUP BY   
-    f.faculty,
+    f.name,
     s.year,
     s.semester
 ORDER BY
-    total_students DESC
+    total_registered DESC
 
 /*
 8. Prof with greatest # of students limited to 5
