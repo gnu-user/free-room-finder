@@ -83,6 +83,7 @@ function get_day_of_week($date)
 	return $day_of_week;
 }
 
+
 /**
  * A function which returns the end time given a starting time ane the duration
  * 
@@ -101,4 +102,42 @@ function get_end_time($start_time, $duration)
 	
 	return $end_time->format('H:i:s');
 }
+
+
+/**
+ * A function which determines the semester and year given the date
+ * 
+ * @param $date The date you want to determine the semester info for, formatted as 'Y-m-d'
+ * @return dictionary containing the semester and year, such as
+ * $semester = array ("semester" => "Fall", "year" => "2012")
+ * 
+ */
+function get_semester($date)
+{
+	$semester = array();
+	
+	/* Set the timezone */
+	date_default_timezone_set('America/Toronto');
+	
+	$cur_date = DateTime::createFromFormat('Y-m-d', $date);
+	$cur_month = $cur_date->format('n');
+	
+	$semester['year'] = $cur_date->format('Y');
+	
+	if ($cur_month >= 1 && $cur_month < 5)
+	{
+		$semester['semester'] = 'Winter';
+	}
+	elseif ($cur_month >= 5 && $cur_month < 9)
+	{
+		$semester['semester'] = 'Summer';
+	}
+	else
+	{
+		$semester['semester'] = 'Fall';
+	}
+	
+	return $semester;
+}
+
 ?>
