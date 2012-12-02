@@ -69,6 +69,72 @@ $semester = "semesters";
 
 
 /**
+ * A function which returns the access account number and full name of a user who
+ * exists in the users table.
+ *
+ * @param mysqli $mysqli_conn The mysqli connection object for the database
+ * @param string $username The username of the user
+ */
+function get_user($mysqli_conn, $username)
+{
+	global $user_table;
+	
+	$user = array(	'access_account' => 0,
+					'first_name' => '',
+					'last_name' => '');
+
+	$user_match = '';
+	
+	/* Get the users information from the database if it exists */
+	if ($stmt = $mysqli_conn->prepare(	"SELECT username
+                                        	FROM ".$user_table.
+										" WHERE username LIKE ?"))
+	{
+		/* bind parameters for markers */
+		$stmt->bind_param('s', $username);
+
+		/* execute query */
+		$stmt->execute();
+
+		/* bind result variables */
+		$stmt->bind_result($user_match);
+
+		/* fetch value */
+		$stmt->fetch();
+
+		/* close statement */
+		$stmt->close();
+	}
+
+	/* If username found, get primary key (access account), and name of the user */
+	if (strcasecmp($username, $user_match) === 0)
+	{
+		if ($stmt = $mysqli_conn->prepare(	"SELECT userId, first_name, last_name
+                                            	FROM ".$user_table.
+											" WHERE username LIKE ?"))
+		{
+			/* bind parameters for markers */
+			$stmt->bind_param('s', $username);
+
+			/* execute query */
+			$stmt->execute();
+
+			/* bind result variables */
+			$stmt->bind_result($user['access_account'], $user['first_name'], $user['last_name']);
+
+			/* fetch value */
+			$stmt->fetch();
+
+			/* close statement */
+			$stmt->close();
+		}
+	}
+
+	return $user;
+}
+
+
+/**
  * Get all of the campuses where rooms are available.
  *
  * @param mysqli $mysqli_conn The mysqli connection object for the ucsc elections DB

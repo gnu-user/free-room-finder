@@ -244,11 +244,11 @@ function set_session_data($mysqli_conn, $username, $SESSION_KEY)
     $_SESSION['login'] = generate_session($username, $SESSION_KEY);
     
     /* Set the members session information */
-    //$member = get_member($mysqli_free_room, $username);
+    $user = get_user($mysqli_conn, $username);
     $_SESSION['username'] = $username;
-    //$_SESSION['access_account'] = $member['access_account'];
-    //$_SESSION['first_name'] = $member['first_name'];
-    //$_SESSION['last_name'] = $member['last_name'];
+    $_SESSION['access_account'] = $user['access_account'];
+    $_SESSION['first_name'] = $user['first_name'];
+    $_SESSION['last_name'] = $user['last_name'];
 }
 
 /**
