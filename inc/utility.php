@@ -46,6 +46,9 @@
  */
 function get_day_of_week($date)
 {
+	/* Set the timezone */
+	date_default_timezone_set('America/Toronto');
+	
 	$cur_date = DateTime::createFromFormat('Y-m-d', $date);
 	
 	$day_of_week = '';
