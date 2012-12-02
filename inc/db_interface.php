@@ -194,13 +194,13 @@ function get_room_open_dur($mysqli_free_room, $duration, $day, $term, $campus)
 {
     global $room_table;
     $rooms = get_rooms_taken($mysqli_free_room, $day, $term, $campus);
-    $first_class = array("room"       => $room[0]["room"],
+    $first_class = array("room"       => $rooms[0]["room"],
                          "starttime"  => "",
                          "endtime"    => "08:00:00",
                          "startdate"  => "",
                          "enddate"    => "");
-    $last_class = array("room"       => $room[0]["room"],
-                         "starttime"  => "22:00:00",
+    $last_class = array("room"       => $rooms[0]["room"],
+                         "starttime"  => "23:00:00",
                          "endtime"    => "",
                          "startdate"  => "",
                          "enddate"    => "");
@@ -209,21 +209,37 @@ function get_room_open_dur($mysqli_free_room, $duration, $day, $term, $campus)
                               "endtime"    => ""));
 
     array_unshift($rooms, $first_class);
-    array_push($rooms, $last_class);
+    //array_push($rooms, $last_class);
 
     $free = TRUE;
-    $num_rooms = sizeof($rooms);
+    $prev_room = $rooms[0]["room"];
+    
+    //$num_rooms = sizeof($rooms);
 
-    for($i = 0; $i < $num_rooms; $i++)
+    //for($i = 0; $i < $num_rooms; $i++)
+   	foreach($rooms as $i => $room)
     {
-        if(($rooms[i+1]["start_time"] - $rooms[i]["endtime"]) > $duration
-          && $rooms[i]["room"] === $room[i]["room"])
-        {
-            /* Size is large enough for the requested gap */
-            $available[i] = array("room"       => $rooms[i]["room"],
-                                  "starttime"  => $rooms[i]["endtime"],
-                                  "endtime"    => $rooms[i+1]["start_time"]);
-        }
+    	if($room["room"] != $prev_room)
+      {
+          array_splice($room, $i, 0, $first_class);
+
+      }
+      elseif($rooms[$i+1]["room"] != $prev_room))
+      {
+          array_splice($room, $i, 0, $last_class);
+      }
+      else
+      {
+
+          if(($rooms[$i+1]["start_time"] - $rooms[$i]["endtime"]) > $duration
+            && $rooms[$i]["room"] === $room[$i]["room"])
+            {
+                /* Size is large enough for the requested gap */
+                $available[$i] = array("room"       => $rooms[$i]["room"],
+                                      "starttime"  => $rooms[$i]["endtime"],
+                                      "endtime"    => $rooms[$i+1]["start_time"]);
+            }
+      }
     }
     return $available;
 }
@@ -238,22 +254,22 @@ function get_room_open($mysqli_free_room, $start_time, $end_time, $day, $term, $
     $index = 0;
     foreach($rooms as $room)
     {
-        if($room["room"] !== $prev_room)
+        if($room["room"] != $prev_room)
         {
         	if($free)
         	{
-        		$possible_rooms[$index]["room"] = $room["room"];
+        		$possible_rooms[$index]["room"] = $prev_room;
         		$index++;
-        		$free = FALSE;       		
         	}
-
+        	$free = TRUE;
+        	$prev_room = $room["room"];
         }
-        if(!($start_time < $room["endtime"] && $end_time < $room["endtime"]
-          || $start_time <= $room["starttime"] && $end_time <= $room["starttime"]))
+        if((!($start_time < $room["endtime"] && $end_time < $room["endtime"]
+          || $start_time <= $room["starttime"] && $end_time <= $room["starttime"]))&& $free == TRUE)
         {
           /* Room is not free */
           $free = FALSE;
-          break;
+          
         }
     }
     return $possible_rooms;
@@ -301,7 +317,7 @@ function get_rooms_taken($mysqli_free_room, $day, $term, $campus)
                                                 INNER JOIN " . $date_table . " AS sd 
                                                 ON o.start_date = sd.dateId
                                                 INNER JOIN " . $date_table . " AS ed
-                                                ON ON o.end_date = ed.dateId
+                                                ON o.end_date = ed.dateId
                                                 INNER JOIN " . $time_table . " AS st
                                                 ON o.start_time = st.timeId
                                                 INNER JOIN " . $time_table . " AS et
@@ -329,12 +345,17 @@ function get_rooms_taken($mysqli_free_room, $day, $term, $campus)
         $stmt->execute();
 
         /* bind result variables */
-        $stmt->bind_result($room);
-
+        $stmt->bind_result($room, $start_t, $end_t, $start_d, $end_d);
+		$i = 0;
         while ($stmt->fetch())
         {
             //TODO verify that this works
-            $rooms[] = $room;
+            $rooms[$i]["room"] = $room;
+            $rooms[$i]["starttime"] = $start_t;
+            $rooms[$i]["endtime"] = $end_t;
+            $rooms[$i]["startdate"] = $start_d;
+            $rooms[$i]["enddate"] = $end_d;
+            $i++;
         }
 
         /* close statement */
