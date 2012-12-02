@@ -82,4 +82,23 @@ function get_day_of_week($date)
 	
 	return $day_of_week;
 }
+
+/**
+ * A function which returns the end time given a starting time ane the duration
+ * 
+ * @param $start_time The start time formatted as H:i:s
+ * @param $duration The duration of time
+ * 
+ * @return The end time formatted as H:i:s
+ */
+function get_end_time($start_time, $duration)
+{
+	/* Set the timezone */
+	date_default_timezone_set('America/Toronto');
+	
+	$end_time = DateTime::createFromFormat('H:i:s', $start_time);
+	$end_time->add(new DateInterval("PT". $duration ."H"));
+	
+	return $end_time->format('H:i:s');
+}
 ?>
