@@ -918,7 +918,7 @@ function get_busy_prof($mysqli_conn)
     return $prof;
 }
 
-/** TODO test
+/**
  * Remove the given room requests
  *
  * @param mysqli $mysqli_conn The mysqli connection object for the ucsc elections DB
@@ -932,10 +932,12 @@ function remove_requested($mysqli_conn, $username, $ids)
 {
     global $room_request_table;
     $num = 0;
-
+    $check = True;
+    $num_people = 0;
     foreach($ids as $index => $id)
     {
-        
+        $num_people = get_room_request_num($mysqli_conn, $id["request_id"]);
+
         if ($stmt = $mysqli_conn->prepare("DELETE FROM " . $room_request_table .
                                                " WHERE requestId = ?" ))
         {
@@ -944,23 +946,17 @@ function remove_requested($mysqli_conn, $username, $ids)
             $stmt->bind_param('d', $id["request_id"]);
 
             /* execute query */
-            $stmt->execute();
+            $check = $stmt->execute();
 
-            /* bind result variables */
-            $stmt->bind_result($check);
-
-            $stmt->fetch();
-
-            if($check === 0)
+            if(!$check)
             {
                 return False;
             }
-
             /* close statement */
             $stmt->close();
         }
 
-        if(update_occupied($mysqli_conn, $username, $ids, False))
+        if(!update_occupied($mysqli_conn, $username, $id["occupy_id"], $num_people, False))
         {
             return False;
         }
@@ -968,7 +964,7 @@ function remove_requested($mysqli_conn, $username, $ids)
     return True;
 }
 
-/** TODO test
+/**
  * Update the total number of people in a room
  *
  * @param mysqli $mysqli_conn The mysqli connection object for the ucsc elections DB
@@ -986,7 +982,7 @@ function update_occupied($mysqli_conn, $username, $occupy_id, $num_people, $addi
     {
         $num_people *= -1;
     }
-
+    $check = False;
     if ($stmt = $mysqli_conn->prepare("UPDATE " . $occupy_table . 
                                            " SET num_people = num_people + ? WHERE occupyId = ?" ))
     {
@@ -995,22 +991,12 @@ function update_occupied($mysqli_conn, $username, $occupy_id, $num_people, $addi
         $stmt->bind_param('dd', $num_people, $occupy_id);
 
         /* execute query */
-        $stmt->execute();
-
-        /* bind result variables */
-        $stmt->bind_result($check);
-
-        $stmt->fetch();
-
-        if($check === 0)
-        {
-            return False;
-        }
+        $check = $stmt->execute();
 
         /* close statement */
         $stmt->close();
     }
-    return True;
+    return $check;
 
 }
 
@@ -1065,7 +1051,7 @@ function add_request_occupied($mysqli_conn, $username, $room, $start_time, $end_
     }
 
     /* Add a check if the room request has not already been made */
-    if(get_room_request_id($mysqli_conn, $occupy_id["occupy_id"], $user_id, $num_people) === 0)
+    if(get_room_request_id($mysqli_conn, $occupy_id["occupy_id"], $user_id, $num_people))
     {
         add_room_request($mysqli_conn, $occupy_id["occupy_id"], $user_id, $num_people);
         return True;
@@ -1074,7 +1060,7 @@ function add_request_occupied($mysqli_conn, $username, $room, $start_time, $end_
     return False;
 }
 
-/** TODO test
+/**
  * Get the user's id given their username
  *
  * @param mysqli $mysqli_conn The mysqli connection object for the ucsc elections DB
@@ -1302,4 +1288,38 @@ function get_room_request_id($mysqli_conn, $occupy_id, $user_id, $num_people)
     }
     return $request_id;
 }
+
+/**
+ * TODO document
+ */
+function get_room_request_num($mysqli_conn, $request_id)
+{
+    global $room_request_table;
+    $num_people = 0;
+    /* Get the occupied # people or Id, current use is to determine if exists */
+    if ($stmt = $mysqli_conn->prepare("SELECT num_people FROM "
+                                               . $room_request_table .
+                                               " WHERE requestId = ?" ))
+    {
+
+        /* bind parameters for markers */
+        $stmt->bind_param('d', $request_id);
+
+        /* execute query */
+        $stmt->execute();
+
+        /* bind result variables */
+        $stmt->bind_result($value);
+
+        $stmt->fetch();
+
+        $num_people = $value;
+
+        /* close statement */
+        $stmt->close();
+    }
+    return $num_people;
+}
+
 ?>
+
