@@ -1,37 +1,88 @@
+<?php
+/*
+ *  Free Room Finder Website
+ *
+ *
+ *  Authors -- Crow's Foot Group
+ *  -------------------------------------------------------
+ *
+ *  Jonathan Gillett
+ *  Joseph Heron
+ *  Amit Jain
+ *  Wesley Unwin
+ *  Anthony Jihn
+ * 
+ *
+ *  License
+ *  -------------------------------------------------------
+ *
+ *  Copyright (C) 2012 Crow's Foot Group
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
-<html>
-	<head>
-		<title> Welcome to the free-room-finder! </title>
-	</head>
-	
-	<body>
-		<div class="container">
-			<form action="RequestARoom.php" method="POST" class="form-signin">            <!-- TO DO: replace RequestARoom.php with actual name of page -->
-				<h1> Please Log in... </h1> <br/>
-				UserName: <input id="login_username" class="input-large login-form" required type="text" maxlength="31" pattern="^[A-Za-z][A-Za-z0-9]*(?:_[A-Za-z0-9]+)*$" name="login_username" placeholder="Username"             /> <br/>
-				Password: <input id="login_password" class="input-large login-form" required type="password" maxlength="31" pattern="^[a-zA-Z0-9\!\$\%\^\&amp;\*\(\)\_\?]{6,31}$" name="login_password" placeholder="Password"      /> <br/>
-				<input id="login_remember" class="login-checkbox" type="checkbox" name="login_remember" checked="checked" value="1"/> Remember me                                                                                      <br/>
-				<input id="LoginButton" class="btn btn-primary btn-large" type="submit" value="Login" /> <br/>
-			</form>	
-			
-			<br/>
-			<!-- The register checkbox -->
-			<form action="Register.php" method="POST" class="form-signin">				<!-- TO DO: replace Register.php with actual name of page -->
-				Not a member? ...  <br/>
-				<input id="Register" class="btn btn-primary btn-large" type="submit" value="Register!" />  <br/>
-			</form>
-		</div>
-	</body>
-	
-</html>
+require_once "inc/db_interface.php";
+require_once "inc/verify.php";
+require_once "inc/free_room_auth.php";
+require_once "inc/validate.php";
 
 
+/* 1. User is not logged in, display one of the templates of logging in */
+if (verify_login_cookie($mysqli_accounts, $SESSION_KEY) === false
+	&& (!isset($_SESSION['login'])
+	|| verify_login_session($mysqli_accounts, $_SESSION['login'], $SESSION_KEY) === false)
+	&& !isset($_POST['login_username'])
+	&& !isset($_POST['login_password']))
+{
+	include 'templates/header.php';
+	include 'templates/login.php';
+}
+/* 2. User is not logged in and has submitted their login information */
+elseif (verify_login_cookie($mysqli_accounts, $SESSION_KEY) === false
+		&& (!isset($_SESSION['login'])
+		|| verify_login_session($mysqli_accounts, $_SESSION['login'], $SESSION_KEY) === false)
+		&& isset($_POST['login_username'])
+		&& isset($_POST['login_password']))
+{
+	/* a) If the login information is valid and they entered the correct username/password  */
+	if (validate_username($_POST['login_username']) && validate_password($_POST['login_password'])
+		&& verify_login($mysqli_accounts, $_POST['login_username'] , $_POST['login_password'], $AES_KEY))
+	{
+		set_session_data($mysqli_accounts, $_POST['login_username'], $SESSION_KEY);
+		
+		if ($_POST['login_remember'] == 1)
+		{
+			set_login_cookie();
+		}
+		
+		/* Redirect to the room_request page */
+		header('Location: room_request.php');
+	}
+	/* b) The login information is invalid dislpay the invalid login page */
+	else
+	{
+		include 'templates/header.php';
+		include 'templates/invalid-login.php';
+	}
+}
+else
+{
+	/* Redirect to room_request page */
+	header('Location: room_request.php');
+}
 
-
-
-	
-
-
-
-
-
+/* Include the footer */
+include 'templates/footer.php';
+exit();
+?>

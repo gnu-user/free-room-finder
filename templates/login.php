@@ -31,28 +31,57 @@
  *  You should have received a copy of the GNU Affero General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+ ?>
 
 
-/*
- * The default template for login page
- */
-?>
-<div class="container">
-	<form action="RequestARoom.php" method="POST" class="form-signin">            <!-- TO DO: replace RequestARoom.php with actual name of page -->
-		<h1> Please Log in... </h1> <br/>
-		UserName: <input id="login_username" class="input-large login-form" required type="text" maxlength="31" pattern="^[A-Za-z][A-Za-z0-9]*(?:_[A-Za-z0-9]+)*$" name="login_username" placeholder="Username"             /> <br/>
-		Password: <input id="login_password" class="input-large login-form" required type="password" maxlength="31" pattern="^[a-zA-Z0-9\!\$\%\^\&amp;\*\(\)\_\?]{6,31}$" name="login_password" placeholder="Password"      /> <br/>
-		<input id="login_remember" class="login-checkbox" type="checkbox" name="login_remember" checked="checked" value="1"/> Remember me                                                                                      <br/>
-		<input id="LoginButton" class="btn btn-primary btn-large" type="submit" value="Login" /> <br/>
-	</form>	
-	
+<div>
 	<br/>
-	<!-- The register checkbox -->
-	<form action="Register.php" method="POST" class="form-signin">				<!-- TO DO: replace Register.php with actual name of page -->
-		Not a member? ...  <br/>
-		<input id="Register" class="btn btn-primary btn-large" type="submit" value="Register!" />  <br/>
+	<h1> Welcome to the Free Room Finder! </h1>
+	<br/>
+	<br/>
+	
+	<form class="form-horizontal">
+		<h2> Please sign in... </h2> <br />
+		
+		<!-- Username label and textbox -->
+		<div class="control-group">
+			<label class="control-label">User name:</label>				
+			<div class="controls">
+				<input type="text" id="login_username" name="login_username" maxlength="31" pattern="^[A-Za-z][A-Za-z0-9]*(?:_[A-Za-z0-9]+)*$" placeholder="Username">      		
+			</div>
+		</div>
+		
+		<!-- Password label and textbox -->
+		<div class="control-group">
+			<label class="control-label" for="inputPassword">Password</label>
+			<div class="controls">
+				<input type="password" id="login_password" name="login_password" maxlength="31" pattern="^[a-zA-Z0-9\!\$\%\^\&amp;\*\(\)\_\?]{6,31}$" placeholder="Password">
+			</div>
+		</div>
+		
+		<!-- Remember me label and checkbox -->
+		<div class="control-group">
+			<div class="controls">
+				<label class="checkbox">
+					<input type="checkbox" id="login_remember" name="login_remember" checked="checked" value="1" > Remember me
+				</label>
+				<button type="submit" id="LoginButton" name="LoginButton" class="btn">Sign in</button>
+			</div>
+		</div>
+		
+		<br />
+		<br />
+		
+		<!-- 'Not a member...' and register button' -->
+		<div class="control-group">
+			<div class="controls">
+				<h3>Not a Member? ... </h3> <button type="submit" id="RegisterButton" name="RegisterButton" class="btn btn-large">Register!</button>
+			</div>
+		</div>	
+		
 	</form>
 </div>
+
 
 
 

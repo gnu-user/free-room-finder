@@ -1,6 +1,38 @@
 <?php
+/*
+ *  Free Room Finder Website
+ *
+ *
+ *  Authors -- Crow's Foot Group
+ *  -------------------------------------------------------
+ *
+ *  Jonathan Gillett
+ *  Joseph Heron
+ *  Amit Jain
+ *  Wesley Unwin
+ *  Anthony Jihn
+ *
+ *
+ *  License
+ *  -------------------------------------------------------
+ *
+ *  Copyright (C) 2012 Crow's Foot Group
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
-/**
+/*
  * Contains a collection of the functions that directly interact with the database
  * to provide a convenient database abstraction layer, in the future support could
  * be added to support other databases. At the moment the implementations are
@@ -12,7 +44,7 @@
  */
 
 
-/**
+/*
  * Thought these should be defined. They can be moved if needed they will however
  * be used throughout this file.
  */
@@ -21,7 +53,7 @@ $time_table = "times";
 $date_table = "dates";
 $semester_table = "semesters";
 $class_type_table = "class_type";
-$campus_table = "campus"
+$campus_table = "campus";
 $user_table = "users";
 $room_table = "rooms";
 $occupy_table = "occupied";
@@ -35,7 +67,6 @@ $next = "next";
 $year = "year";
 $semester = "semesters";
 
-//require_once 'election.php';
 
 /**
  * Get all of the campuses where rooms are available.
@@ -46,10 +77,10 @@ $semester = "semesters";
  */
 function get_all_campus($mysqli_free_room)
 {
-
+    global $campus_table;
     $campuses = array();
     /* Get the campuses */
-    if ($stmt = $mysqli_elections->prepare("SELECT name
+    if ($stmt = $mysqli_free_room->prepare("SELECT name
                                                 FROM " . $campus_table ))
     {
         /* execute query */
@@ -80,6 +111,7 @@ function get_all_campus($mysqli_free_room)
  */
 function get_year($mysqli_free_room)
 {
+    global $semester_table, $current, $next, $year, $semester;
 
     /*
      * Need to calculate the current semester based on the date
@@ -89,8 +121,8 @@ function get_year($mysqli_free_room)
      * July - August == Summer
      */
     $semesters = array();
-    $term = array( $current => array($year => 0, $semester => 0), 
-                   $next    => array($year => 0, $semester => 0));
+    $term = array(	$current => array($year => 0, $semester => 0), 
+					$next    => array($year => 0, $semester => 0));
 
     /* The current election year */
     $year = date('Y');
@@ -104,9 +136,9 @@ function get_year($mysqli_free_room)
     */
 
     /* Get the candidate for the current position from the database */
-    if ($stmt = $mysqli_elections->prepare("SELECT year, semester
+    if ($stmt = $mysqli_free_room->prepare("SELECT year, semester
                                                 FROM " . $semester_table . 
-                                                "WHERE (year = ? AND 
+                                                " WHERE (year = ? AND 
                                                 semester LIKE ? ) OR
                                                 (year = ? AND 
                                                 semester LIKE ?
@@ -158,22 +190,23 @@ function get_year($mysqli_free_room)
  * @return $available the room, start, and end time that are available given the day,
  * term and campus.
  */
-function get_room_opens($mysqli_free_room, $duration, $day, $term, $campus)
+function get_room_open_dur($mysqli_free_room, $duration, $day, $term, $campus)
 {
+    global $room_table;
     $rooms = get_rooms_taken($mysqli_free_room, $day, $term, $campus);
-    $first_class = array("room"       => $room[0]["room"]
-                         "starttime"  => ""
-                         "endtime"    => "08:00:00"
-                         "startdate"  => ""
+    $first_class = array("room"       => $room[0]["room"],
+                         "starttime"  => "",
+                         "endtime"    => "08:00:00",
+                         "startdate"  => "",
                          "enddate"    => "");
-    $last_class = array("room"       => $room[0]["room"]
-                         "starttime"  => "22:00:00"
-                         "endtime"    => ""
-                         "startdate"  => ""
+    $last_class = array("room"       => $room[0]["room"],
+                         "starttime"  => "22:00:00",
+                         "endtime"    => "",
+                         "startdate"  => "",
                          "enddate"    => "");
-    $available = array( array("room"       => ""
-                              "starttime"  => ""
-                              "endtime"    => "");
+    $available = array( array("room"       => "",
+                              "starttime"  => "",
+                              "endtime"    => ""));
 
     array_unshift($rooms, $first_class);
     array_push($rooms, $last_class);
@@ -181,32 +214,40 @@ function get_room_opens($mysqli_free_room, $duration, $day, $term, $campus)
     $free = TRUE;
     $num_rooms = sizeof($rooms);
 
-    foreach($i = 0; $i < $num_rooms; $i++)
+    for($i = 0; $i < $num_rooms; $i++)
     {
         if(($rooms[i+1]["start_time"] - $rooms[i]["endtime"]) > $duration
           && $rooms[i]["room"] === $room[i]["room"])
         {
             /* Size is large enough for the requested gap */
-            $available[i] = array("room"       => $rooms[i]["room"]
-                                  "starttime"  => $rooms[i]["endtime"]
+            $available[i] = array("room"       => $rooms[i]["room"],
+                                  "starttime"  => $rooms[i]["endtime"],
                                   "endtime"    => $rooms[i+1]["start_time"]);
         }
     }
     return $available;
 }
 
-function get_room_opens($mysqli_free_room, $start_time, $end_time, $day, $term, $campus)
+function get_room_open($mysqli_free_room, $start_time, $end_time, $day, $term, $campus)
 {
     $rooms = get_rooms_taken($mysqli_free_room, $day, $term, $campus);
 
     $free = TRUE;
+    $prev_room = $rooms[0]["room"];
+    $possible_rooms = array( array("room" => ""));
+    $index = 0;
     foreach($rooms as $room)
     {
-        /*if($start_time >= $rooms["endtime"] && $end_time >= $rooms["endtime"]
-          || $start_time <= $rooms["starttime"] && $end_time <= $rooms["starttime"])
+        if($room["room"] !== $prev_room)
         {
+        	if($free)
+        	{
+        		$possible_rooms[$index]["room"] = $room["room"];
+        		$index++;
+        		$free = FALSE;       		
+        	}
 
-        }*/
+        }
         if(!($start_time < $room["endtime"] && $end_time < $room["endtime"]
           || $start_time <= $room["starttime"] && $end_time <= $room["starttime"]))
         {
@@ -215,7 +256,7 @@ function get_room_opens($mysqli_free_room, $start_time, $end_time, $day, $term, 
           break;
         }
     }
-    return $free;
+    return $possible_rooms;
 }
 
 /**
@@ -234,22 +275,22 @@ function get_room_opens($mysqli_free_room, $start_time, $end_time, $day, $term, 
  */
 function get_rooms_taken($mysqli_free_room, $day, $term, $campus)
 {
-
-/*
+    global $offering_table, $semester_table, $date_table, $time_table, $room_table, $campus_table;
+    /*
      * Need to make a function that calcs the current week offset based on the date
      * first week of the semester is week 1 and so on...
      */
     //temporarly set to 1 as default
     $week_alt = 1;
-    $rooms = array( array("room"       => ""
-                          "starttime"  => ""
-                          "endtime"    => ""
-                          "startdate"  => ""
+    $rooms = array( array("room"       => "",
+                          "starttime"  => "",
+                          "endtime"    => "",
+                          "startdate"  => "",
                           "enddate"    => ""));
 
 
     /* Get the rooms that are taken from the database */
-    if ($stmt = $mysqli_elections->prepare("SELECT r.name,
+    if ($stmt = $mysqli_free_room->prepare("SELECT r.name,
                                                 st.time AS start_time,
                                                 et.time AS end_time,
                                                 sd.date AS start_date,
@@ -282,7 +323,7 @@ function get_rooms_taken($mysqli_free_room, $day, $term, $campus)
                                                 r.name" ))
     {
         /* bind parameters for markers */
-        $stmt->bind_param('ssss', $day, $term[0], $campus, $term[1]);
+        $stmt->bind_param('ssssd', $day, $term[0], $campus, $term[1], $week_alt);
 
         /* execute query */
         $stmt->execute();
@@ -323,12 +364,12 @@ function get_rooms_taken($mysqli_free_room, $day, $term, $campus)
  */
 function get_rooms($mysqli_free_room, $campus)
 {
-
+    global $room_table, $campus_table;
     $week_alt = 1;
     $rooms = array();
     
     /* Retrieve all of the rooms on the given campus */
-    if ($stmt = $mysqli_elections->prepare("SELECT r.name,
+    if ($stmt = $mysqli_free_room->prepare("SELECT r.name,
                                                 FROM " . $room_table . " AS r 
                                                 ON o.roomId = r.roomId
                                                 INNER JOIN " . $campus_table . " AS c 
@@ -382,18 +423,18 @@ function get_rooms($mysqli_free_room, $campus)
  */
 function get_users_rooms($mysqli_free_room, $username)
 {
-
-    $rooms = array( array("room"         => ""
-                          "campus"       => ""
-                          "starttime"    => ""
-                          "endtime"      => ""
-                          "date"         => ""
-                          "num_people"   => ""
-                          "request_id"   => ""
+    global $time_table, $date_table, $campus_table, $user_table, $room_table, $room_request_table;
+    $rooms = array( array("room"         => "",
+                          "campus"       => "",
+                          "starttime"    => "",
+                          "endtime"      => "",
+                          "date"         => "",
+                          "num_people"   => "",
+                          "request_id"   => "",
                           "total_people" => ""));
     
     /* Get the candidate for the current position from the database */
-    if ($stmt = $mysqli_elections->prepare("SELECT r.name AS room_name,
+    if ($stmt = $mysqli_free_room->prepare("SELECT r.name AS room_name,
                                                 c.name AS campus, 
                                                 st.time AS start_time,
                                                 et.time AS end_time,
@@ -413,7 +454,7 @@ function get_users_rooms($mysqli_free_room, $username)
                                                 INNER JOIN " . $room_table . " AS r 
                                                 ON oc.roomId = r.roomId
                                                 INNER JOIN " . $campus_table . " AS c 
-                                                ON r.campusId = c.campusId
+                                                ON r.campusId = c.campusId 
                                                 WHERE 
                                                 u.username LIKE username
                                                 ORDER BY oc.date" ))
@@ -464,11 +505,12 @@ function get_users_rooms($mysqli_free_room, $username)
  */
 function get_total_occupied($mysqli_free_room, $room, $start_time, $end_time, $day)
 {
-    $rooms = = array( array("room"         => ""
+    global $occupy_table, $time_table, $room_table;
+    $rooms = array( array("room"         => "",
                             "total_people" => ""));
     
     /* Get the total occupied in a room given a start and end time and the day from the database */
-    if ($stmt = $mysqli_elections->prepare("SELECT r.name AS room_name,
+    if ($stmt = $mysqli_free_room->prepare("SELECT r.name AS room_name,
                                                 SUM(oc.num_people) AS total_num_people
                                                 FROM " . $occupy_table . " AS oc
                                                 INNER JOIN " . $time_table . " AS st
@@ -476,7 +518,7 @@ function get_total_occupied($mysqli_free_room, $room, $start_time, $end_time, $d
                                                 INNER JOIN " . $time_table . " AS et 
                                                 ON oc.end_time = et.timeId
                                                 INNER JOIN " . $room_table . " AS r 
-                                                ON oc.roomId = r.roomIdd
+                                                ON oc.roomId = r.roomIdd 
                                                 WHERE 
                                                 r.name LIKE ? AND
                                                 st.time = ? AND
@@ -526,13 +568,14 @@ function get_total_occupied($mysqli_free_room, $room, $start_time, $end_time, $d
  * 
  * @return $rooms The room and total number of people expected for that room for all rooms
  */
-function get_total_occupied($mysqli_free_room)
+function get_all_total_occupied($mysqli_free_room)
 {
-    $rooms = = array( array("room"         => ""
+    global $occupy_table, $room_table;
+    $rooms = array( array("room"         => "",
                             "total_people" => ""));
     
     /* Get the total occupied in a a room from the database */
-    if ($stmt = $mysqli_elections->prepare("SELECT r.name AS room_name,
+    if ($stmt = $mysqli_free_room->prepare("SELECT r.name AS room_name,
                                                 SUM(oc.num_people) AS total_num_people
                                                 FROM " . $occupy_table . " AS oc
                                                 INNER JOIN " . $room_table . " AS r 
@@ -581,12 +624,13 @@ function get_total_occupied($mysqli_free_room)
  */
 function get_total_registered($mysqli_free_room)
 {
-    $rooms = array( array("registered"   => ""
-                          "year"         => ""
+    global $offering_table, $class_type_table, $semester_table, $room_table;
+    $rooms = array( array("registered"   => "",
+                          "year"         => "",
                           "semester"     => ""));
     
     /* Get the total registered per semester per year from the database */
-    if ($stmt = $mysqli_elections->prepare("SELECT SUM(o.registered) AS total_registered,
+    if ($stmt = $mysqli_free_room->prepare("SELECT SUM(o.registered) AS total_registered,
                                                 s.year,
                                                 s.semester
                                                 FROM " . $offering_table . " AS o
@@ -598,7 +642,7 @@ function get_total_registered($mysqli_free_room)
                                                 ON o.roomId = r.roomId
                                                 GROUP BY
                                                 s.year,
-                                                s.semester
+                                                s.semester 
                                                 WHERE
                                                 ct.acr <> 'LAB' AND
                                                 ct.acr <> 'TUT'" ))
@@ -643,13 +687,14 @@ function get_total_registered($mysqli_free_room)
  */
 function get_total_reg_fac($mysqli_free_room)
 {
-    $reg = array( array("registered"   => ""
-                        "faculty"      => ""
-                        "year"         => ""
+    global $offering_table, $faculty_table, $class_type_table, $semester_table, $room_table;
+    $reg = array( array("registered"   => "",
+                        "faculty"      => "",
+                        "year"         => "",
                         "semester"     => ""));
     
     /* Get the total registered per faculty per semester per year from the database */
-    if ($stmt = $mysqli_elections->prepare("SELECT SUM(o.registered) AS total_registered,
+    if ($stmt = $mysqli_free_room->prepare("SELECT SUM(o.registered) AS total_registered,
                                                 f.faculty,
                                                 s.year,
                                                 s.semester
@@ -661,7 +706,7 @@ function get_total_reg_fac($mysqli_free_room)
                                                 INNER JOIN " . $semester_table . " AS s 
                                                 ON o.semesterId = s.semesterId
                                                 LEFT JOIN " . $room_table . " AS r
-                                                ON o.roomId = r.roomId
+                                                ON o.roomId = r.roomId 
                                                 WHERE
                                                 ct.acr <> 'LAB' AND
                                                 ct.acr <> 'TUT'
@@ -712,11 +757,12 @@ function get_total_reg_fac($mysqli_free_room)
  */
 function get_busy_prof($mysqli_free_room)
 {
-    $prof = array( array("professor"   => ""
+    global $offering_table, $professor_table;
+    $prof = array( array("professor"   => "",
                          "student_num" => ""));
     
     /* Get the total occupied in a a room from the database */
-    if ($stmt = $mysqli_elections->prepare("SELECT p.name,
+    if ($stmt = $mysqli_free_room->prepare("SELECT p.name,
                                                 SUM(o.registered) AS total_students
                                                 FROM " . $offering_table . " AS o
                                                 INNER JOIN " . $professor_table . " AS o
@@ -766,12 +812,13 @@ function get_busy_prof($mysqli_free_room)
  */
 function remove_requested($mysqli_free_room, $username, $ids)
 {
+    global $room_request_table;
     $num = 0;
 
     foreach($ids as $index => $id)
     {
         
-        if ($stmt = $mysqli_elections->prepare("DELETE FROM " . room_request_table .
+        if ($stmt = $mysqli_free_room->prepare("DELETE FROM " . $room_request_table .
                                                " WHERE requestId = ?" ))
         {
 
@@ -816,13 +863,13 @@ function remove_requested($mysqli_free_room, $username, $ids)
 /* TODO change the function to only take the num_people and user passes neg number to take away num_people */
 function update_occupied($mysqli_free_room, $username, $occupy_id, $num_people, $addition)
 {
-
+    global $occupy_table;
     if(!$addition)
     {
         $num_people *= -1;
     }
 
-    if ($stmt = $mysqli_elections->prepare("UPDATE " . occupy_table . 
+    if ($stmt = $mysqli_free_room->prepare("UPDATE " . $occupy_table . 
                                            " SET num_people = num_people + ? WHERE occupyId = ?" ))
     {
 
@@ -884,25 +931,25 @@ function add_request_occupied($mysqli_free_room, $username, $room, $start_time, 
     $room_id = get_room_id($mysqli_free_room, $room);
     $start_id = get_time_id($mysqli_free_room, $start_time);
     $end_id = get_time_id($mysqli_free_room, $end_time);
-    $occupy_id = get_occupy_id($mysqli_free_room, $room, $start_time, $end_time, $date)["occupy_id"];
+    $occupy_id = get_occupy_id($mysqli_free_room, $room, $start_time, $end_time, $date);
 
-    if($occupy_id === NULL)
+    if($occupy_id["occupy_id"] === NULL)
     {
         /* No previous occupied entry matching the given time, date and room */
         /* Insert the occupied value */
-        $occupy_id = add_occupied($mysqli_free_room, $room_id, $start_id, $end_id, $date, $num_people);
+        $occupy_id["occupy_id"] = add_occupied($mysqli_free_room, $room_id, $start_id, $end_id, $date, $num_people);
     }
     else
     {
         
         /* Update the occupied value */
-        update_occupied($mysqli_free_room, $username, $occupy_id, $num_people, True);
+        update_occupied($mysqli_free_room, $username, $occupy_id["occupy_id"], $num_people, True);
     }
 
     /* Add a check if the room request has not already been made */
-    if(get_room_request_id($mysqli_free_room, $occupy_id, $user_id, $num_people) === 0)
+    if(get_room_request_id($mysqli_free_room, $occupy_id["occupy_id"], $user_id, $num_people) === 0)
     {
-        add_room_request($mysqli_free_room, $occupy_id, $user_id, $num_people);
+        add_room_request($mysqli_free_room, $occupy_id["occupy_id"], $user_id, $num_people);
         return True;
     }
 
@@ -919,10 +966,11 @@ function add_request_occupied($mysqli_free_room, $username, $room, $start_time, 
  */
 function get_user_id($mysqli_free_room, $username)
 {
+    global $user_table;
     $user_id = 0;
     /* Return user_id */
-    if ($stmt = $mysqli_elections->prepare("SELECT userId FROM "
-                                               . user_table . 
+    if ($stmt = $mysqli_free_room->prepare("SELECT userId FROM "
+                                               . $user_table . 
                                                " WHERE username LIKE ?" ))
     {
 
@@ -944,19 +992,20 @@ function get_user_id($mysqli_free_room, $username)
 }
 
 /**
- * Get the user's id given their username
+ * Get the room's id given the room name
  *
  * @param mysqli $mysqli_free_room The mysqli connection object for the ucsc elections DB
- * @param $username the username of the user making the request
+ * @param $room the room name 
  * 
  * @return $user_id the user id of the given username
  */
 function get_room_id($mysqli_free_room, $room)
 {
+    global $room_table;
     $room_id = 0;
     /* Return room_id */
-    if ($stmt = $mysqli_elections->prepare("SELECT roomId FROM "
-                                               . room_table . 
+    if ($stmt = $mysqli_free_room->prepare("SELECT roomId FROM "
+                                               . $room_table . 
                                                " WHERE name LIKE ?" ))
     {
 
@@ -979,10 +1028,11 @@ function get_room_id($mysqli_free_room, $room)
 
 function get_time_id($mysqli_free_room, $time)
 {
+    global $time_table;
     $time_id = 0;
     /* Return time id */
-    if ($stmt = $mysqli_elections->prepare("SELECT timeId FROM "
-                                               . time_table . 
+    if ($stmt = $mysqli_free_room->prepare("SELECT timeId FROM "
+                                               . $time_table . 
                                                " WHERE time = ?" ))
     {
 
@@ -1003,18 +1053,20 @@ function get_time_id($mysqli_free_room, $time)
     return $time_id;
 }
 
+
 function get_occupied($mysqli_free_room, $room, $start_time, $end_time, $date)
 {
-    $occupied = array("occupy_id"  => 0
+    global $time_table, $room_table;
+    $occupied = array("occupy_id"  => 0,
                       "num_people" => 0);
     /* Get the occupied # people or Id, current use is to determine if exists */
-    if ($stmt = $mysqli_elections->prepare("SELECT c.occupyId, c.num_people FROM "
+    if ($stmt = $mysqli_free_room->prepare("SELECT c.occupyId, c.num_people FROM "
                                                . occupy_table . " AS o 
-                                               INNER JOIN " . time_table . " AS st
+                                               INNER JOIN " . $time_table . " AS st
                                                ON o.start_time = st.timeId
-                                               INNER JOIN " . time_table . " AS et
+                                               INNER JOIN " . $time_table . " AS et
                                                ON o.end_time = et.timeId
-                                               INNER JOIN " . room_table . " AS r
+                                               INNER JOIN " . $room_table . " AS r
                                                ON o.roomId = r.roomId 
                                                WHERE
                                                st.time = ? AND
@@ -1044,8 +1096,9 @@ function get_occupied($mysqli_free_room, $room, $start_time, $end_time, $date)
 
 function add_occupied($mysqli_free_room, $room_id, $start_id, $end_id, $date, $num_people)
 {
+    global $occupy_table;
     $check = 0;
-    if ($stmt = $mysqli_elections->prepare("INSERT INTO " . occupy_table . 
+    if ($stmt = $mysqli_free_room->prepare("INSERT INTO " . $occupy_table . 
                                            " (roomId, start_time, end_time,
                                             date, num_people) VALUES 
                                             (?, ?, ?, ?, ?)" ))
@@ -1070,8 +1123,9 @@ function add_occupied($mysqli_free_room, $room_id, $start_id, $end_id, $date, $n
 
 function add_room_request($mysqli_free_room, $occupy_id, $user_id, $num_people)
 {
+    global $occupy_table;
     $check = 0;
-    if ($stmt = $mysqli_elections->prepare("INSERT INTO " . occupy_table . 
+    if ($stmt = $mysqli_free_room->prepare("INSERT INTO " . $occupy_table . 
                                            " (userId, occupyId, num_people) VALUES 
                                             (?, ?, ?)" ))
     {
@@ -1095,11 +1149,12 @@ function add_room_request($mysqli_free_room, $occupy_id, $user_id, $num_people)
 
 function get_room_request_id($mysqli_free_room, $occupy_id, $user_id, $num_people)
 {
+    global $room_request_table;
     $request_id = 0;
     /* Get the occupied # people or Id, current use is to determine if exists */
-    if ($stmt = $mysqli_elections->prepare("SELECT requestId FROM "
-                                               . room_requests . "
-                                               WHERE
+    if ($stmt = $mysqli_free_room->prepare("SELECT requestId FROM "
+                                               . $room_requests_table .
+                                               " WHERE
                                                occupyId = ? AND
                                                user_id = ? AND
                                                num_peopel = ?" ))

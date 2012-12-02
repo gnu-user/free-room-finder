@@ -32,34 +32,13 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 /*
- * The default footer for the website, displays copyright, etc.
+ *  A simple page that you can modify to test your templates
  */
+include 'templates/header.php';
+
+include 'templates/login.php';
+
+include 'templates/footer.php';
+exit();
 ?>
-      <footer class="footer">
-        <div class="pull-left">
-          <p>Designed and built by <a target="_blank" href="#">Crow'sFoot</a></p>
-          <p>This website is Open Source, code licensed under the 
-          	<a target="_blank" href="http://www.gnu.org/licenses/agpl-3.0.html">GNU Affero General Public License, Version 3</a>
-          </p>
-          <p><strong>&copy; Crow's Foot</strong></p>
-        </div>
-      </footer>
-    </div>
-    <!-- Javascript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="js/jquery-1.8.3.js"></script>
-    <script src="js/bootstrap.js"></script>
-    <script src="js/bootstrap-datepicker.js"></script>
-    <script>
-      $(function(){
-        $('#dp1').datepicker({
-          format: 'mm-dd-yyyy'
-        });
-      });
-    </script>
-    <!--<script src="js/custom.js"></script>-->
-  </body>
-</html>

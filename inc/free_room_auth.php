@@ -1,7 +1,22 @@
 <?php
 /*
- *  UOIT/DC Computer Science Club Elections Website
- *  Copyright (C) 2012 UOIT/DC Computer Science Club
+ *  Free Room Finder Website
+ *
+ *
+ *  Authors -- Crow's Foot Group
+ *  -------------------------------------------------------
+ *
+ *  Jonathan Gillett
+ *  Joseph Heron
+ *  Amit Jain
+ *  Wesley Unwin
+ *  Anthony Jihn
+ *
+ *
+ *  License
+ *  -------------------------------------------------------
+ *
+ *  Copyright (C) 2012 Crow's Foot Group
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Affero General Public License as
@@ -28,11 +43,10 @@
  * publicly accessible.
  */
 
-
 /* Database access */
-$db_user = '';
-$db_pass = '';
-$db_name = '';
+$db_user = 'root';
+$db_pass = 'igal3dm4c';
+$db_name = 'free_test';
 
 /* AES ENCRYPT/DECRYPT KEY */
 $AES_KEY = 'test123';
