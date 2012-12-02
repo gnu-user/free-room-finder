@@ -344,7 +344,7 @@ function get_rooms_taken($mysqli_free_room, $day, $term, $campus)
                                                 r.name" ))
     {
         /* bind parameters for markers */
-        $stmt->bind_param('ssss', $day, $term[0], $campus, $term[1]);
+        $stmt->bind_param('ssssd', $day, $term[0], $campus, $term[1], $week_alt);
 
         /* execute query */
         $stmt->execute();
@@ -1175,7 +1175,7 @@ function add_room_request($mysqli_free_room, $occupy_id, $user_id, $num_people)
 
 function get_room_request_id($mysqli_free_room, $occupy_id, $user_id, $num_people)
 {
-    global $room_request_table
+    global $room_request_table;
     $request_id = 0;
     /* Get the occupied # people or Id, current use is to determine if exists */
     if ($stmt = $mysqli_free_room->prepare("SELECT requestId FROM "
