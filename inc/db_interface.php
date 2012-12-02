@@ -414,7 +414,7 @@ function get_rooms_taken($mysqli_conn, $day, $term, $campus)
                                                 r.name" ))
     {
         /* bind parameters for markers */
-        $stmt->bind_param('ssssd', $day, $term[0], $campus, $term[1], $week_alt);
+        $stmt->bind_param('ssssd', $day, $term['year'], $campus, $term['semester'], $week_alt);
 
         /* execute query */
         $stmt->execute();
