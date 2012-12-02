@@ -186,7 +186,7 @@ room_requests
 */
 CREATE TABLE room_requests
 (
-    requestId   INTEGER UNSIGNED NOT NULL,
+    requestId   INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
     userId      INTEGER UNSIGNED NOT NULL,
     occupyId    INTEGER UNSIGNED NOT NULL,
     num_people  INTEGER UNSIGNED NOT NULL DEFAULT 1,
