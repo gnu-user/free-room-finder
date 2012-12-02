@@ -144,18 +144,17 @@ function get_user($mysqli_conn, $username)
 function get_all_campus($mysqli_conn)
 {
     global $campus_table;
+    
     $campuses = array();
     /* Get the campuses */
     if ($stmt = $mysqli_conn->prepare("SELECT name
-                                                FROM " . $campus_table ))
+                                       FROM " . $campus_table))
     {
         /* execute query */
         $stmt->execute();
 
         /* bind result variables */
         $stmt->bind_result($campus);
-
-        $stmt->fetch();
 
         while ($stmt->fetch())
         {
