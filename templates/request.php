@@ -49,6 +49,27 @@
  * 
  */
 
+/* The following are the available times, durations, and number of people */
+/* TODO FIX THIS UGLY HACK */
+$avail_times = array(	"08:00:00",
+						"09:00:00",
+						"10:00:00",
+						"11:00:00",
+						"12:00:00",
+						"13:00:00",
+						"14:00:00",
+						"15:00:00",
+						"16:00:00",
+						"17:00:00",
+						"18:00:00",
+						"19:00:00",
+						"20:00:00",
+						"21:00:00",
+						"22:00:00"
+					);
+
+$durations = array (1, 2, 3);
+$num_people = array (1, 2, 3, 4, 5);
 ?>
 <section id="request_room">
 	<div class="page-header">
@@ -62,10 +83,15 @@
 			      		<label for="select_time" class="control-label">Time</label>
 				      	<div class="controls">
 				      		<select id="select_time" name="select_time" class="input-xlarge">
-				      			<option></option>
-				      			<?php 
-		      						echo '<option>' . $candidates['President'][0] . ' (Candidate)' . '</option>';
-		      						echo '<option>' . $incumbents['President'][0] . ' (Incumbent)' . '</option>';
+				      			<?php
+				      				/* Set the default option as the current time */
+					      			date_default_timezone_set('America/Toronto');
+					      			$cur_time = date('H:i:s');
+					      			echo '<option>' . $cur_time . '</option>';
+				      				foreach ($avail_times as $time)
+				      				{
+				      					echo '<option>' . $time . '</option>';
+				      				}
 				      			?>
 				      		</select>
 				      	</div>
@@ -73,13 +99,17 @@
 		      		<div class="control-group">
 			      		<label for="select_duration" class="control-label">Duration</label>
 				      	<div class="controls">
-				      		<select id="select_duration" name="select_duration" class="input-xlarge">
-				      			<option></option>
-				      			<?php 
-		      						echo '<option>' . $candidates['Vice President'][0] . ' (Candidate)' . '</option>';
-		      						echo '<option>' . $incumbents['Vice President'][0] . ' (Incumbent)' . '</option>';
-				      			?>
-				      		</select>
+				      		<div class="input-append">
+					      		<select id="select_duration" name="select_duration" class="input-xlarge">
+					      			<?php
+					      				foreach ($durations as $duration)
+					      				{
+					      					echo '<option>' . $duration . '</option>';
+					      				}
+					      			?>
+					      		</select>
+					      		<span class="add-on">Hours</span>
+				      		</div>
 				      	</div>
 		      		</div>
 		      		<div class="control-group">
@@ -98,7 +128,6 @@
 			      		<label for="select_campus" class="control-label">Campus</label>
 				      	<div class="controls">
 				      		<select id="select_campus" name="select_campus" class="input-xlarge">
-				      			<option></option>
 				      			<?php
 				      				foreach ($campuses as $campus)
 				      				{
@@ -112,10 +141,11 @@
 			      		<label for="select_num_people" class="control-label">Number of People</label>
 				      	<div class="controls">
 				      		<select id="select_num_people" name="select_num_people" class="input-xlarge">
-				      			<option></option>
-				      			<?php 
-		      						echo '<option>' . $candidates['Treasurer'][0] . ' (Candidate)' . '</option>';
-		      						echo '<option>' . $incumbents['Treasurer'][0] . ' (Incumbent)' . '</option>';
+				      			<?php
+				      				foreach ($num_people as $num)
+				      				{
+				      					echo '<option>' . $num . '</option>';
+				      				}
 				      			?>
 				      		</select>
 				      	</div>
