@@ -44,12 +44,13 @@
  */
 
 /* Database access */
-$db_user = 'root';
-$db_pass = 'igal3dm4c';
-$db_name = 'free_test';
+$db_user = '';
+$db_pass = '';
+$db_name = '';
 
 /* AES ENCRYPT/DECRYPT KEY */
 $AES_KEY = 'test123';
 
 /* SESSION ENCRYPT/DECRYPT KEY */
 $SESSION_KEY = 'test123';
+?>
