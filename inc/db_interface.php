@@ -138,7 +138,7 @@ function get_year($mysqli_free_room)
     /* Get the candidate for the current position from the database */
     if ($stmt = $mysqli_free_room->prepare("SELECT year, semester
                                                 FROM " . $semester_table . 
-                                                "WHERE (year = ? AND 
+                                                " WHERE (year = ? AND 
                                                 semester LIKE ? ) OR
                                                 (year = ? AND 
                                                 semester LIKE ?
@@ -269,7 +269,8 @@ function get_room_open($mysqli_free_room, $start_time, $end_time, $day, $term, $
         	$free = TRUE;
         	$prev_room = $room["room"];
         }
-        
+        /*if((!($start_time < $room["endtime"] && $end_time < $room["endtime"]
+          || $start_time > $room["starttime"] && $end_time > $room["starttime"]))&& $free)*/
         if((($start_time > $room["starttime"] && $start_time < $room["endtime"])
         		|| ($end_time > $room["starttime"] && $end_time < $room["endtime"]))&& $free)
         {
@@ -396,13 +397,11 @@ function get_rooms($mysqli_free_room, $campus)
     $rooms = array();
     
     /* Retrieve all of the rooms on the given campus */
-    if ($stmt = $mysqli_free_room->prepare("SELECT r.name,
+    if ($stmt = $mysqli_free_room->prepare("SELECT r.name
                                                 FROM " . $room_table . " AS r 
-                                                ON o.roomId = r.roomId
                                                 INNER JOIN " . $campus_table . " AS c 
                                                 ON r.campusId = c.campusId 
-                                                WHERE 
-                                                c.name LIKE ?
+                                                WHERE c.name LIKE ? 
                                                 ORDER BY r.name, c.name" ))
     {
         /* bind parameters for markers */
@@ -483,7 +482,7 @@ function get_users_rooms($mysqli_free_room, $username)
                                                 INNER JOIN " . $campus_table . " AS c 
                                                 ON r.campusId = c.campusId 
                                                 WHERE 
-                                                u.username LIKE username
+                                                u.username LIKE ?
                                                 ORDER BY oc.date" ))
     {
         /* bind parameters for markers */
@@ -545,7 +544,7 @@ function get_total_occupied($mysqli_free_room, $room, $start_time, $end_time, $d
                                                 INNER JOIN " . $time_table . " AS et 
                                                 ON oc.end_time = et.timeId
                                                 INNER JOIN " . $room_table . " AS r 
-                                                ON oc.roomId = r.roomId
+                                                ON oc.roomId = r.roomIdd 
                                                 WHERE 
                                                 r.name LIKE ? AND
                                                 st.time = ? AND
@@ -602,15 +601,13 @@ function get_all_total_occupied($mysqli_free_room)
                             "total_people" => ""));
     
     /* Get the total occupied in a a room from the database */
-    if ($stmt = $mysqli_free_room->prepare("SELECT r.name AS room_name,
-                                                SUM(oc.num_people) AS total_num_people
-                                                FROM " . $occupy_table . " AS oc
+    if ($stmt = $mysqli_free_room->prepare("SELECT r.name AS room_name, 
+                                                SUM(oc.num_people) AS total_num_people 
+                                                FROM " . $occupy_table . " AS oc 
                                                 INNER JOIN " . $room_table . " AS r 
-                                                ON oc.roomId = r.roomIdd
-                                                GROUP BY 
-                                                r.name
-                                                ORDER BY
-                                                total_num_people DESC" ))
+                                                ON oc.roomId = r.roomIdd 
+                                                GROUP BY r.name 
+                                                ORDER BY total_num_people DESC" ))
     {
 
         /* execute query */
@@ -657,21 +654,20 @@ function get_total_registered($mysqli_free_room)
                           "semester"     => ""));
     
     /* Get the total registered per semester per year from the database */
-    if ($stmt = $mysqli_free_room->prepare("SELECT SUM(o.registered) AS total_registered,
-                                                s.year,
-                                                s.semester
-                                                FROM " . $offering_table . " AS o
-                                                INNER JOIN " . $class_type_table . " AS ct
-                                                ON o.typeId = ct.typeId
-                                                INNER JOIN " . $semester_table . " AS s 
-                                                ON o.semesterId = s.semesterId
-                                                LEFT JOIN " . $room_table . " AS r
-                                                ON o.roomId = r.roomId
-                                                GROUP BY
-                                                s.year,
+    if ($stmt = $mysqli_free_room->prepare("SELECT SUM(o.registered) AS total_registered, 
+                                                s.year, 
                                                 s.semester 
-                                                WHERE
-                                                ct.acr <> 'LAB' AND
+                                                FROM " . $offering_table . " AS o 
+                                                INNER JOIN " . $class_type_table . " AS ct 
+                                                ON o.typeId = ct.typeId 
+                                                INNER JOIN " . $semester_table . " AS s  
+                                                ON o.semesterId = s.semesterId 
+                                                LEFT JOIN " . $room_table . " AS r 
+                                                ON o.roomId = r.roomId 
+                                                GROUP BY s.year,
+                                                s.semester 
+                                                WHERE 
+                                                ct.acr <> 'LAB' AND 
                                                 ct.acr <> 'TUT'" ))
     {
 
@@ -721,27 +717,27 @@ function get_total_reg_fac($mysqli_free_room)
                         "semester"     => ""));
     
     /* Get the total registered per faculty per semester per year from the database */
-    if ($stmt = $mysqli_free_room->prepare("SELECT SUM(o.registered) AS total_registered,
-                                                f.faculty,
-                                                s.year,
-                                                s.semester
-                                                FROM " . $offering_table . " AS o
-                                                INNER JOIN " . $faculty_table . " AS f
-                                                ON o.facultyId = f.facultyId
-                                                INNER JOIN " . $class_type_table . " AS ct
-                                                ON o.typeId = ct.typeId
+    if ($stmt = $mysqli_free_room->prepare("SELECT SUM(o.registered) AS total_registered, 
+                                                f.faculty, 
+                                                s.year, 
+                                                s.semester 
+                                                FROM " . $offering_table . " AS o 
+                                                INNER JOIN " . $faculty_table . " AS f 
+                                                ON o.facultyId = f.facultyId 
+                                                INNER JOIN " . $class_type_table . " AS ct 
+                                                ON o.typeId = ct.typeId 
                                                 INNER JOIN " . $semester_table . " AS s 
-                                                ON o.semesterId = s.semesterId
-                                                LEFT JOIN " . $room_table . " AS r
+                                                ON o.semesterId = s.semesterId 
+                                                LEFT JOIN " . $room_table . " AS r 
                                                 ON o.roomId = r.roomId 
-                                                WHERE
-                                                ct.acr <> 'LAB' AND
-                                                ct.acr <> 'TUT'
-                                                GROUP BY
-                                                f.faculty,
-                                                s.year,
-                                                s.semester
-                                                ORDER BY
+                                                WHERE 
+                                                ct.acr <> 'LAB' AND 
+                                                ct.acr <> 'TUT' 
+                                                GROUP BY 
+                                                f.faculty, 
+                                                s.year, 
+                                                s.semester 
+                                                ORDER BY 
                                                 total_students DESC" ))
     {
 
@@ -789,13 +785,13 @@ function get_busy_prof($mysqli_free_room)
                          "student_num" => ""));
     
     /* Get the total occupied in a a room from the database */
-    if ($stmt = $mysqli_free_room->prepare("SELECT p.name,
-                                                SUM(o.registered) AS total_students
-                                                FROM " . $offering_table . " AS o
-                                                INNER JOIN " . $professor_table . " AS o
-                                                ON o.profId = p.profId
-                                                GROUP BY
-                                                p.name
+    if ($stmt = $mysqli_free_room->prepare("SELECT p.name, 
+                                                SUM(o.registered) AS total_students 
+                                                FROM " . $offering_table . " AS o 
+                                                INNER JOIN " . $professor_table . " AS o 
+                                                ON o.profId = p.profId 
+                                                GROUP BY 
+                                                p.name 
                                                 ORDER BY 
                                                 total_students DESC" ))
     {
@@ -1089,16 +1085,16 @@ function get_occupied($mysqli_free_room, $room, $start_time, $end_time, $date)
     /* Get the occupied # people or Id, current use is to determine if exists */
     if ($stmt = $mysqli_free_room->prepare("SELECT c.occupyId, c.num_people FROM "
                                                . occupy_table . " AS o 
-                                               INNER JOIN " . $time_table . " AS st
-                                               ON o.start_time = st.timeId
-                                               INNER JOIN " . $time_table . " AS et
-                                               ON o.end_time = et.timeId
-                                               INNER JOIN " . $room_table . " AS r
+                                               INNER JOIN " . $time_table . " AS st 
+                                               ON o.start_time = st.timeId 
+                                               INNER JOIN " . $time_table . " AS et 
+                                               ON o.end_time = et.timeId 
+                                               INNER JOIN " . $room_table . " AS r 
                                                ON o.roomId = r.roomId 
-                                               WHERE
-                                               st.time = ? AND
-                                               et.time = ? AND
-                                               r.name LIKE ? AND
+                                               WHERE 
+                                               st.time = ? AND 
+                                               et.time = ? AND 
+                                               r.name LIKE ? AND 
                                                date = ?" ))
     {
 
@@ -1126,7 +1122,7 @@ function add_occupied($mysqli_free_room, $room_id, $start_id, $end_id, $date, $n
     global $occupy_table;
     $check = 0;
     if ($stmt = $mysqli_free_room->prepare("INSERT INTO " . $occupy_table . 
-                                           " (roomId, start_time, end_time,
+                                           " (roomId, start_time, end_time, 
                                             date, num_people) VALUES 
                                             (?, ?, ?, ?, ?)" ))
     {
@@ -1181,9 +1177,9 @@ function get_room_request_id($mysqli_free_room, $occupy_id, $user_id, $num_peopl
     /* Get the occupied # people or Id, current use is to determine if exists */
     if ($stmt = $mysqli_free_room->prepare("SELECT requestId FROM "
                                                . $room_requests_table .
-                                               " WHERE
-                                               occupyId = ? AND
-                                               user_id = ? AND
+                                               " WHERE 
+                                               occupyId = ? AND 
+                                               user_id = ? AND 
                                                num_peopel = ?" ))
     {
 
