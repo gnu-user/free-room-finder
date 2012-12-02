@@ -188,6 +188,8 @@ function verify_login($mysqli_free_room, $username, $password, $AES_KEY)
  */
 function verify_login_session($mysqli_free_room, $ses_validate, $SESSION_KEY)
 {
+	global $user_table;
+	
     /* Decrypted validate session variable */ 
     $validate = trim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, $SESSION_KEY, base64_decode($ses_validate), 
                 MCRYPT_MODE_ECB, mcrypt_create_iv(mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, 
