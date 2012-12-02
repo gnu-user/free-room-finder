@@ -140,6 +140,12 @@ if (isset($_POST['select_time'])
 	//$available = get_room_open_dur($mysqli_conn, 2, $day, $term, $campus);
 	$available = get_room_open($mysqli_conn, $start_time, $end_time, $day, $term, $campus);
 	
+	$doc = new DOMDocument(); 
+	$doc->formatOutput = true; 
+
+	$r = $doc->createElement( "BusiestProfs" ); 
+	$doc->appendChild( $r ); 
+
 	foreach( $available as $avail ) 
 	{ 
 		$b = $doc->createElement( "TimeSlot" ); 
