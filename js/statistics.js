@@ -133,11 +133,12 @@ function plotEnrollmentAll(data) {
         },
         series: [{
             name: 'UOIT',
+			/* Approximation of the number of students from previous years */
             data: [ 300, 546, 1349, 2188, 4210, 5832]
         }]
     };
     
-    /* Get the enrollment data from the REST api and add it to the series */
+    /* Get the enrollment data from the REST api using AJAX and add it to the series */
 	console.log('enrollmentAllGetData');
 	// JAX-RS serializes an empty list as null, and a 'collection of one' as an object (not an 'array of one')
 	var list = data == null ? [] : (data.totalRegistered instanceof Array ? data.totalRegistered : [data.totalRegistered]);
@@ -145,8 +146,6 @@ function plotEnrollmentAll(data) {
 	var approx_reg = 0;
 	
 	$.each(list, function(index, enrollment) {
-		alert(parseInt(enrollment.registered));
-		
 		/* Approximate the number of students attending as total / 5 (assume avg. course load of 5) */
 		approx_reg = parseInt(enrollment.registered) / 5;
 		
