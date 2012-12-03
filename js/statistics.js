@@ -37,9 +37,11 @@ var rootURL = "http://free-room.dom/api";
 
 
 $(document).ready(function () {
-	alert(window.location.toString());
 	/* Display the statistics when page is loaded */
+	
 	busyProfs();
+	plotEnrollmentAll();
+	
 });
 
 /* Get the list of the top 10 busiest professors and populate the table */
@@ -53,7 +55,6 @@ function busyProfs() {
 	});
 }
 
-
 /* Function which populates the busiest profs table with the top 10
  * busiest professors
  */
@@ -65,4 +66,61 @@ function displayTable(data) {
 	$.each(list, function(index, prof) {
 		$('#tbody_busyprofs').append('<tr><td>' + prof.professor + '</td><td>' + prof.student_num + '</td></tr>');
 	});
+}
+
+/* Function which plots the student enrollment for all students */
+function plotEnrollmentAll() {
+	console.log('plotEnrollmentAll');
+	var chart;
+    chart = new Highcharts.Chart({
+        chart: {
+            renderTo: 'enrollment_all',
+            type: 'area'
+        },
+        title: {
+            text: 'UOIT Enrollment'
+        },
+        xAxis: {
+            labels: {
+                formatter: function() {
+                    return this.value; // clean, unformatted number for year
+                }
+            }
+        },
+        yAxis: {
+            title: {
+                text: 'Number of Students'
+            },
+            labels: {
+                formatter: function() {
+                    return this.value / 1000 +'k';
+                }
+            }
+        },
+        tooltip: {
+            formatter: function() {
+                return this.series.name +' enrolled <b>'+
+                    Highcharts.numberFormat(this.y, 0) +'</b><br/>students in '+ this.x;
+            }
+        },
+        plotOptions: {
+            area: {
+                pointStart: 2003,
+                marker: {
+                    enabled: false,
+                    symbol: 'circle',
+                    radius: 2,
+                    states: {
+                        hover: {
+                            enabled: true
+                        }
+                    }
+                }
+            }
+        },
+        series: [{
+            name: 'UOIT',
+            data: [10, 143, 369, 640, 1005, 1436, 2063, 3057, 4618, 6112]
+        }]
+    });
 }

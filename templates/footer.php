@@ -53,6 +53,7 @@
     <script src="js/jquery-1.8.3.js"></script>
     <script src="js/bootstrap.js"></script>
     <script src="js/bootstrap-datepicker.js"></script>
+    <script src="js/highcharts/highcharts.js"></script>
     <script>
       $(function(){
         $('#select_date').datepicker({
