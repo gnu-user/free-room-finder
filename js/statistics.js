@@ -42,12 +42,12 @@ $(document).ready(function () {
 	busyProfs();
 });
 
-/* Get the list of the busiest professors and populate the table */
+/* Get the list of the top 10 busiest professors and populate the table */
 function busyProfs() {
 	console.log('busyprofs');
 	$.ajax({
 		type: 'GET',
-		url: rootURL + '/busyprofs',
+		url: rootURL + '/busyprofs/10',
 		dataType: "json", // data type of response
 		success: displayTable
 	});
