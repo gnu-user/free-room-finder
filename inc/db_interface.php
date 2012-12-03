@@ -137,7 +137,7 @@ function get_user($mysqli_conn, $username)
 /**
  * Get all of the campuses where rooms are available.
  *
- * @param mysqli $mysqli_conn The mysqli connection object for the ucsc elections DB
+ * @param mysqli $mysqli_conn The mysqli connection object for the free room finder DB
  *
  * @return array $campuses An array containing all of the campuses available
  */
@@ -170,7 +170,7 @@ function get_all_campus($mysqli_conn)
 /** TODO fix to work
  * Get the current term and the next term (in year, semester)
  *
- * @param mysqli $mysqli_conn The mysqli connection object for the ucsc elections DB
+ * @param mysqli $mysqli_conn The mysqli connection object for the free room finder DB
  *
  * @return $term An array containing the current year and semester as well as the next year and semester
  */
@@ -189,7 +189,7 @@ function get_year($mysqli_conn)
     $term = array(	$current => array($year => 0, $semester => 0), 
 					          $next    => array($year => 0, $semester => 0));
 
-    /* The current election year */
+    /* The current year */
     $cur_year = date('Y');
 
     /* The next year */
@@ -245,7 +245,7 @@ function get_year($mysqli_conn)
 /** TODO fix
  * Get the rooms that are open given the duration, day, term and campus
  *
- * @param mysqli $mysqli_conn The mysqli connection object for the ucsc elections DB
+ * @param mysqli $mysqli_conn The mysqli connection object for the free room finder DB
  * @param $duration the length of time the user wishes to find free
  * @param $day is the week day desired, the first letter of the week day name, with Thursday = 'R'
  * @param $term the term desired **NOTE term = { year, semester}
@@ -316,7 +316,7 @@ function get_room_open_dur($mysqli_conn, $duration, $day, $term, $campus)
 /**
  * Get the rooms that are open given the duration, day, term and campus
  *
- * @param mysqli $mysqli_conn The mysqli connection object for the ucsc elections DB
+ * @param mysqli $mysqli_conn The mysqli connection object for the free room finder DB
  * @param $start_time The start time of the time slot
  * @param $end_time The end time of the time slot
  * @param $day is the week day desired, the first letter of the week day name, with Thursday = 'R'
@@ -364,7 +364,7 @@ function get_room_open($mysqli_conn, $start_time, $end_time, $day, $term, $campu
  * This can be used to get the slots available on the day as well as if a certain time slot is 
  * available.
  *
- * @param mysqli $mysqli_conn The mysqli connection object for the ucsc elections DB
+ * @param mysqli $mysqli_conn The mysqli connection object for the free room finder DB
  * @param $day is the week day desired, the first letter of the week day name, with Thursday = 'R'
  * @param $term the term desired **NOTE term = { year, semester}
  * @param $campus the campus desired, the full campus name
@@ -460,7 +460,7 @@ function get_rooms_taken($mysqli_conn, $day, $term, $campus)
 /**
  * Get all of rooms on a given campus
  *
- * @param mysqli $mysqli_conn The mysqli connection object for the ucsc elections DB
+ * @param mysqli $mysqli_conn The mysqli connection object for the free room finder DB
  * @param $campus the campus desired, the full campus name
  *
  * @return $rooms all of the rooms given a campus
@@ -515,7 +515,7 @@ function get_rooms($mysqli_conn, $campus)
 /**
  * Get all of the rooms the user has requested
  *
- * @param mysqli $mysqli_conn The mysqli connection object for the ucsc elections DB
+ * @param mysqli $mysqli_conn The mysqli connection object for the free room finder DB
  * @param $username the username of the user currently logged in.
  * 
  * @return $rooms The room, campus, start time, end time, date, number of people booked,
@@ -604,7 +604,7 @@ function get_users_rooms($mysqli_conn, $username)
 /**
  * Get all of the rooms the user has requested
  *
- * @param mysqli $mysqli_conn The mysqli connection object for the ucsc elections DB
+ * @param mysqli $mysqli_conn The mysqli connection object for the free room finder DB
  * @param 
  * 
  * @return $rooms The room and total number of people expected for that room given the
@@ -671,7 +671,7 @@ function get_total_occupied($mysqli_conn, $room, $start_time, $end_time, $day)
 /**
  * Get all of the rooms the user has requested
  *
- * @param mysqli $mysqli_conn The mysqli connection object for the ucsc elections DB
+ * @param mysqli $mysqli_conn The mysqli connection object for the free room finder DB
  * @param $username the username of the user currently logged in.
  * 
  * @return $rooms The room and total number of people expected for that room for all rooms
@@ -723,7 +723,7 @@ function get_all_total_occupied($mysqli_conn)
 /**
  * Get all of the rooms the user has requested
  *
- * @param mysqli $mysqli_conn The mysqli connection object for the ucsc elections DB
+ * @param mysqli $mysqli_conn The mysqli connection object for the free room finder DB
  * @param $username the username of the user currently logged in.
  * 
  * @return $rooms The total registered in courses per semester, per year.
@@ -788,7 +788,7 @@ function get_total_registered($mysqli_conn)
 /**
  * Get the total registered for each faculty over the years and semesters
  *
- * @param mysqli $mysqli_conn The mysqli connection object for the ucsc elections DB
+ * @param mysqli $mysqli_conn The mysqli connection object for the free room finder DB
  * @param $username the username of the user currently logged in.
  * 
  * @return $reg The total registered per faculty, per semester, per year. 
@@ -864,7 +864,7 @@ function get_total_reg_fac($mysqli_conn)
 /**
  * Busiest Professors
  *
- * @param mysqli $mysqli_conn The mysqli connection object for the ucsc elections DB
+ * @param mysqli $mysqli_conn The mysqli connection object for the free room finder DB
  * @param $username the username of the user currently logged in.
  * 
  * @return $prof The professors and number of students registered in courses taught by the
@@ -922,7 +922,7 @@ function get_busy_prof($mysqli_conn)
 /**
  * Busiest Professors
  *
- * @param mysqli $mysqli_conn The mysqli connection object for the ucsc elections DB
+ * @param mysqli $mysqli_conn The mysqli connection object for the free room finder DB
  * @param $username the username of the user currently logged in.
  *
  * @return $prof The professors and number of students registered in courses taught by the
@@ -982,7 +982,7 @@ function get_busy_prof_num($mysqli_conn, $num)
 /**
  * Remove the given room requests
  *
- * @param mysqli $mysqli_conn The mysqli connection object for the ucsc elections DB
+ * @param mysqli $mysqli_conn The mysqli connection object for the free room finder DB
  * @param $ids
  * array(array( request_id => ""
  *              occupy_id  => "") ) 
@@ -1028,7 +1028,7 @@ function remove_requested($mysqli_conn, $username, $ids)
 /**
  * Update the total number of people in a room
  *
- * @param mysqli $mysqli_conn The mysqli connection object for the ucsc elections DB
+ * @param mysqli $mysqli_conn The mysqli connection object for the free room finder DB
  * @param $occupy_id
  * @param $addition idicates whether the user's requests are being added or taken away from
  * the running total
@@ -1063,7 +1063,7 @@ function update_occupied($mysqli_conn, $username, $occupy_id, $num_people, $addi
 /**
  * Add a room request to the database
  *
- * @param mysqli $mysqli_conn The mysqli connection object for the ucsc elections DB
+ * @param mysqli $mysqli_conn The mysqli connection object for the free room finder DB
  * @param $username the username of the user making the request
  * @param $room the room the user is requesting
  * @param $start_time the start time the room is requested for
@@ -1130,7 +1130,7 @@ function add_request_occupied($mysqli_conn, $username, $room, $start_time, $end_
 /**
  * Get the user's id given their username
  *
- * @param mysqli $mysqli_conn The mysqli connection object for the ucsc elections DB
+ * @param mysqli $mysqli_conn The mysqli connection object for the free room finder DB
  * @param $username the username of the user making the request
  * 
  * @return $user_id the user id of the given username
@@ -1165,7 +1165,7 @@ function get_user_id($mysqli_conn, $username)
 /**
  * Get the room's id given the room name
  *
- * @param mysqli $mysqli_conn The mysqli connection object for the ucsc elections DB
+ * @param mysqli $mysqli_conn The mysqli connection object for the free room finder DB
  * @param $room the room name 
  * 
  * @return $room_id the user id of the given username
@@ -1200,7 +1200,7 @@ function get_room_id($mysqli_conn, $room)
 /**
  * Get the times's id given the room name
  *
- * @param mysqli $mysqli_conn The mysqli connection object for the ucsc elections DB
+ * @param mysqli $mysqli_conn The mysqli connection object for the free room finder DB
  * @param $time the time to find the id of 
  * 
  * @return $time_id the time id of the given time
@@ -1236,7 +1236,7 @@ function get_time_id($mysqli_conn, $time)
  * Get the occupy id and the number of people occupying the room given the room,
  * start time, end time and date.
  *
- * @param mysqli $mysqli_conn The mysqli connection object for the ucsc elections DB
+ * @param mysqli $mysqli_conn The mysqli connection object for the free room finder DB
  * @param $room the room name 
  * @param $start_time the start time
  * @param $end_time the end time
@@ -1288,7 +1288,7 @@ function get_occupied($mysqli_conn, $room, $start_time, $end_time, $date)
 /**
  * Add a occupied row given the room id, start_id, end_id, date, and number of people.
  *
- * @param mysqli $mysqli_conn The mysqli connection object for the ucsc elections DB
+ * @param mysqli $mysqli_conn The mysqli connection object for the free room finder DB
  * @param $room_id the room name's id 
  * @param $start_id the start time's id
  * @param $end_id the end time's id
@@ -1322,7 +1322,7 @@ function add_occupied($mysqli_conn, $room_id, $start_id, $end_id, $date, $num_pe
 /**
  * Add the room_request given the occupy id, user id, and number of people
  *
- * @param mysqli $mysqli_conn The mysqli connection object for the ucsc elections DB
+ * @param mysqli $mysqli_conn The mysqli connection object for the free room finder DB
  * @param $occupy_id the occupied id 
  * @param $user_id the user's id
  * @param $num_people the number of people
@@ -1353,7 +1353,7 @@ function add_room_request($mysqli_conn, $occupy_id, $user_id, $num_people)
 /**
  * Get the request id given the occupy id, user id, and number of people
  *
- * @param mysqli $mysqli_conn The mysqli connection object for the ucsc elections DB
+ * @param mysqli $mysqli_conn The mysqli connection object for the free room finder DB
  * @param $occupy_id the occupied id 
  * @param $user_id the user's id
  * @param $num_people the number of people
@@ -1395,7 +1395,7 @@ function get_room_request_id($mysqli_conn, $occupy_id, $user_id, $num_people)
 /**
  * Get the num_people given the request id
  *
- * @param mysqli $mysqli_conn The mysqli connection object for the ucsc elections DB
+ * @param mysqli $mysqli_conn The mysqli connection object for the free room finder DB
  * @param $request_id the request id 
  * 
  * @return $num_people The number of people requested
@@ -1430,7 +1430,7 @@ function get_room_request_num($mysqli_conn, $request_id)
 }
 
 /**
- * @param mysqli $mysqli_conn The mysqli connection object for the ucsc elections DB
+ * @param mysqli $mysqli_conn The mysqli connection object for the free room finder DB
  *
  * @return $courses the courses and number of courses
  */
@@ -1487,7 +1487,7 @@ function get_course_count($mysqli_conn)
  * whether any two courses from the same faculty share the same start time
  * regardless of day).
  * 
- * @param mysqli $mysqli_conn The mysqli connection object for the ucsc elections DB
+ * @param mysqli $mysqli_conn The mysqli connection object for the free room finder DB
  *
  * @return $courses the courses' names
  */
@@ -1539,7 +1539,7 @@ function get_same_start_time($mysqli_conn)
 /**
  * Display all of the rooms on campus with the day and room capacity. 
  * 
- * @param mysqli $mysqli_conn The mysqli connection object for the ucsc elections DB
+ * @param mysqli $mysqli_conn The mysqli connection object for the free room finder DB
  *
  * @return $courses the course_id, day, name and room_capacity
  */
@@ -1596,7 +1596,7 @@ function get_all_class_rooms($mysqli_conn)
 /**
  * Display all of the rooms on campus with the day and room capacity. 
  * 
- * @param mysqli $mysqli_conn The mysqli connection object for the ucsc elections DB
+ * @param mysqli $mysqli_conn The mysqli connection object for the free room finder DB
  *
  * @return $prof the professor name
  */

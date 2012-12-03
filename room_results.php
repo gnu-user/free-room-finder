@@ -155,7 +155,7 @@ if (isset($_POST['select_time'])
 
 
 	/* Generate the XML document so the user can save the results */
-	$doc = new DOMDocument(); 
+	$doc = new DOMDocument('1.0', 'UTF-8'); 
 	$doc->formatOutput = true;
 	
 	/* Add the style sheet */

@@ -34,7 +34,7 @@
 
 
 /**
- * The following is a configuration file containing all of the election website
+ * The following is a configuration file containing all of the free room website
  * authentication information such as the database access and database names
  * as well as the AES encrypt/decrypt keys.
  * 

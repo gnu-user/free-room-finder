@@ -58,7 +58,7 @@ function generate_session($username, $SESSION_KEY)
  * 
  * NOTE: This method is primarily used to get the username from a valid login cookie
  *
- * @param mysqli $mysqli_conn The mysqli connection object for the ucsc accounts DB
+ * @param mysqli $mysqli_conn The mysqli connection object for the free room finder DB
  * @param string $ses_validate The session data to validate
  * @param string $SESSION_KEY The session encrypt/decrypt key
  * @return string The username stored in the session login/cookie
@@ -107,7 +107,7 @@ function username_from_session($mysqli_conn, $ses_validate, $SESSION_KEY)
  * A function which verifies the login information provided by the user
  * returns true if the login username and password provided are valid
  * 
- * @param mysqli $mysqli_conn The mysqli connection object for the ucsc accounts DB
+ * @param mysqli $mysqli_conn The mysqli connection object for the free room finder DB
  * @param string $username The username of the person logging in
  * @param string $password The password of the person logging in
  * @param string $AES_KEY The AES encrypt/decrypt key for the password
@@ -179,7 +179,7 @@ function verify_login($mysqli_conn, $username, $password, $AES_KEY)
  * A function which validates the session by decrypting the validate session
  * variable and comparing it to the username session variable
  * 
- * @param mysqli $mysqli_conn The mysqli connection object for the ucsc accounts DB
+ * @param mysqli $mysqli_conn The mysqli connection object for the free room finder DB
  * @param string $ses_validate The session data to validate
  * @param string $SESSION_KEY The session encrypt/decrypt key
  * @return boolean true if the decrypted validate session variable matches the
@@ -229,17 +229,17 @@ function verify_login_session($mysqli_conn, $ses_validate, $SESSION_KEY)
 
 /**
  * A function which sets the session data for a valid user who has logged in
- * to the elections website. It starts the session and stores the login
+ * to the free room website. It starts the session and stores the login
  * validation session variable, the username, access_account, and fullname
  * of the user.
  *
- * @param mysqli $mysqli_conn The mysqli connection object for the ucsc accounts DB
+ * @param mysqli $mysqli_conn The mysqli connection object for the free room finder DB
  * @param string $username The username of the valid user who is logged in
  * @param string $SESSION_KEY The session encrypt/decrypt key
  */
 function set_session_data($mysqli_conn, $username, $SESSION_KEY)
 {   
-    //TODO Determine the neccessary session data, copied from election_web
+    //TODO Determine the neccessary session data, copied from free-room_web
     /* Set session info validate is a unique session based on their username */
     $_SESSION['login'] = generate_session($username, $SESSION_KEY);
     
@@ -263,7 +263,7 @@ function set_session_data($mysqli_conn, $username, $SESSION_KEY)
  */
 function set_login_cookie()
 {
-    //TODO determine if the cookie is fine, copied from election_web
+    //TODO determine if the cookie is fine, copied from free room finder DB
 
     /* Verify the login session created and the cookie set successfully */
     if (isset($_SESSION['login']))
@@ -282,13 +282,13 @@ function set_login_cookie()
  * login information set in the cookie is valid for the user, if it
  * is then the user is logged in.
  *
- * @param mysqli $mysqli_conn The mysqli connection object for the ucsc accounts DB
+ * @param mysqli $mysqli_conn The mysqli connection object for the free room finder DB
  * @param string $SESSION_KEY The session encrypt/decrypt key
  * @return TRUE If the cookie is a valid login cookie
  */
 function verify_login_cookie($mysqli_conn, $SESSION_KEY)
 {
-    //TODO verify that this function is valid, copied from election_web
+    //TODO verify that this function is valid, copied from free room finder DB
     /* Verify the login cookie is set and that the login is valid */
     if (isset($_COOKIE['login']))
     {
