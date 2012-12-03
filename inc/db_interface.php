@@ -1035,7 +1035,7 @@ function add_request_occupied($mysqli_conn, $username, $room, $start_time, $end_
     $room_id = get_room_id($mysqli_conn, $room);
     $start_id = get_time_id($mysqli_conn, $start_time);
     $end_id = get_time_id($mysqli_conn, $end_time);
-    $occupy_id = get_occupy_id($mysqli_conn, $room, $start_time, $end_time, $date);
+    $occupy_id = get_occupied($mysqli_conn, $room, $start_time, $end_time, $date);
 
     if($occupy_id["occupy_id"] === NULL)
     {

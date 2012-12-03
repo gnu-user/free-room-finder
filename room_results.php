@@ -144,6 +144,46 @@ if (isset($_POST['select_time'])
 	$available = get_room_open(	$mysqli_conn, $start_time, 
 								$end_time, $day_of_week, 
 								$semester, $campus);
+
+
+	$doc = new DOMDocument(); 
+	$doc->formatOutput = true; 
+
+	$r = $doc->createElement( "BusiestProfs" ); 
+	$doc->appendChild( $r ); 
+
+	foreach( $available as $avail ) 
+	{ 
+		$b = $doc->createElement( "TimeSlot" ); 
+
+		$name = $doc->createElement( "room" ); 
+		$name->appendChild( $doc->createTextNode( $avail['room'] )); 
+		$b->appendChild( $name ); 
+
+		$campus = $doc->createElement( "campus" ); 
+		$campus->appendChild( $doc->createTextNode( $avail['campus'] )); 
+		$b->appendChild( $campus ); 
+
+		$start_time = $doc->createElement( "starttime" ); 
+		$start_time->appendChild( $doc->createTextNode( $avail['starttime'] )); 
+		$b->appendChild( $start_time ); 
+
+		$end_time = $doc->createElement( "endtime" ); 
+		$end_time->appendChild( $doc->createTextNode( $avail['endtime'] )); 
+		$b->appendChild( $end_time ); 
+
+		$date = $doc->createElement( "date" ); 
+		$date->appendChild( $doc->createTextNode( $avail['date'] )); 
+		$b->appendChild( $date );
+
+		$request_num_people = $doc->createElement( "request_num_people" ); 
+		$request_num_people->appendChild( $doc->createTextNode( $avail['request_num_people'] )); 
+		$b->appendChild( $request_num_people ); 
+
+		$r->appendChild( $b ); 
+	}
+	echo $doc->saveXML(); 
+	$doc->save("time_slots.xml");
 }
 
 /* Invalid post data display error message */
