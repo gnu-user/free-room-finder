@@ -71,3 +71,9 @@ form.logout-form {
 	padding-bottom: 5px; 
 	margin-bottom: 0px;
 }
+
+/* Fix for the multipl results paeg XML download buttons */
+div#save-xml {
+	padding-left: 100px;
+	padding-right: 100px;
+}
