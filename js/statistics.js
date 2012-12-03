@@ -38,9 +38,11 @@ var rootURL = "http://free-room.dom/api";
 
 $(document).ready(function () {
 	/* Display the statistics when page is loaded */
-	busyProfs();
-	totalEnrollment();
-	
+	if (window.location.pathname.match(/statistics\.php/))
+	{
+		busyProfs();
+		totalEnrollment();
+	}
 });
 
 /* Get the list of the top 10 busiest professors and populate the table */
@@ -131,7 +133,7 @@ function plotEnrollmentAll(data) {
         },
         series: [{
             name: 'UOIT',
-            data: [100, 220, 300, 500, 900, 1200, 2000]
+            data: [ 300, 546, 1349, 2188, 4210, 5832]
         }]
     };
     
