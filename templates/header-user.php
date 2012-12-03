@@ -72,7 +72,7 @@
     <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container">
-          <a class="brand" href="#">
+          <a class="brand" href="index.php">
             Free Room Finder
           </a>
           <div class="nav-collapse">

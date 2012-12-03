@@ -36,6 +36,7 @@ require_once "inc/free_room_auth.php";
 require_once "inc/db_interface.php";
 require_once "inc/validate.php";
 require_once "inc/verify.php";
+require_once "inc/utility.php";
 
 /*
  * Display the rooms that fit the given post data
@@ -130,54 +131,63 @@ if (isset($_POST['select_time'])
 	 * 		c) have option to download results
 	 * 		d) link to statitics page
 	 */
-	$start_time = "10:10:00";
-	$end_time = "11:00:00";
-	$day = "R";
-	$term = array("2012", "Fall");
-	$campus = "North Oshawa Campus";
+	$duration =  $_POST['select_duration'];
+	$start_time = $_POST['select_time'];
+	$end_time =  get_end_time($start_time, $duration);
+	$date = $_POST['select_date'];
+	$day_of_week = get_day_of_week($date);
+	$semester = get_semester($date);
+	$campus = $_POST['select_campus'];
+	$num_people = $_POST['select_num_people'];
 	
-	/* Get the available rooms */
-	//$available = get_room_open_dur($mysqli_conn, 2, $day, $term, $campus);
-	$available = get_room_open($mysqli_conn, $start_time, $end_time, $day, $term, $campus);
-	
+	/* Get the available rooms */ 
+	$available = get_room_open(	$mysqli_conn, $start_time, 
+								$end_time, $day_of_week, 
+								$semester, $campus);
+
+
+	/* Generate the XML document so user can save the results */
 	$doc = new DOMDocument(); 
 	$doc->formatOutput = true; 
 
-	$r = $doc->createElement( "BusiestProfs" ); 
-	$doc->appendChild( $r ); 
+	$r = $doc->createElement( "TimeSlots" );
+	$r->setAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
+	$r->setAttribute("xsi:noNamespaceSchemaLocation", "time_slots.xsd");
+	$doc->appendChild( $r );
 
 	foreach( $available as $avail ) 
 	{ 
 		$b = $doc->createElement( "TimeSlot" ); 
 
-		$name = $doc->createElement( "room" ); 
-		$name->appendChild( $doc->createTextNode( $avail['room'] )); 
-		$b->appendChild( $name ); 
+		$xml_name = $doc->createElement( "room" ); 
+		$xml_name->appendChild( $doc->createTextNode( $avail['room'] )); 
+		$b->appendChild( $xml_name ); 
 
-		$campus = $doc->createElement( "campus" ); 
-		$campus->appendChild( $doc->createTextNode( $avail['campus'] )); 
-		$b->appendChild( $campus ); 
+		$xml_campus = $doc->createElement( "campus" ); 
+		$xml_campus->appendChild( $doc->createTextNode( $campus )); 
+		$b->appendChild( $xml_campus ); 
 
-		$start_time = $doc->createElement( "starttime" ); 
-		$start_time->appendChild( $doc->createTextNode( $avail['starttime'] )); 
-		$b->appendChild( $start_time ); 
+		$xml_start_time = $doc->createElement( "starttime" ); 
+		$xml_start_time->appendChild( $doc->createTextNode( $start_time )); 
+		$b->appendChild( $xml_start_time ); 
 
-		$end_time = $doc->createElement( "endtime" ); 
-		$end_time->appendChild( $doc->createTextNode( $avail['endtime'] )); 
-		$b->appendChild( $end_time ); 
+		$xml_end_time = $doc->createElement( "endtime" ); 
+		$xml_end_time->appendChild( $doc->createTextNode( $end_time )); 
+		$b->appendChild( $xml_end_time ); 
 
-		$date = $doc->createElement( "date" ); 
-		$date->appendChild( $doc->createTextNode( $avail['date'] )); 
-		$b->appendChild( $date );
+		$xml_date = $doc->createElement( "date" ); 
+		$xml_date->appendChild( $doc->createTextNode( $date )); 
+		$b->appendChild( $xml_date );
 
-		$request_num_people = $doc->createElement( "request_num_people" ); 
-		$request_num_people->appendChild( $doc->createTextNode( $avail['request_num_people'] )); 
-		$b->appendChild( $request_num_people ); 
+		$xml_request_num_people = $doc->createElement( "request_num_people" ); 
+		$xml_request_num_people->appendChild( $doc->createTextNode( $num_people )); 
+		$b->appendChild( $xml_request_num_people ); 
 
 		$r->appendChild( $b ); 
 	}
-	echo $doc->saveXML(); 
-	$doc->save("time_slots.xml");
+
+	/* Save the time slots XML file */
+	$doc->save("etc/time_slots.xml");
 }
 
 /* Invalid post data display error message */

@@ -46,6 +46,9 @@
  */
 function get_day_of_week($date)
 {
+	/* Set the timezone */
+	date_default_timezone_set('America/Toronto');
+	
 	$cur_date = DateTime::createFromFormat('Y-m-d', $date);
 	
 	$day_of_week = '';
@@ -78,5 +81,94 @@ function get_day_of_week($date)
 	}
 	
 	return $day_of_week;
+}
+
+
+/**
+ * A function which returns the end time given a starting time ane the duration
+ * 
+ * @param $start_time The start time formatted as H:i:s
+ * @param $duration The duration of time
+ * 
+ * @return The end time formatted as H:i:s
+ */
+function get_end_time($start_time, $duration)
+{
+	/* Set the timezone */
+	date_default_timezone_set('America/Toronto');
+	
+	$end_time = DateTime::createFromFormat('H:i:s', $start_time);
+	$end_time->add(new DateInterval("PT". $duration ."H"));
+	
+	return $end_time->format('H:i:s');
+}
+
+
+/**
+ * A function which determines the semester and year given the date
+ * 
+ * @param $date The date you want to determine the semester info for, formatted as 'Y-m-d'
+ * @return dictionary containing the semester and year, such as
+ * $semester = array ("semester" => "Fall", "year" => "2012")
+ * 
+ */
+function get_semester($date)
+{
+	$semester = array();
+	
+	/* Set the timezone */
+	date_default_timezone_set('America/Toronto');
+	
+	$cur_date = DateTime::createFromFormat('Y-m-d', $date);
+	$cur_month = $cur_date->format('n');
+	
+	$semester['year'] = $cur_date->format('Y');
+	
+	if ($cur_month >= 1 && $cur_month < 5)
+	{
+		$semester['semester'] = 'Winter';
+	}
+	elseif ($cur_month >= 5 && $cur_month < 9)
+	{
+		$semester['semester'] = 'Summer';
+	}
+	else
+	{
+		$semester['semester'] = 'Fall';
+	}
+	
+	return $semester;
+}
+
+/**
+ * A function which creates a zip archive containing the files specified
+ * 
+ * @param array $files An array of the files to compress into a zip file
+ * @oaran $destination The destination/name to save the zip archive
+ * 
+ */
+function arhive_files($files, $destination)
+{
+	if (count($files))
+	{
+		$zip = new ZipArchive();
+		if($zip->open($destination, ZIPARCHIVE::OVERWRITE) !== true)
+		{
+			return false;
+		}
+		foreach($files as $file)
+		{
+			$zip->addFile($file,$file);
+		}
+		
+		$zip->close();
+
+		/* Return True if the file exists */
+		return file_exists($destination);
+	}
+	else
+	{
+		return false;
+	}
 }
 ?>
