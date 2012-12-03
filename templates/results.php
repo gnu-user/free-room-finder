@@ -138,14 +138,16 @@
 		                foreach ($available as $room)
 		                {
 		                	echo '<tr>';
-		                		echo '<td>';
-		                			echo '<input type="radio" name="group1">';
-		                		echo '</td>';
-		                		echo '<td>' . $room['room'] .'</td>';
-		                		echo '<td>' . $room['starttime'] . '</td>';
-		                		echo '<td>' . $room['endtime'] . '</td>';
-		                		echo '<td>0</td>';
-		                		echo '<td>0</td>';
+		                	echo '<td>';
+		                		echo '<input type="radio" name="select_room" value="' 
+ 								. $room['room'] . ', ' . $room['starttime'] . ', ' 
+ 								. $room['endtime'] . '"';
+		                	echo '</td>';
+		                	echo '<td>' . $room['room'] .'</td>';
+		                	echo '<td>' . $room['starttime'] . '</td>';
+		                	echo '<td>' . $room['endtime'] . '</td>';
+		                	echo '<td>0</td>';
+		                	echo '<td>0</td>';
 		                	echo '</tr>';
 		                }
                 	}
@@ -156,7 +158,8 @@
                 		{
                 			echo '<tr>';
                 			echo '<td>';
-                			echo '<input type="radio" name="group1">';
+		                		echo '<input type="radio" name="select_room" value="'
+ 								. $room['room'] . ', ' . $start_time . ', ' . $end_time . '"';
                 			echo '</td>';
                 			echo '<td>' . $room['room'] .'</td>';
                 			echo '<td>' . $start_time . '</td>';

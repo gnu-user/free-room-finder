@@ -37,6 +37,7 @@ require_once "inc/db_interface.php";
 require_once "inc/validate.php";
 require_once "inc/verify.php";
 
+session_start();
 
 /* Connect to the database */
 $mysqli_conn = new mysqli("localhost", $db_user, $db_pass, $db_name);
@@ -111,5 +112,4 @@ else
 
 /* Include the footer */
 include 'templates/footer.php';
-exit();
 ?>

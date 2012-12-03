@@ -38,6 +38,8 @@ require_once "inc/validate.php";
 require_once "inc/verify.php";
 require_once "inc/utility.php";
 
+session_start();
+
 /*
  * Display the rooms that fit the given post data
  * 
@@ -140,13 +142,19 @@ if (isset($_POST['select_time'])
 	$campus = $_POST['select_campus'];
 	$num_people = $_POST['select_num_people'];
 	
+	/* Save the values in the GLOBALS array */
+	$_SESSION['starttime'] = $start_time;
+	$_SESSION['endtime'] = $end_time;
+	$_SESSION['date'] = $date;
+	$_SESSION['num_people'] = $num_people;
+	
 	/* Get the available rooms */ 
 	$available = get_room_open(	$mysqli_conn, $start_time, 
 								$end_time, $day_of_week, 
 								$semester, $campus);
 
 
-	/* Generate the XML document so user can save the results */
+	/* Generate the XML document so the user can save the results */
 	$doc = new DOMDocument(); 
 	$doc->formatOutput = true; 
 
@@ -204,5 +212,4 @@ include 'templates/results.php';
 
 /* Include the footer */
 include 'templates/footer.php';
-exit();
 ?>

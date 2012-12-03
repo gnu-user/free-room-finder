@@ -32,6 +32,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+session_start();
 
 /*
  * Display different statical representations of the data obtained through scraping the school's course website.
