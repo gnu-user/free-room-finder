@@ -36,6 +36,7 @@ require_once "inc/free_room_auth.php";
 require_once "inc/db_interface.php";
 require_once "inc/validate.php";
 require_once "inc/verify.php";
+require_once "inc/utility.php";
 
 /*
  * Display the rooms that fit the given post data
@@ -130,16 +131,19 @@ if (isset($_POST['select_time'])
 	 * 		c) have option to download results
 	 * 		d) link to statitics page
 	 */
-	$start_time = "10:10:00";
-	$end_time = "11:00:00";
-	$day = "R";
-	$term = array("2012", "Fall");
-	$campus = "North Oshawa Campus";
+	$duration =  $_POST['select_duration'];
+	$start_time = $_POST['select_time'];
+	$end_time =  get_end_time($start_time, $duration);
+	$date = $_POST['select_date'];
+	$day_of_week = get_day_of_week($date);
+	$semester = get_semester($date);
+	$campus = $_POST['select_campus'];
+	$num_people = $_POST['select_num_people'];
 	
-	/* Get the available rooms */
-	$available = get_room_open_dur($mysqli_conn, 2, $day, $term, $campus);
-	//$available = get_room_open($mysqli_conn, $start_time, $end_time, $day, $term, $campus);
-	
+	/* Get the available rooms */ 
+	$available = get_room_open(	$mysqli_conn, $start_time, 
+								$end_time, $day_of_week, 
+								$semester, $campus);
 }
 
 /* Invalid post data display error message */

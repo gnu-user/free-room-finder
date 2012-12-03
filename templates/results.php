@@ -41,8 +41,20 @@
  * DEPENDENCIES
  * ------------
  * 
- * This template depends on the $available array containing the room, start, and end 
- * time that are available for the day.
+ * This template depends on the follow variables to display the information that a user
+ * requested
+ * 
+ * 	$duration =  2
+ *	$start_time = "10:00:00"
+ *	$end_time =  "11:00:00"
+ *	$date = "2012-12-02"
+ *	$campus = "North Oshawa"
+ *	$num_people = 4
+ *	
+ * 
+ * 
+ * In addition, this template depends on the $available array containing the room, start,
+ * and end time that are available for the day.
  * 
  *    $available = array( array("room"       => "UA1350",
  *                            	"starttime"  => "10:10:00",
@@ -71,31 +83,34 @@
 					<div class="control-group">
 			      		<label for="select_time" class="control-label">Time</label>
 				      	<div class="controls">
-				      		<input type="text" placeholder="14:10" disabled>
+				      		<input type="text" placeholder="<?php echo $start_time; ?>" disabled>
 				      	</div>
 		      		</div>
 		      		<div class="control-group">
 			      		<label for="select_duration" class="control-label">Duration</label>
 				      	<div class="controls">
-				      		<input type="text" placeholder="2 hours" disabled>
+				      		<div class="input-append">
+				      			<input type="text" placeholder="<?php echo $duration; ?>" disabled>
+      							<span class="add-on">Hours</span>
+				      		</div>
 				      	</div>
 		      		</div>
 		      		<div class="control-group">
 			      		<label for="select_date" class="control-label">Date</label>
 							<div class="controls">
-							<input type="text" placeholder="12-02-2012" disabled>
+								<input type="text" placeholder="<?php echo $date; ?>" disabled>
 							</div>
 		      		</div>
 		      		<div class="control-group">
 			      		<label for="select_campus" class="control-label">Campus</label>
 				      	<div class="controls">
-				      		<input type="text" placeholder="North Oshawa" disabled>
+				      		<input type="text" placeholder="<?php echo $campus; ?>" disabled>
 				      	</div>
 		      		</div>
 		      		<div class="control-group">
 			      		<label for="select_numberofpeople" class="control-label">Number of People</label>
 				      	<div class="controls">
-				      		<input type="text" placeholder="4" disabled>
+				      		<input type="text" placeholder="<?php echo $num_people; ?>" disabled>
 				      	</div>
 		      		</div>
           <h3>Rooms Found</h3>
