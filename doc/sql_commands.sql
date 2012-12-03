@@ -302,18 +302,17 @@ FROM
     INNER JOIN rooms AS r 
     ON oc.roomId = r.roomId
 WHERE
-    r.name LIKE {given_room} AND
-    st.time = {given_time} AND
-    et.time = {given_time} AND
+    r.name LIKE 'J127' AND
+    st.time = '10:00:00' AND
+    et.time = '11:00:00' AND
     (
-        (DAYNAME(oc.date) LIKE {given_day} + '%' AND
+        (DAYNAME(oc.date) LIKE 'W%' AND
         DAYNAME(oc.date) NOT LIKE 'Thu%') OR
-        DAYNAME(oc.date) NOT LIKE {given_day} + '%' AND
-        DAYNAME(oc.date) NOT LIKE 'Thu%'
+        DAYNAME(oc.date) NOT LIKE 'W%' AND
+        DAYNAME(oc.date) LIKE 'Thu%')
 GROUP BY
-    r.name));
-
-
+    r.name;
+    
 /*
 3. Busiest rooms/least available rooms (like 5 entries)
 Finds the sum of the total num of people occupying a room each day
@@ -578,3 +577,40 @@ WHERE
     c1.courseId = o1.courseId AND
     f1.facultyId = c1.facultyId AND
     f1.code LIKE 'ENGR')
+
+/*
+Get occupied information
+*/
+SELECT 
+    oc.occupyId,
+    oc.num_people
+FROM
+    occupied AS oc 
+    INNER JOIN times AS st 
+    ON oc.start_time = st.timeId 
+    INNER JOIN times AS et 
+    ON oc.end_time = et.timeId 
+    INNER JOIN rooms AS r 
+    ON oc.roomId = r.roomId 
+    WHERE 
+    st.time = {start_time} AND 
+    et.time = {end_time} AND 
+    r.name LIKE {room} AND 
+    date = {date}
+
+SELECT 
+    oc.occupyId,
+    oc.num_people
+FROM
+    occupied AS oc 
+    INNER JOIN times AS st 
+    ON oc.start_time = st.timeId 
+    INNER JOIN times AS et 
+    ON oc.end_time = et.timeId 
+    INNER JOIN rooms AS r 
+    ON oc.roomId = r.roomId 
+    WHERE 
+    st.time = '10:00:00' AND 
+    et.time = '11:00:00' AND 
+    r.name LIKE 'J127' AND 
+    date = '2012-12-02'

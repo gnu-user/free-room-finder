@@ -596,7 +596,7 @@ function get_users_rooms($mysqli_conn, $username)
     return $rooms;
 }
 
-/** TODO test
+/**
  * Get all of the rooms the user has requested
  *
  * @param mysqli $mysqli_conn The mysqli connection object for the ucsc elections DB
@@ -610,31 +610,31 @@ function get_total_occupied($mysqli_conn, $room, $start_time, $end_time, $day)
     global $occupy_table, $time_table, $room_table;
     $rooms = array( array("room"         => "",
                             "total_people" => ""));
-    
+    $day = $day . "%";
     /* Get the total occupied in a room given a start and end time and the day from the database */
-    if ($stmt = $mysqli_conn->prepare("SELECT r.name AS room_name,
-                                                SUM(oc.num_people) AS total_num_people
-                                                FROM " . $occupy_table . " AS oc
-                                                INNER JOIN " . $time_table . " AS st
+    if ($stmt = $mysqli_conn->prepare("SELECT r.name AS room_name, 
+                                                SUM(oc.num_people) AS total_num_people 
+                                                FROM " . $occupy_table . " AS oc 
+                                                INNER JOIN " . $time_table . " AS st 
                                                 ON oc.start_time = st.timeId
                                                 INNER JOIN " . $time_table . " AS et 
                                                 ON oc.end_time = et.timeId
                                                 INNER JOIN " . $room_table . " AS r 
-                                                ON oc.roomId = r.roomIdd 
+                                                ON oc.roomId = r.roomId 
                                                 WHERE 
-                                                r.name LIKE ? AND
-                                                st.time = ? AND
-                                                et.time = ? AND
-                                                (
-                                                    (DAYNAME(oc.date) LIKE ? + '%' AND
-                                                    DAYNAME(oc.date) NOT LIKE 'Thu%') OR
-                                                    DAYNAME(oc.date) NOT LIKE ? + '%' AND
-                                                    DAYNAME(oc.date) NOT LIKE 'Thu%'))
+                                                r.name LIKE ? AND 
+                                                st.time = ? AND 
+                                                et.time = ? AND 
+                                                ( 
+                                                    (DAYNAME(oc.date) LIKE ? AND 
+                                                    DAYNAME(oc.date) NOT LIKE 'Thu%') OR 
+                                                    DAYNAME(oc.date) NOT LIKE ? AND 
+                                                    DAYNAME(oc.date) LIKE 'Thu%') 
                                                 GROUP BY
                                                 r.name" ))
     {
         /* bind parameters for markers */
-        $stmt->bind_param('sssss', $room, $start_time, $end_time, $day, $day);
+        $stmt->bind_param('sssss', $room, $start_time, $end_time, $day , $day);
 
         /* execute query */
         $stmt->execute();
@@ -664,7 +664,7 @@ function get_total_occupied($mysqli_conn, $room, $start_time, $end_time, $day)
     return $rooms;
 }
 
-/** TODO test
+/**
  * Get all of the rooms the user has requested
  *
  * @param mysqli $mysqli_conn The mysqli connection object for the ucsc elections DB
@@ -683,7 +683,7 @@ function get_all_total_occupied($mysqli_conn)
                                                 SUM(oc.num_people) AS total_num_people 
                                                 FROM " . $occupy_table . " AS oc 
                                                 INNER JOIN " . $room_table . " AS r 
-                                                ON oc.roomId = r.roomIdd 
+                                                ON oc.roomId = r.roomId 
                                                 GROUP BY r.name 
                                                 ORDER BY total_num_people DESC" ))
     {
