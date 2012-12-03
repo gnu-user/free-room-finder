@@ -75,7 +75,7 @@ function getBusyProfs()
 	/* Encode the results as JSON */
 	echo '{"busyProfs": ';
 	echo json_encode($busy_profs);
-	echo '}';
+	echo '}}';
 }
 
 /* Gets the total number of registered students per semester per year */
@@ -97,7 +97,7 @@ function getTotalRegistered()
 	/* Encode the results as JSON */
 	echo '{"totalRegistered": ';
 	echo json_encode($total_registered);
-	echo '}';
+	echo '}}';
 }
 
 /* Gets the total number of registered students per faculty per semester per year */
@@ -119,6 +119,6 @@ function getTotalRegisteredFaculty()
 	/* Encode the results as JSON */
 	echo '{"totalRegisteredFaculty": ';
 	echo json_encode($total_reg_fac);
-	echo '}';
+	echo '}}';
 }
 ?>
