@@ -918,6 +918,68 @@ function get_busy_prof($mysqli_conn)
     return $prof;
 }
 
+
+/**
+ * Busiest Professors
+ *
+ * @param mysqli $mysqli_conn The mysqli connection object for the ucsc elections DB
+ * @param $username the username of the user currently logged in.
+ *
+ * @return $prof The professors and number of students registered in courses taught by the
+ * professor order by the number of students so that the first element will contain the
+ * professor who is "the busiest"
+ */
+function get_busy_prof_num($mysqli_conn, $num)
+{
+	global $offering_table, $professor_table;
+	$prof = array( array("professor"   => "",
+			"student_num" => ""));
+
+	/* Get the total occupied in a a room from the database */
+	if ($stmt = $mysqli_conn->prepare("SELECT p.name,
+                                                SUM(o.registered) AS total_students
+                                                FROM " . $offering_table . " AS o
+                                                INNER JOIN " . $professor_table . " AS p
+                                                ON o.profId = p.profId
+                                                GROUP BY
+                                                p.name
+                                                ORDER BY
+                                                total_students DESC LIMIT ?" ))
+	{
+		/* bind parameters for markers */
+		$stmt->bind_param('d', $num);
+		
+		/* execute query */
+		$stmt->execute();
+
+		/* bind result variables */
+		$stmt->bind_result($professor, $student_num);
+
+		$i = 0;
+		while ($stmt->fetch())
+		{
+			//TODO verify that this is valid
+			$prof[$i]["professor"] = $professor;
+			$prof[$i]["student_num"] = $student_num;
+			$i++;
+		}
+
+		/* close statement */
+		$stmt->close();
+	}
+
+	/*
+	 * Return a 2D array contain:
+	* {
+	*   { total_registered,
+	*     year,
+	*     semester}
+	* }
+	*/
+	return $prof;
+}
+
+
 /**
  * Remove the given room requests
  *

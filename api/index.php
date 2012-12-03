@@ -47,6 +47,7 @@ $app = new Slim();
 
 /* Gets a list of the busiest profs on campus with the number of students they have */
 $app->get('/busyprofs', 'getBusyProfs');
+$app->get('/busyprofs/:num', 'getBusyProfsNum');
 
 /* Gets the total number of registered students per semester per year */
 $app->get('/totalregistered', 'getTotalRegistered');
@@ -77,6 +78,29 @@ function getBusyProfs()
 	echo json_encode($busy_profs);
 	echo '}}';
 }
+
+/* Gets only the specified number of busiest profs */
+function getBusyProfsNum($num)
+{
+	global $db_user, $db_pass, $db_name;
+
+	/* Connect to the database */
+	$mysqli_conn = new mysqli("localhost", $db_user, $db_pass, $db_name);
+
+	/* check connection */
+	if (mysqli_connect_errno()) {
+		printf("Connect failed: %s\n", mysqli_connect_error());
+		exit();
+	}
+
+	$busy_profs = get_busy_prof_num($mysqli_conn, $num);
+
+	/* Encode the results as JSON */
+	echo '{"busyProfs": ';
+	echo json_encode($busy_profs);
+	echo '}}';
+}
+
 
 /* Gets the total number of registered students per semester per year */
 function getTotalRegistered()
