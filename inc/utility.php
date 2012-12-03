@@ -140,4 +140,35 @@ function get_semester($date)
 	return $semester;
 }
 
+/**
+ * A function which creates a zip archive containing the files specified
+ * 
+ * @param array $files An array of the files to compress into a zip file
+ * @oaran $destination The destination/name to save the zip archive
+ * 
+ */
+function arhive_files($files, $destination)
+{
+	if (count($files))
+	{
+		$zip = new ZipArchive();
+		if($zip->open($destination, ZIPARCHIVE::OVERWRITE) !== true)
+		{
+			return false;
+		}
+		foreach($files as $file)
+		{
+			$zip->addFile($file,$file);
+		}
+		
+		$zip->close();
+
+		/* Return True if the file exists */
+		return file_exists($destination);
+	}
+	else
+	{
+		return false;
+	}
+}
 ?>
