@@ -38,7 +38,7 @@
 		<h1> Welcome to the Free Room Finder! </h1>
 	</div>
 	<div class="row">
-		<div class="span8">
+		<div class="well span8">
 			<form class="form-horizontal" action="login.php" method="post">
 				<h2> Please sign in</h2>
 				<br />

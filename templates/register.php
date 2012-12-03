@@ -91,12 +91,5 @@
 				</fieldset>
 			</form>
 		</div>
- 	</div>
- </section>
- 
- 
- 
- 
- 
- 
- 
+	</div>
+</section>
