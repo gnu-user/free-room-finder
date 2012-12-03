@@ -59,9 +59,13 @@ if (verify_login_cookie($mysqli_conn, $SESSION_KEY) === false
 	header('Location: login.php');
 }
 
-/* User has a valid login cookie set / has logged into the site with valid account */
-elseif (verify_login_cookie($mysqli_conn, $SESSION_KEY)
-		|| verify_login_session($mysqli_conn, $_SESSION['login'], $SESSION_KEY))
+/* User has a valid login cookie set / has logged into the site with valid account 
+ * and the POST data isset */
+elseif ((verify_login_cookie($mysqli_conn, $SESSION_KEY)
+			|| verify_login_session($mysqli_conn, $_SESSION['login'], $SESSION_KEY))
+		&& isset($_POST['select_room'])
+		&& isset($_SESSION['date'])
+		&& isset($_SESSION['num_people']))
 {
 	/* FIX, forgot to account for when user has login cookie set but there is no session
 	 * data, have to retrieve username from cookie and then set the session data
