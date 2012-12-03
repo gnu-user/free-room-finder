@@ -71,7 +71,9 @@ function getBusyProfs()
 		exit();
 	}
 	
-	$busy_profs = get_busy_prof($mysqli_conn);
+	date_default_timezone_set('America/Toronto');
+	$cur_year = date('Y');
+	$busy_profs = get_busy_prof($mysqli_conn, $cur_year);
 	
 	/* Encode the results as JSON */
 	echo '{"busyProfs": ';
@@ -93,7 +95,9 @@ function getBusyProfsNum($num)
 		exit();
 	}
 
-	$busy_profs = get_busy_prof_num($mysqli_conn, $num);
+	date_default_timezone_set('America/Toronto');
+	$cur_year = date('Y');
+	$busy_profs = get_busy_prof_num($mysqli_conn, $num, $cur_year);
 
 	/* Encode the results as JSON */
 	echo '{"busyProfs": ';

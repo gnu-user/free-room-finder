@@ -893,7 +893,7 @@ function get_busy_prof($mysqli_conn, $year)
                                                 total_students DESC" ))
     {
         /* bind parameters for markers */
-        $stmt->bind_param('d', $year);
+        $stmt->bind_param('s', $year);
 
         /* execute query */
         $stmt->execute();
@@ -937,7 +937,7 @@ function get_busy_prof($mysqli_conn, $year)
  */
 function get_busy_prof_num($mysqli_conn, $num, $year)
 {
-	global $offering_table, $professor_table;
+    global $offering_table, $professor_table, $semester_table;
 	$prof = array( array("professor"   => "",
 			"student_num" => ""));
 
@@ -957,7 +957,7 @@ function get_busy_prof_num($mysqli_conn, $num, $year)
                                                 total_students DESC LIMIT ?" ))
 	{
 		/* bind parameters for markers */
-		$stmt->bind_param('d', $num, $year);
+		$stmt->bind_param('sd', $year, $num);
 		
 		/* execute query */
 		$stmt->execute();
