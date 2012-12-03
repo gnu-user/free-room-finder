@@ -871,7 +871,7 @@ function get_total_reg_fac($mysqli_conn)
  * professor order by the number of students so that the first element will contain the 
  * professor who is "the busiest"
  */
-function get_busy_prof($mysqli_conn)
+function get_busy_prof($mysqli_conn, $year)
 {
     global $offering_table, $professor_table, $semester_table;
     $prof = array( array("professor"   => "",
@@ -893,7 +893,7 @@ function get_busy_prof($mysqli_conn)
                                                 total_students DESC" ))
     {
         /* bind parameters for markers */
-        $stmt->bind_param('d', '2012');
+        $stmt->bind_param('d', $year);
 
         /* execute query */
         $stmt->execute();
@@ -935,7 +935,7 @@ function get_busy_prof($mysqli_conn)
  * professor order by the number of students so that the first element will contain the
  * professor who is "the busiest"
  */
-function get_busy_prof_num($mysqli_conn, $num)
+function get_busy_prof_num($mysqli_conn, $num, $year)
 {
 	global $offering_table, $professor_table;
 	$prof = array( array("professor"   => "",
@@ -957,7 +957,7 @@ function get_busy_prof_num($mysqli_conn, $num)
                                                 total_students DESC LIMIT ?" ))
 	{
 		/* bind parameters for markers */
-		$stmt->bind_param('d', $num, '2012');
+		$stmt->bind_param('d', $num, $year);
 		
 		/* execute query */
 		$stmt->execute();
