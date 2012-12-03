@@ -418,6 +418,10 @@ FROM
     offerings AS o 
     INNER JOIN professors AS p
     ON o.profId = p.profId
+    INNER JOIN semesters AS s 
+    ON o.semesterId = s.semesterId
+WHERE
+    s.year = '2012'
 GROUP BY
     p.name
 ORDER BY 

@@ -873,7 +873,7 @@ function get_total_reg_fac($mysqli_conn)
  */
 function get_busy_prof($mysqli_conn)
 {
-    global $offering_table, $professor_table;
+    global $offering_table, $professor_table, $semester_table;
     $prof = array( array("professor"   => "",
                          "student_num" => ""));
     
@@ -883,11 +883,17 @@ function get_busy_prof($mysqli_conn)
                                                 FROM " . $offering_table . " AS o 
                                                 INNER JOIN " . $professor_table . " AS p
                                                 ON o.profId = p.profId 
+                                                INNER JOIN " . $semester_table . " AS s 
+                                                ON o.semesterId = s.semesterId 
+                                                WHERE
+                                                s.year = ?
                                                 GROUP BY 
                                                 p.name 
                                                 ORDER BY 
                                                 total_students DESC" ))
     {
+        /* bind parameters for markers */
+        $stmt->bind_param('d', '2012');
 
         /* execute query */
         $stmt->execute();
@@ -941,13 +947,17 @@ function get_busy_prof_num($mysqli_conn, $num)
                                                 FROM " . $offering_table . " AS o
                                                 INNER JOIN " . $professor_table . " AS p
                                                 ON o.profId = p.profId
+                                                INNER JOIN " . $semester_table . " AS s 
+                                                ON o.semesterId = s.semesterId 
+                                                WHERE
+                                                s.year = ?
                                                 GROUP BY
                                                 p.name
                                                 ORDER BY
                                                 total_students DESC LIMIT ?" ))
 	{
 		/* bind parameters for markers */
-		$stmt->bind_param('d', $num);
+		$stmt->bind_param('d', $num, '2012');
 		
 		/* execute query */
 		$stmt->execute();
