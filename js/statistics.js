@@ -38,9 +38,8 @@ var rootURL = "http://free-room.dom/api";
 
 $(document).ready(function () {
 	/* Display the statistics when page is loaded */
-	
 	busyProfs();
-	plotEnrollmentAll();
+	totalEnrollment();
 	
 });
 
@@ -54,6 +53,18 @@ function busyProfs() {
 		success: displayTable
 	});
 }
+
+/* Get the total enrollment for all students and plot the chart */
+function totalEnrollment() {
+	console.log('busyprofs');
+	$.ajax({
+		type: 'GET',
+		url: rootURL + '/totalregistered',
+		dataType: "json", // data type of response
+		success: plotEnrollmentAll
+	});
+}
+
 
 /* Function which populates the busiest profs table with the top 10
  * busiest professors
@@ -69,10 +80,10 @@ function displayTable(data) {
 }
 
 /* Function which plots the student enrollment for all students */
-function plotEnrollmentAll() {
+function plotEnrollmentAll(data) {
 	console.log('plotEnrollmentAll');
 	var chart;
-    chart = new Highcharts.Chart({
+    var options = {
         chart: {
             renderTo: 'enrollment_all',
             type: 'area'
@@ -120,7 +131,26 @@ function plotEnrollmentAll() {
         },
         series: [{
             name: 'UOIT',
-            data: [10, 143, 369, 640, 1005, 1436, 2063, 3057, 4618, 6112]
+            data: [100, 220, 300, 500, 900, 1200, 2000]
         }]
-    });
+    };
+    
+    /* Get the enrollment data from the REST api and add it to the series */
+	console.log('enrollmentAllGetData');
+	// JAX-RS serializes an empty list as null, and a 'collection of one' as an object (not an 'array of one')
+	var list = data == null ? [] : (data.totalRegistered instanceof Array ? data.totalRegistered : [data.totalRegistered]);
+	var arr_registered = [];
+	var approx_reg = 0;
+	
+	$.each(list, function(index, enrollment) {
+		alert(parseInt(enrollment.registered));
+		
+		/* Approximate the number of students attending as total / 5 (assume avg. course load of 5) */
+		approx_reg = parseInt(enrollment.registered) / 5;
+		
+		/* Add the approx number of registered students to the plotting data */
+		options.series[0].data.push(approx_reg);
+	});
+	
+	chart = new Highcharts.Chart(options);
 }
