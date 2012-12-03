@@ -87,8 +87,11 @@ if (verify_login_cookie($mysqli_conn, $SESSION_KEY) === false
 	/* b) The login information is invalid display the invalid login page */
 	else
 	{
+		/* Invalid password entered, used by template to display error message */
+		$invalid = true;
+		
 		include 'templates/header.php';
-		include 'templates/invalid-login.php';
+		include 'templates/login.php';
 	}
 }
 /* 2. User is not logged in, display the login page template */

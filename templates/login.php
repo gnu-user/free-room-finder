@@ -30,6 +30,13 @@
  *
  *  You should have received a copy of the GNU Affero General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *  
+ *  DEPENDENCIES
+ *  ------------
+ *  
+ *  For displaying a notification that the login information is invalid checks if
+ *  $invalid isset, if so displays a notice
+ *  
  */
  ?>
 
@@ -38,6 +45,16 @@
 		<h1> Welcome to the Free Room Finder! </h1>
 	</div>
 	<div class="row">
+		<!--  Display an error if they entered invalid credentials -->
+		<?php
+			if (isset($invalid))
+			{
+				echo '<div class="alert alert-error span8">
+	              		<button type="button" class="close" data-dismiss="alert">×</button>
+	             	 	<strong>Invalid Credentials!</strong> Please enter a valid username and password.
+	            	  </div>';
+			}
+     	?>
 		<div class="well span8">
 			<form class="form-horizontal" action="login.php" method="post">
 				<h2> Please sign in</h2>
