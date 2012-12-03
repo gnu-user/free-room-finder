@@ -242,9 +242,9 @@ FROM
     INNER JOIN campus AS c
     ON r.campusId = c.campusId
 WHERE
-    u.username LIKE {given_username}
+    u.username LIKE "test"
 ORDER BY
-    oc.date;
+    oc.date
 
 
 /*
@@ -353,12 +353,12 @@ FROM
     ON o.semesterId = s.semesterId
     LEFT JOIN rooms AS r
     ON o.roomId = r.roomId
-GROUP BY
-    s.year,
-    s.semester
 WHERE
     ct.acr <> 'LAB' AND
     ct.acr <> 'TUT'
+GROUP BY
+    s.year,
+    s.semester
 
 
 /*

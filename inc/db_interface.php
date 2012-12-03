@@ -506,7 +506,7 @@ function get_rooms($mysqli_conn, $campus)
     return $rooms;
 }
 
-/** TODO test
+/**
  * Get all of the rooms the user has requested
  *
  * @param mysqli $mysqli_conn The mysqli connection object for the ucsc elections DB
@@ -517,7 +517,7 @@ function get_rooms($mysqli_conn, $campus)
  */
 function get_users_rooms($mysqli_conn, $username)
 {
-    global $time_table, $date_table, $campus_table, $user_table, $room_table, $room_request_table;
+    global $time_table, $date_table, $campus_table, $user_table, $room_table, $room_request_table, $occupy_table;
     $rooms = array( array("room"         => "",
                           "campus"       => "",
                           "starttime"    => "",
@@ -536,7 +536,7 @@ function get_users_rooms($mysqli_conn, $username)
                                                 rr.num_people AS num_people,
                                                 rr.requestId,
                                                 oc.num_people AS total_num_people
-                                                FROM " . $users . " AS u
+                                                FROM " . $user_table . " AS u
                                                 INNER JOIN " . $room_request_table . " AS rr
                                                 ON u.userId = rr.userId
                                                 INNER JOIN " . $occupy_table . " AS oc 
@@ -1062,7 +1062,7 @@ function update_occupied($mysqli_conn, $username, $occupy_id, $num_people, $addi
 
 }
 
-/** TODO test
+/**
  * Add a room request to the database
  *
  * @param mysqli $mysqli_conn The mysqli connection object for the ucsc elections DB

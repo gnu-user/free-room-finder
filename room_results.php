@@ -156,8 +156,12 @@ if (isset($_POST['select_time'])
 
 	/* Generate the XML document so the user can save the results */
 	$doc = new DOMDocument(); 
-	$doc->formatOutput = true; 
-
+	$doc->formatOutput = true;
+	
+	/* Add the style sheet */
+	$style = $doc->createProcessingInstruction( 'xml-stylesheet', 'type="text/xsl" href="time_slots.xsl"' );
+    $doc->appendChild( $style );
+    
 	$r = $doc->createElement( "TimeSlots" );
 	$r->setAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
 	$r->setAttribute("xsi:noNamespaceSchemaLocation", "time_slots.xsd");
