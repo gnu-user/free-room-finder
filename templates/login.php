@@ -67,7 +67,9 @@
 							</div>
 						</div>
 				</fieldset>
-				<br />
+			</form>
+			<br />
+			<form class="form-horizontal" action="register.php">
 				<!-- 'Not a member...' and register button' -->
 				<h2>Not a Member?</h2>
 				<br />
@@ -75,7 +77,7 @@
 					<div class="controls">	
 						<button type="submit" id="register_button" name="register_button" class="btn btn-large">Register!</button>
 					</div>
-				</div>	
+				</div>
 			</form>
 		</div>
 	</div>
