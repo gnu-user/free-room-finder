@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="time_slots.xsl"?>
+<TimeSlots>
+  <TimeSlot>
+    <room>UA1350</room>
+    <campus>NORTH</campus>
+    <starttime>10:00:00</starttime>
+    <endtime>11:00:00</endtime>
+    <date>2012-12-02</date>
+    <request_num_people>10</request_num_people>
+  </TimeSlot>
+  <TimeSlot>
+    <room>UA1350</room>
+    <campus>NORTH</campus>
+    <starttime>10:00:00</starttime>
+    <endtime>11:00:00</endtime>
+    <date>2012-12-02</date>
+    <request_num_people>10</request_num_people>
+  </TimeSlot>
+  <TimeSlot>
+    <room>UA1350</room>
+    <campus>NORTH</campus>
+    <starttime>10:00:00</starttime>
+    <endtime>11:00:00</endtime>
+    <date>2012-12-02</date>
+    <request_num_people>10</request_num_people>
+  </TimeSlot>
+</TimeSlots>

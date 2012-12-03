@@ -187,10 +187,10 @@ function get_year($mysqli_conn)
      */
     $semesters = array();
     $term = array(	$current => array($year => 0, $semester => 0), 
-					$next    => array($year => 0, $semester => 0));
+					          $next    => array($year => 0, $semester => 0));
 
     /* The current election year */
-    $year = date('Y');
+    $cur_year = date('Y');
 
     /* The next year */
     $new_year = $year;
@@ -211,7 +211,7 @@ function get_year($mysqli_conn)
                                                 year)" ))
     {
         /* bind parameters for markers */
-        $stmt->bind_param('ssss', $year, $semesters[0], new_year, $semesters[1]);
+        $stmt->bind_param('ssss', $cur_year, $semesters[0], $new_year, $semesters[1]);
 
         /* execute query */
         $stmt->execute();
