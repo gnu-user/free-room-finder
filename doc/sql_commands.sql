@@ -474,3 +474,106 @@ ORDER BY
  * Could also extrapolate what year each building first "opened" (since no rooms from that building would have been free the previous years)
 
  */
+
+ /*
+    Query using ANY, with a subquery
+ */
+ SELECT
+    c.name,
+    COUNT(o.courseId) AS number_of_courses
+FROM
+    offerings AS o,
+    faculties AS f,
+    professors AS p,
+    courses AS c
+WHERE
+    p.profId = o.profId AND
+    f.facultyId = c.facultyId AND
+    c.courseId = o.courseId AND
+    f.code = ANY
+    (SELECT
+           f2.code
+     FROM
+           faculties AS f2
+     WHERE 
+           f2.code LIKE '%H%' OR
+           f2.code LIKE '%T%')
+GROUP BY
+        c.name;
+
+
+/*
+Query using correlated nested query
+*/
+SELECT
+    c.name
+FROM
+    courses AS c,
+    offerings AS o,
+    faculties AS f
+WHERE
+    c.facultyId = f.facultyId AND
+    c.courseId = o.courseId AND
+    o.start_time = ANY 
+    (SELECT
+        o2.start_time
+    FROM
+        offerings AS o2,
+        courses AS c2,
+        faculties AS f2
+    WHERE
+        c2.facultyId = f2.facultyId AND
+        c2.courseId = o2.courseId AND
+        f2.facultyId <> f.facultyId);
+
+/*
+Fake full JOIN
+*/
+SELECT
+   o.courseId AS course_name,
+   o.day,
+   r.name AS room_name,
+   r.room_capacity
+FROM
+   rooms AS r RIGHT JOIN
+   offerings AS o ON
+   r.roomId = o.roomId)
+UNION
+(SELECT
+   o.courseId AS course_name,
+   o.day,
+   r.name AS room_name,
+   r.room_capacity
+FROM
+   rooms AS r LEFT JOIN
+   offerings AS o ON
+   r.roomId = o.roomId);
+
+/*
+nested UNION
+*/
+SELECT
+    p.name
+FROM
+    professors AS p,
+    offerings AS o,
+    courses AS c,
+    faculties AS f
+WHERE
+    p.profId = o.profId AND
+    c.courseId = o.courseId AND
+    f.facultyId = c.facultyId AND
+    f.code LIKE 'MATH')
+UNION
+(SELECT
+    p1.name
+FROM
+    professors AS p1,
+    offerings AS o1,
+    courses AS c1,
+    faculties AS f1
+WHERE
+    p1.profId = o1.profId AND
+    c1.courseId = o1.courseId AND
+    f1.facultyId = c1.facultyId AND
+    f1.code LIKE 'ENGR')

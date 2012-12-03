@@ -1011,7 +1011,7 @@ function update_occupied($mysqli_conn, $username, $occupy_id, $num_people, $addi
  * @param $date the date that user requested the room for
  * @param $num_people the total number of people to attend the request
  * 
- * @return $addition true if successful, false otherwise
+ * @return $success true if successful, false otherwise
  */
 function add_request_occupied($mysqli_conn, $username, $room, $start_time, $end_time, $date, $num_people)
 {
@@ -1037,11 +1037,18 @@ function add_request_occupied($mysqli_conn, $username, $room, $start_time, $end_
     $end_id = get_time_id($mysqli_conn, $end_time);
     $occupy_id = get_occupied($mysqli_conn, $room, $start_time, $end_time, $date);
 
-    if($occupy_id["occupy_id"] === NULL)
+    if($occupy_id["occupy_id"] === 0)
     {
         /* No previous occupied entry matching the given time, date and room */
         /* Insert the occupied value */
-        $occupy_id["occupy_id"] = add_occupied($mysqli_conn, $room_id, $start_id, $end_id, $date, $num_people);
+        if(add_occupied($mysqli_conn, $room_id, $start_id, $end_id, $date, $num_people))
+        {
+        	$occupy_id["occupy_id"] = get_occupied($mysqli_conn, $room, $start_time, $end_time, $date);
+        }
+        else
+       {
+        	return False;
+        }
     }
     else
     {
@@ -1051,7 +1058,7 @@ function add_request_occupied($mysqli_conn, $username, $room, $start_time, $end_
     }
 
     /* Add a check if the room request has not already been made */
-    if(get_room_request_id($mysqli_conn, $occupy_id["occupy_id"], $user_id, $num_people))
+    if(!get_room_request_id($mysqli_conn, $occupy_id["occupy_id"], $user_id, $num_people))
     {
         add_room_request($mysqli_conn, $occupy_id["occupy_id"], $user_id, $num_people);
         return True;
@@ -1319,6 +1326,227 @@ function get_room_request_num($mysqli_conn, $request_id)
         $stmt->close();
     }
     return $num_people;
+}
+
+/**
+ * @param mysqli $mysqli_conn The mysqli connection object for the ucsc elections DB
+ *
+ * @return $courses the courses and number of courses
+ */
+function get_course_count($mysqli_conn)
+{
+    global $offering_table, $faculty_table, $professor_table, $course_table;
+    $num_people = 0;
+    $courses = array(array( "course"     => "",
+                            "num_course" => ""));
+    /* Get the occupied # people or Id, current use is to determine if exists */
+    if ($stmt = $mysqli_conn->prepare("SELECT
+                                       c.name,
+                                       COUNT(o.courseId) AS number_of_courses
+                                       FROM " . $offering_table . " AS o, "
+                                       . $faculty_table . " AS f, "
+                                       . $professor_table . " AS p, "
+                                       . $course_table . " AS c 
+                                       WHERE
+                                       p.profId = o.profId AND
+                                       f.facultyId = c.facultyId AND
+                                       c.courseId = o.courseId AND
+                                       f.code = ANY
+                                       (SELECT
+                                              f2.code
+                                        FROM
+                                              faculties AS f2
+                                        WHERE 
+                                              f2.code LIKE '%H%' OR
+                                              f2.code LIKE '%T%')
+                                        GROUP BY
+                                           c.name" ))
+    {
+
+        /* execute query */
+        $stmt->execute();
+
+        /* bind result variables */
+        $stmt->bind_result($name, $num);
+
+        while($stmt->fetch())
+        {
+            $courses["course"] = $name;
+            $courses["num_course"] = $num;
+        }
+
+        /* close statement */
+        $stmt->close();
+    }
+    return $courses;
+}
+
+/**
+ * Returns all course names that start at the specified time (where that time is
+ * whether any two courses from the same faculty share the same start time
+ * regardless of day).
+ * 
+ * @param mysqli $mysqli_conn The mysqli connection object for the ucsc elections DB
+ *
+ * @return $courses the courses' names
+ */
+function get_same_start_time($mysqli_conn)
+{
+    global $offering_table, $faculty_table, $course_table;
+    $num_people = 0;
+    $courses = array(array( "course"     => ""));
+    /* Get the occupied # people or Id, current use is to determine if exists */
+    if ($stmt = $mysqli_conn->prepare("SELECT
+                                        c.name
+                                    FROM "
+                                        . $course_table . " AS c, " 
+                                        . $offering_table . " AS o, "
+                                        . $faculty_table . " AS f 
+                                    WHERE
+                                        c.facultyId = f.facultyId AND
+                                        c.courseId = o.courseId AND
+                                        o.start_time = ANY 
+                                        (SELECT
+                                            o2.start_time
+                                        FROM
+                                            offerings AS o2,
+                                            courses AS c2,
+                                            faculties AS f2
+                                        WHERE
+                                            c2.facultyId = f2.facultyId AND
+                                            c2.courseId = o2.courseId AND
+                                            f2.facultyId <> f.facultyId)" ))
+    {
+
+        /* execute query */
+        $stmt->execute();
+
+        /* bind result variables */
+        $stmt->bind_result($name);
+
+        while($stmt->fetch())
+        {
+            $courses["course"] = $name;
+        }
+
+        /* close statement */
+        $stmt->close();
+    }
+    return $courses;
+}
+
+/**
+ * Display all of the rooms on campus with the day and room capacity. 
+ * 
+ * @param mysqli $mysqli_conn The mysqli connection object for the ucsc elections DB
+ *
+ * @return $courses the course_id, day, name and room_capacity
+ */
+function get_all_class_rooms($mysqli_conn)
+{
+    global $offering_table, $room_table;
+    $num_people = 0;
+    $courses = array(array( "course_id"     => "",
+                            "day"           => "",
+                            "name"          => "",
+                            "room_cap"      => ""));
+    /* Get the occupied # people or Id, current use is to determine if exists */
+    if ($stmt = $mysqli_conn->prepare("SELECT
+                                       o.courseId AS course_name,
+                                       o.day,
+                                       r.name AS room_name,
+                                       r.room_capacity
+                                    FROM "
+                                       . $room_table . " AS r RIGHT JOIN "
+                                       . $offering_table . " AS o ON  
+                                       r.roomId = o.roomId)
+                                    UNION
+                                    (SELECT
+                                       o.courseId AS course_name,
+                                       o.day,
+                                       r.name AS room_name,
+                                       r.room_capacity
+                                    FROM "
+                                       . $room_table . " AS r LEFT JOIN "
+                                       . $offering_table . " AS o ON 
+                                       r.roomId = o.roomId)" ))
+    {
+
+        /* execute query */
+        $stmt->execute();
+
+        /* bind result variables */
+        $stmt->bind_result($id, $day, $name, $cap);
+
+        while($stmt->fetch())
+        {
+            $courses["course_id"] = $id;
+            $courses["day"] = $day;
+            $courses["name"] = $name;
+            $courses["room_cap"] = $cap;
+        }
+
+        /* close statement */
+        $stmt->close();
+    }
+    return $courses;
+}
+
+/**
+ * Display all of the rooms on campus with the day and room capacity. 
+ * 
+ * @param mysqli $mysqli_conn The mysqli connection object for the ucsc elections DB
+ *
+ * @return $prof the professor name
+ */
+function get_profs($mysqli_conn)
+{
+    global $offering_table, $faculty_table, $course_table, $professor_table;
+    $num_people = 0;
+    $prof = array(array( "name"     => ""));
+    /* Get the occupied # people or Id, current use is to determine if exists */
+    if ($stmt = $mysqli_conn->prepare("SELECT
+                                        p.name
+                                      FROM "
+                                        . $professor_table . " AS p, "
+                                        . $offering_table . " AS o, "
+                                        . $course_table . " AS c, "
+                                        . $faculty_table . " AS f 
+                                      WHERE
+                                        p.profId = o.profId AND
+                                        c.courseId = o.courseId AND
+                                        f.facultyId = c.facultyId AND
+                                        f.code LIKE 'MATH')
+                                      UNION
+                                      (SELECT
+                                        p1.name
+                                      FROM "
+                                        . $professor_table . " AS p1, " 
+                                        . $offering_table . " AS o1, " 
+                                        . $course_table . " AS c1, " 
+                                        . $faculty_table . " AS f1
+                                      WHERE
+                                        p1.profId = o1.profId AND
+                                        c1.courseId = o1.courseId AND
+                                        f1.facultyId = c1.facultyId AND
+                                        f1.code LIKE 'ENGR')" ))
+    {
+
+        /* execute query */
+        $stmt->execute();
+
+        /* bind result variables */
+        $stmt->bind_result($name);
+
+        while($stmt->fetch())
+        {
+            $prof["name"] = $name;
+        }
+
+        /* close statement */
+        $stmt->close();
+    }
+    return $prof;
 }
 
 ?>
