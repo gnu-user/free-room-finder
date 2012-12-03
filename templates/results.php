@@ -113,71 +113,72 @@
 				      		<input type="text" placeholder="<?php echo $num_people; ?>" disabled>
 				      	</div>
 		      		</div>
-          <h3>Rooms Found</h3>
-            <table class="table table-striped">
-              <thead>
-                <tr>
-                  <th width=50px>Select</th>	
-                  <th width=50px>Room</th>
-                  <th width=50px>Start Time</th>
-                  <th width=50px>End Time</th>
-                  <th width=100px>Estimated <br>Number of People</th>
-                  <th width=100px>Average <br>Number of People</th>
-                </tr>
-              </thead>
-              <tbody>
-                <!-- Display the rooms found -->
-                <?php 
-                	/* If the available array contains the start and end time then
-                	 * display the start and end time for each room stored in the
-                	 * array, otherwise just display the start and end time provided
-                	 * by the user.
-                	 */
-                	if (isset($available[0]['starttime']) && isset($available[0]['endtime']))
-                	{
-		                foreach ($available as $room)
-		                {
-		                	echo '<tr>';
-		                	echo '<td>';
-		                		echo '<input type="radio" name="select_room" value="' 
- 								. $room['room'] . ', ' . $room['starttime'] . ', ' 
- 								. $room['endtime'] . '"';
-		                	echo '</td>';
-		                	echo '<td>' . $room['room'] .'</td>';
-		                	echo '<td>' . $room['starttime'] . '</td>';
-		                	echo '<td>' . $room['endtime'] . '</td>';
-		                	echo '<td>0</td>';
-		                	echo '<td>0</td>';
-		                	echo '</tr>';
-		                }
-                	}
-                	/* Otherwise, display the start and end time provided by the user */
-                	else
-                	{
-                		foreach ($available as $room)
-                		{
-                			echo '<tr>';
-                			echo '<td>';
-		                		echo '<input type="radio" name="select_room" value="'
- 								. $room['room'] . ', ' . $start_time . ', ' . $end_time . '"';
-                			echo '</td>';
-                			echo '<td>' . $room['room'] .'</td>';
-                			echo '<td>' . $start_time . '</td>';
-                			echo '<td>' . $end_time . '</td>';
-                			echo '<td>0</td>';
-                			echo '<td>0</td>';
-                			echo '</tr>';
-                		}
-                	}
-                ?>
-              </tbody>
-            </table>
-		      		<div class="form-actions">
-		            	<button class="btn btn-primary" type="submit" name="book_room" value="Book Room">Book Room</button>
-		          		<!-- File and XML schema downloads -->
-		          		<a class="btn btn-primary" href="etc/time_slots.xml">Save Rooms</a>
-		          		<a class="btn btn-primary" href="etc/time_slots.xsd">Save Schema</a>
-          		   	</div>
+          			<h3>Rooms Found</h3>
+		            <table class="table table-striped">
+		              <thead>
+		                <tr>
+		                  <th width=50px>Select</th>	
+		                  <th width=50px>Room</th>
+		                  <th width=50px>Start Time</th>
+		                  <th width=50px>End Time</th>
+		                  <th width=100px>Estimated <br>Number of People</th>
+		                  <th width=100px>Average <br>Number of People</th>
+		                </tr>
+		              </thead>
+		              <tbody>
+		                <!-- Display the rooms found -->
+		                <?php 
+		                	/* If the available array contains the start and end time then
+		                	 * display the start and end time for each room stored in the
+		                	 * array, otherwise just display the start and end time provided
+		                	 * by the user.
+		                	 */
+		                	if (isset($available[0]['starttime']) && isset($available[0]['endtime']))
+		                	{
+				                foreach ($available as $room)
+				                {
+				                	echo '<tr>';
+				                	echo '<td>';
+				                		echo '<input type="radio" name="select_room" value="' 
+		 								. $room['room'] . ', ' . $room['starttime'] . ', ' 
+		 								. $room['endtime'] . '"';
+				                	echo '</td>';
+				                	echo '<td>' . $room['room'] .'</td>';
+				                	echo '<td>' . $room['starttime'] . '</td>';
+				                	echo '<td>' . $room['endtime'] . '</td>';
+				                	echo '<td>0</td>';
+				                	echo '<td>0</td>';
+				                	echo '</tr>';
+				                }
+		                	}
+		                	/* Otherwise, display the start and end time provided by the user */
+		                	else
+		                	{
+		                		foreach ($available as $room)
+		                		{
+		                			echo '<tr>';
+		                			echo '<td>';
+				                		echo '<input type="radio" name="select_room" value="'
+		 								. $room['room'] . ', ' . $start_time . ', ' . $end_time . '"';
+		                			echo '</td>';
+		                			echo '<td>' . $room['room'] .'</td>';
+		                			echo '<td>' . $start_time . '</td>';
+		                			echo '<td>' . $end_time . '</td>';
+		                			echo '<td>0</td>';
+		                			echo '<td>0</td>';
+		                			echo '</tr>';
+		                		}
+		                	}
+		                ?>
+		              </tbody>
+            		</table>
+	      			<div id="save-xml" class="form-actions">
+	            		<button class="btn btn-primary" type="submit" name="book_room" value="Book Room">Book Room</button>
+	          			<!-- File and XML schema downloads -->
+		          		<a class="btn btn-primary" target="_blank" href="etc/time_slots.xml">Save Rooms</a>
+		          		<a class="btn btn-primary" target="_blank" href="etc/time_slots.xsd">Save Schema</a>
+		          		<a class="btn btn-primary" target="_blank" href="etc/time_slots.xsl">Save XML Sytlesheet</a>
+	          		</div>
 				</fieldset>
 			</form>
 		</div>

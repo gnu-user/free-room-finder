@@ -142,7 +142,7 @@ if (isset($_POST['select_time'])
 	$campus = $_POST['select_campus'];
 	$num_people = $_POST['select_num_people'];
 	
-	/* Save the values in the GLOBALS array */
+	/* Save the values in the SESSION */
 	$_SESSION['starttime'] = $start_time;
 	$_SESSION['endtime'] = $end_time;
 	$_SESSION['date'] = $date;
