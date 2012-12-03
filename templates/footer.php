@@ -60,5 +60,6 @@
         });
       });
     </script>
+    <script src="js/statistics.js"></script>
   </body>
 </html>
