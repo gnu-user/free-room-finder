@@ -409,6 +409,7 @@ ORDER BY
     total_registered DESC
 
 /*
+TODO make per year
 8. Prof with greatest # of students limited to 5
 */
 SELECT
@@ -529,7 +530,7 @@ WHERE
 /*
 Fake full JOIN
 */
-SELECT
+(SELECT
    o.courseId AS course_name,
    o.day,
    r.name AS room_name,
@@ -552,7 +553,7 @@ FROM
 /*
 nested UNION
 */
-SELECT
+(SELECT
     p.name
 FROM
     professors AS p,

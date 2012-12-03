@@ -1451,8 +1451,8 @@ function get_all_class_rooms($mysqli_conn)
                             "name"          => "",
                             "room_cap"      => ""));
     /* Get the occupied # people or Id, current use is to determine if exists */
-    if ($stmt = $mysqli_conn->prepare("SELECT
-                                       o.courseId AS course_name,
+    if ($stmt = $mysqli_conn->prepare("(SELECT
+                                       o.courseId AS course_id,
                                        o.day,
                                        r.name AS room_name,
                                        r.room_capacity
@@ -1462,7 +1462,7 @@ function get_all_class_rooms($mysqli_conn)
                                        r.roomId = o.roomId)
                                     UNION
                                     (SELECT
-                                       o.courseId AS course_name,
+                                       o.courseId AS course_id,
                                        o.day,
                                        r.name AS room_name,
                                        r.room_capacity
@@ -1505,7 +1505,7 @@ function get_profs($mysqli_conn)
     $num_people = 0;
     $prof = array(array( "name"     => ""));
     /* Get the occupied # people or Id, current use is to determine if exists */
-    if ($stmt = $mysqli_conn->prepare("SELECT
+    if ($stmt = $mysqli_conn->prepare("(SELECT
                                         p.name
                                       FROM "
                                         . $professor_table . " AS p, "
