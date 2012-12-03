@@ -77,7 +77,7 @@
 	</div>
 	<div class="row">
 		<div class="span8">
-			<form class="well form-horizontal" action="index.php" method="post" accept-charset="UTF-8">
+			<form class="well form-horizontal" action="room_booked.php" method="post" accept-charset="UTF-8">
 				<h3>Requested Information</h3>
 				<fieldset>
 					<div class="control-group">
@@ -171,7 +171,10 @@
             </table>
 		      		<div class="form-actions">
 		            	<button class="btn btn-primary" type="submit" name="book_room" value="Book Room">Book Room</button>
-		          </div>
+		          		<!-- File and XML schema downloads -->
+		          		<a class="btn btn-primary" href="etc/time_slots.xml">Save Rooms</a>
+		          		<a class="btn btn-primary" href="etc/time_slots.xsd">Save Schema</a>
+          		   	</div>
 				</fieldset>
 			</form>
 		</div>
