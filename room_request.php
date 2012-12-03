@@ -37,6 +37,8 @@ require_once "inc/db_interface.php";
 require_once "inc/validate.php";
 require_once "inc/verify.php";
 
+session_start();
+
  /*
  * The page that will allow the user to enter the information about the room they
  * wish to look for.
@@ -107,5 +109,4 @@ include 'templates/request.php';
 
 /* Include the footer */
 include 'templates/footer.php';
-exit();
 ?>
