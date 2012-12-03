@@ -217,17 +217,16 @@ function get_year($mysqli_conn)
         $stmt->execute();
 
         /* bind result variables */
-        $stmt->bind_result($term);
+        $stmt->bind_result($term_year, $term_semester);
 
         $stmt->fetch();
 
-        //TODO make so that it assigns it to the write one...
-        $terms[$current][$year] = $term[0];
-        $terms[$current][$semeter] = $term[1];
+        $terms[$current][$year] = $term_year;
+        $terms[$current][$semeter] = $term_semester;
 
         $stmt->fetch();
-        $terms[$next][$year] = $term[0];
-        $terms[$next][$semeter] = $term[1];
+        $terms[$next][$year] = $term_year;
+        $terms[$next][$semeter] = $term_semester;
 
         /* close statement */
         $stmt->close();
@@ -315,7 +314,16 @@ function get_room_open_dur($mysqli_conn, $duration, $day, $term, $campus)
 }
 
 /**
- * TODO document
+ * Get the rooms that are open given the duration, day, term and campus
+ *
+ * @param mysqli $mysqli_conn The mysqli connection object for the ucsc elections DB
+ * @param $start_time The start time of the time slot
+ * @param $end_time The end time of the time slot
+ * @param $day is the week day desired, the first letter of the week day name, with Thursday = 'R'
+ * @param $term the term desired **NOTE term = { year, semester}
+ * @param $campus the campus desired, the full campus name
+ *
+ * @return $available the room that are available
  */
 function get_room_open($mysqli_conn, $start_time, $end_time, $day, $term, $campus)
 {
@@ -424,7 +432,6 @@ function get_rooms_taken($mysqli_conn, $day, $term, $campus)
 		    $i = 0;
         while ($stmt->fetch())
         {
-            //TODO verify that this works
             $rooms[$i]["room"] = $room;
             $rooms[$i]["starttime"] = $start_t;
             $rooms[$i]["endtime"] = $end_t;
@@ -484,7 +491,6 @@ function get_rooms($mysqli_conn, $campus)
 
         while ($stmt->fetch())
         {
-            //TODO verify that this is valid
             $rooms[] = $room;
         }
 
@@ -564,7 +570,6 @@ function get_users_rooms($mysqli_conn, $username)
         $i = 0;
         while ($stmt->fetch())
         {
-            //TODO verify that this is valid
             $rooms[$i]["room"] = $room;
             $rooms[$i]["campus"] = $campus;
             $rooms[$i]["starttime"] = $start_t;
@@ -644,7 +649,6 @@ function get_total_occupied($mysqli_conn, $room, $start_time, $end_time, $day)
         $i = 0;
         while ($stmt->fetch())
         {
-            //TODO verify that this is valid
             $rooms[$i]["room"] = $room;
             $rooms[$i]["total_people"] = $total_num;
             $i++;
@@ -697,7 +701,6 @@ function get_all_total_occupied($mysqli_conn)
         $i = 0;
         while ($stmt->fetch())
         {
-            //TODO verify that this is valid
             $rooms[$i]["room"] = $room;
             $rooms[$i]["total_people"] = $total_num;
             $i++;
@@ -761,7 +764,6 @@ function get_total_registered($mysqli_conn)
         $i = 0;
         while ($stmt->fetch())
         {
-            //TODO verify that this is valid
             $reg[$i]["registered"] = $register;
             $reg[$i]["year"] = $year;
             $reg[$i]["semester"] = $semester;
@@ -837,7 +839,6 @@ function get_total_reg_fac($mysqli_conn)
         $i = 0;
         while ($stmt->fetch())
         {
-            //TODO verify that this is valid
             $reg[$i]["registered"] = $register;
             $reg[$i]["faculty"] = $faculty;
             $reg[$i]["year"] = $year;
@@ -897,7 +898,6 @@ function get_busy_prof($mysqli_conn)
 		    $i = 0;
         while ($stmt->fetch())
         {
-            //TODO verify that this is valid
             $prof[$i]["professor"] = $professor;
             $prof[$i]["student_num"] = $student_num;
             $i++;
@@ -958,7 +958,6 @@ function get_busy_prof_num($mysqli_conn, $num)
 		$i = 0;
 		while ($stmt->fetch())
 		{
-			//TODO verify that this is valid
 			$prof[$i]["professor"] = $professor;
 			$prof[$i]["student_num"] = $student_num;
 			$i++;
@@ -1036,7 +1035,6 @@ function remove_requested($mysqli_conn, $username, $ids)
  * 
  * @return $deleted true if successful, false otherwise
  */
-/* TODO change the function to only take the num_people and user passes neg number to take away num_people */
 function update_occupied($mysqli_conn, $username, $occupy_id, $num_people, $addition)
 {
     global $occupy_table;
@@ -1170,7 +1168,7 @@ function get_user_id($mysqli_conn, $username)
  * @param mysqli $mysqli_conn The mysqli connection object for the ucsc elections DB
  * @param $room the room name 
  * 
- * @return $user_id the user id of the given username
+ * @return $room_id the user id of the given username
  */
 function get_room_id($mysqli_conn, $room)
 {
@@ -1200,7 +1198,12 @@ function get_room_id($mysqli_conn, $room)
 }
 
 /**
- * TODO document
+ * Get the times's id given the room name
+ *
+ * @param mysqli $mysqli_conn The mysqli connection object for the ucsc elections DB
+ * @param $time the time to find the id of 
+ * 
+ * @return $time_id the time id of the given time
  */
 function get_time_id($mysqli_conn, $time)
 {
@@ -1230,7 +1233,16 @@ function get_time_id($mysqli_conn, $time)
 }
 
 /**
- * TODO document
+ * Get the occupy id and the number of people occupying the room given the room,
+ * start time, end time and date.
+ *
+ * @param mysqli $mysqli_conn The mysqli connection object for the ucsc elections DB
+ * @param $room the room name 
+ * @param $start_time the start time
+ * @param $end_time the end time
+ * @param $date the date 
+ * 
+ * @return $occupied the occupy id and the number of people
  */
 function get_occupied($mysqli_conn, $room, $start_time, $end_time, $date)
 {
@@ -1259,7 +1271,6 @@ function get_occupied($mysqli_conn, $room, $start_time, $end_time, $date)
         /* execute query */
         $stmt->execute();
 
-        //TODO FIX
         /* bind result variables */
         $stmt->bind_result($occupy, $num_people);
 
@@ -1275,7 +1286,16 @@ function get_occupied($mysqli_conn, $room, $start_time, $end_time, $date)
 }
 
 /**
- * TODO document
+ * Add a occupied row given the room id, start_id, end_id, date, and number of people.
+ *
+ * @param mysqli $mysqli_conn The mysqli connection object for the ucsc elections DB
+ * @param $room_id the room name's id 
+ * @param $start_id the start time's id
+ * @param $end_id the end time's id
+ * @param $date the date
+ * @param $num_people the number of people
+ * 
+ * @return $success True if successful, otherwise False
  */
 function add_occupied($mysqli_conn, $room_id, $start_id, $end_id, $date, $num_people)
 {
@@ -1300,7 +1320,14 @@ function add_occupied($mysqli_conn, $room_id, $start_id, $end_id, $date, $num_pe
 }
 
 /**
- * TODO document
+ * Add the room_request given the occupy id, user id, and number of people
+ *
+ * @param mysqli $mysqli_conn The mysqli connection object for the ucsc elections DB
+ * @param $occupy_id the occupied id 
+ * @param $user_id the user's id
+ * @param $num_people the number of people
+ * 
+ * @return $success True if successful, otherwise False
  */
 function add_room_request($mysqli_conn, $occupy_id, $user_id, $num_people)
 {
@@ -1315,16 +1342,23 @@ function add_room_request($mysqli_conn, $occupy_id, $user_id, $num_people)
         $stmt->bind_param('ddd', $user_id, $occupy_id, $num_people);
 
         /* execute query */
-        $check = $stmt->execute();
+        $success = $stmt->execute();
 
         /* close statement */
         $stmt->close();
     }
-    return $check;
+    return $success;
 }
 
 /**
- * TODO document
+ * Get the request id given the occupy id, user id, and number of people
+ *
+ * @param mysqli $mysqli_conn The mysqli connection object for the ucsc elections DB
+ * @param $occupy_id the occupied id 
+ * @param $user_id the user's id
+ * @param $num_people the number of people
+ * 
+ * @return $request_id The row id of the request
  */
 function get_room_request_id($mysqli_conn, $occupy_id, $user_id, $num_people)
 {
@@ -1359,7 +1393,12 @@ function get_room_request_id($mysqli_conn, $occupy_id, $user_id, $num_people)
 }
 
 /**
- * TODO document
+ * Get the num_people given the request id
+ *
+ * @param mysqli $mysqli_conn The mysqli connection object for the ucsc elections DB
+ * @param $request_id the request id 
+ * 
+ * @return $num_people The number of people requested
  */
 function get_room_request_num($mysqli_conn, $request_id)
 {
