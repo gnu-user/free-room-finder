@@ -85,7 +85,7 @@ function get_day_of_week($date)
 
 
 /**
- * A function which returns the end time given a starting time ane the duration
+ * A function which returns the end time given a starting time and the duration
  * 
  * @param $start_time The start time formatted as H:i:s
  * @param $duration The duration of time
