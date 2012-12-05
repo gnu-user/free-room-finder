@@ -345,10 +345,10 @@ function get_room_open($mysqli_conn, $start_time, $end_time, $day, $term, $campu
         	$free = TRUE;
         	$prev_room = $room["room"];
         }
-        /*if((!($start_time < $room["endtime"] && $end_time < $room["endtime"]
-          || $start_time > $room["starttime"] && $end_time > $room["starttime"]))&& $free)*/
-        if((($start_time > $room["starttime"] && $start_time < $room["endtime"])
-        		|| ($end_time > $room["starttime"] && $end_time < $room["endtime"]))&& $free)
+        
+        if(((($start_time >= $room["starttime"] && $start_time < $room["endtime"])
+        		|| ($end_time > $room["starttime"] && $end_time <= $room["endtime"]))
+        		|| ($start_time <= $room["starttime"] && $end_time >= $room["endtime"]))&& $free)
         {
           /* Room is not free */
           $free = FALSE;
