@@ -172,12 +172,8 @@
 		                ?>
 		              </tbody>
             		</table>
-	      			<div id="save-xml" class="form-actions">
+	      			<div class="form-actions">
 	            		<button class="btn btn-primary" type="submit" name="book_room" value="Book Room">Book Room</button>
-	          			<!-- File and XML schema downloads -->
-		          		<a class="btn btn-primary" target="_blank" href="etc/time_slots.xml">Save Rooms</a>
-		          		<a class="btn btn-primary" target="_blank" href="etc/time_slots.xsd">Save Schema</a>
-		          		<a class="btn btn-primary" target="_blank" href="etc/time_slots.xsl">Save XML Sytlesheet</a>
 	          		</div>
 				</fieldset>
 			</form>
