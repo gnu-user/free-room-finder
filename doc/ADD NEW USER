@@ -1,1 +1,0 @@
-INSERT INTO users VALUES (NULL, 'Billy', 'Bob', AES_ENCRYPT('100123456', 'test123'), 'test@gmail.com', 'test', AES_ENCRYPT('test123','test123'), '2012-12-01', '2012-12-01');
