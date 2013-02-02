@@ -69,8 +69,8 @@ Using the Free Room Finder
     a login page, please login to the free room finder website using the following
     credentials
 
-    **username: test**
-    **password: test123**
+    **username: test**  
+    **password: test123**  
 
 3.  Lastly, to view the statistics page simply click your username (Billy Bob)
     at the top right and select the "View Statistics" entry to view the statistics
@@ -84,38 +84,38 @@ The following is a list of some important files that are significant to the
 project, such as web service API and the database interface.
 
 
-REST Web Service API (api/index.php)
-    The web service which allows for users to query for statistics.
+REST Web Service API (api/index.php)  
+    The web service which allows for users to query for statistics.  
 
-Statistics (AJAX)  (js/statistics.js)
-    Used to generate the statistical plots given the information in the database.
+Statistics (AJAX)  (js/statistics.js)  
+    Used to generate the statistical plots given the information in the database.  
 
-Generated XML Files  (etc/)
-    The location where the xml files reside and are generated to.
+Generated XML Files  (etc/)  
+    The location where the xml files reside and are generated to.  
 
-Database Interface  (inc/db_interface.php)
+Database Interface  (inc/db_interface.php)  
     This is used to query the database throughout the website all necessary queries   
-    are contained in this file.
+    are contained in this file.  
 
-Templates (Models)  (templates/)
+Templates (Models)  (templates/)  
     A folder containing all of the templates that will be used by the website to 
-    display necessary information.
+    display necessary information.  
 
-Room Results, XML Generation  (room_results.php)
+Room Results, XML Generation  (room_results.php)  
     This is the logic behind the show room results page. This uses the db interface 
-    given the information given by the user to generate the correct results.
+    given the information given by the user to generate the correct results.  
 
-Screen Scraping, Database Generation  (scripts/db-generate-room.py)
-    This is used to scrape the course scheduling data from school’s website.
+Screen Scraping, Database Generation  (scripts/db-generate-room.py)  
+    This is used to scrape the course scheduling data from school’s website.  
 
-Website Rough Design  (doc/website_views.pdf)
-    The early rough design of the website sketched out on paper for full effect.
+Website Rough Design  (doc/website_views.pdf)  
+    The early rough design of the website sketched out on paper for full effect.  
 
-Other Diagrams  (Doc folder)
+Other Diagrams  (Doc folder)  
     Contains all necessary documentation involved in database design, database setup, 
-    and necessary documentation for the project as well.
+    and necessary documentation for the project as well.  
 
-Validation  (inc/verify.php)
+Validation  (inc/verify.php)  
     A collection of helper functions that facilitate the site’s login, session and 
-    cookies verification and validation.
+    cookies verification and validation.  
 
