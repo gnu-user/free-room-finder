@@ -21,27 +21,41 @@ they are not being used for any classes.
 What the Free Room Finder Doesn't Do Well
 -----------------------------------------
 
-+ Detect students who may have already found the free room before you and are using it
-*(Don't panic we've got this one solved! We need help setting up a wireless sensor network
-to detect students in rooms, see below)*
-+ Detect clubs and other organizations who may have booked the room through other school
+Detect students who may have already found the free room before you and are using it.
+*(Don't panic we've got this one solved! We need help setting up a room booking system
+for students who use the service.)*
+
+Detect clubs and other organizations who may have booked the room through other school
 organizations such as the SA, Campus Societies, or the mob.
+
+
+How to Setup the Free Room Finder
+----------------------------------
+
+If you are interested in setting up the free room finder for development purposes or 
+if you would like to host it yourself, the setup procedure is fairly straighforward.
+Please see the detailed setup instructions in [SETUP.md](SETUP.md), which provides 
+instructions on creating the database, configuring the PHP source files, and lastly 
+a description of useful source files and their purpose.
 
 
 How You Can Contribute
 ----------------------
 
-While the database, data collection scripts for getting all courses on campus, and the scripts
-for analyzing the data to find free rooms are all complete there is still much to be done, such
-as:
+While the database, data collection scripts for getting all courses on campus, the scripts
+for analyzing the data to find free rooms, and website are mostly complete there is still
+much to be done, such as:
 
-+ A web interface for searching for free rooms and viewing the results in a browser
++ Fixing up parsing errors in the screen scraping scripts (scripts/db-generate-room.py)
+as it currently does not work properly for screen-scraping course info for every year.
 + Detecting students who may have already found the free room before you and are using it, 
-a wireless sensor network to detect students in rooms would be an excellent solution
+such as adding support for a room booking system so you can see how many students have already
+booked the room through the free room finder website.
 + An effective solution to determine clubs and other organizations who may have booked the room 
-through other school organizations such as the SA
+through other school organizations such as the SA.
 + Code refactoring and documentation, we are leaning towards [Sphinx](http://sphinx.pocoo.org/)
-or [Read the Docs](http://readthedocs.org/), but even a wiki would be great
+for the Python code, [phpDocumentor](http://www.phpdoc.org/) for the PHP source code, and 
+[Read the Docs](http://readthedocs.org/) or even a wiki for everything else would be great.
 
 
 Copyright (Really Copyleft)
