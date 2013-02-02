@@ -2,3 +2,6 @@
 *.buildpath
 *.project
 .settings/
+
+# Ignore backup files
+*.*~
