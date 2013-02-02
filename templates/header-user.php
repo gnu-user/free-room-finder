@@ -42,7 +42,7 @@
     <title>Free Room Finder</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Free Room Finder">
-    <meta name="author" content="Crow's Foot">
+    <meta name="author" content="Computer Science Club">
 
     <!-- CSS styles -->
     <link href="css/bootstrap.css" rel="stylesheet">

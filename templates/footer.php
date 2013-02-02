@@ -25,11 +25,11 @@
 ?>
       <footer class="footer">
         <div class="pull-left">
-          <p>Designed and built by <a target="_blank" href="#">Crow's Foot</a></p>
+          <p>Designed and built by <a target="_blank" href="#">Computer Science Club</a></p>
           <p>This website is Open Source, code licensed under the 
           	<a target="_blank" href="http://www.gnu.org/licenses/agpl-3.0.html">GNU Affero General Public License, Version 3</a>
           </p>
-          <p><strong>&copy; Crow's Foot</strong></p>
+          <p><strong>&copy; Computer Science Club</strong></p>
         </div>
       </footer>
     </div>
