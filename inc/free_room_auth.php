@@ -44,9 +44,9 @@
  */
 
 /* Database access */
-$db_user = 'jon';
-$db_pass = 'test123';
-$db_name = 'free_room_finder';
+$db_user = '';
+$db_pass = '';
+$db_name = '';
 
 /* AES ENCRYPT/DECRYPT KEY */
 $AES_KEY = 'test123';
