@@ -187,10 +187,10 @@ def get_time_id(con, time):
         print "Error %d: %s" % (e.args[0],e.args[1])
         
 
-#Insert the date into the database if it is not already in the database
+# Insert the date into the database if it is not already in the database
+# NOTE: Courses that have been cancelled have the same start and end date
 def insert_date(con, start_date, finish_date):
     start_id = get_date_id(con, start_date)
-    finish_id = get_date_id(con, finish_date)
     if start_id == 0:
         try:
             cur = con.cursor()
@@ -199,7 +199,8 @@ def insert_date(con, start_date, finish_date):
             con.commit()
         except mdb.Error, e:
             print "Error %d: %s" % (e.args[0],e.args[1])
-            
+
+    finish_id = get_date_id(con, finish_date)
     if finish_id == 0:
         try:
             cur = con.cursor()
