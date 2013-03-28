@@ -20,6 +20,33 @@ Creating the Database
     mysql -u<username> -p free_room_finder < free_room_finder.sql
     ```
 
+Creating the Database from Scratch
+------------------------------------
+
+1.  Alternatively, if you would like to develop the db-generate script which parses
+    course data, or just would like to have an empty database for development you
+    can do so by simply creating the database schema.
+
+2.  Create a new database named free_room_finder and then quit mysql.
+
+    ```sql
+    CREATE DATABASE free_room_finder;
+    ```
+
+3.  Next, import the database schema using the following command
+
+    ```bash
+    mysql -u<username> -p free_room_finder < create_schema.sql
+    ```
+
+4.  You can add a test account so that you can login using the following command.
+
+    INSERT INTO users VALUES (NULL, 'Bobby', 'Tables', AES_ENCRYPT('100123456', 'test123'), 'bobby.tables@gmail.com', 'test', AES_ENCRYPT('test123', 'test123'), CURDATE(), CURDATE());
+
+5.  You can login to the free room finder website using the username **test** and 
+    password **test123**.
+
+
 Configuring PHP 
 ----------------
 
