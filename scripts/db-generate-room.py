@@ -453,18 +453,13 @@ con = None
 user = 'jon'
 passwd = 'test123'
 domain = 'localhost'
-db_name = 'test'
+db_name = 'free_room_finder'
 
 
 # Current month, year semester
 cur_month = datetime.now().month
 cur_year = str(datetime.now().year)     # Year is ALWAYS used as a string
 cur_semester = None
-
-# Dictionary mapping campus querys to the appropriate post data
-#campuses = generate_dictionary('campuses', ' ')
-# Dictionary of faculties mapping faculty acronyms to full faculty name
-#faculties = generate_dictionary('faculties', ' - ')
 
 
 # Get the current semester based on the current month, anything from 01 - 04
