@@ -22,7 +22,8 @@ campus_acronyms = { 'UON': 'North Oshawa Campus',
                     'UOD': 'Downtown Oshawa Campus',
                     'UOG': 'Campus-Georgian Campus',
                     'TRN': 'Trent at Oshawa Thornton Campus',
-                    'WEB': 'Web Course' }
+                    'WEB': 'Web Course',
+                    'OTH': 'Other Campus' }
 
 # Dictionary mapping class types to acronyms
 class_types = { 'LEC': 'Lecture', 
