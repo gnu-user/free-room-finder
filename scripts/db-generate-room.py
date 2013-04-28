@@ -254,7 +254,7 @@ def parse_course_info(course_content, course_data):
         for row in course_table.findAll('th', {'class': "ddheader", 'scope': "col"}, True, re_course_info):
             match = re_course_info.search(str(row).strip())
             if match is not None:
-                ##print "course info", idx_key
+                #print "course info", idx_key
                 # Store the course information parsed 3-D dictionary, course_data
                 (course_name, crn, program_code, course_code, course_section) = match.group(1, 2, 3, 4, 5)
                 # Remove all punctuation for the course name
@@ -376,7 +376,11 @@ def parse_class_time(course_content, course_data):
                 # WEEK 2 ALTERNATING
                 elif re.match(re.compile(r'^(&nbsp;)*W2$'), column.strip()):
                     course_data[idx_key][alp_key] = {'week_alt': False}
-                    
+                # WEEK 3 ALTERNATING
+                # TODO FIX DATABASE DOES NOT HAVE SUPPORT FOR W3, ATM TREATING W3 AS W1 
+                elif re.match(re.compile(r'^(&nbsp;)*W3$'), column.strip()):
+                    course_data[idx_key][alp_key] = {'week_alt': True}
+
             # Parse the course start and end time
             for column in row.findAll('td', {'class': "dbdefault"}, True)[2:3]:
                 match = re_course_time.search(str(column).strip())
