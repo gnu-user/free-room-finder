@@ -2,21 +2,8 @@
 /*
  *  Free Room Finder Website
  *
- *
- *  Authors -- Crow's Foot Group
- *  -------------------------------------------------------
- *
- *  Jonathan Gillett
- *  Joseph Heron
- *  Amit Jain
- *  Wesley Unwin
- *  Anthony Jihn
- * 
- *
- *  License
- *  -------------------------------------------------------
- *
- *  Copyright (C) 2012 Crow's Foot Group
+ *  Copyright (C) 2013 Jonathan Gillett and Joseph Heron
+ *  All rights reserved.
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Affero General Public License as
@@ -152,54 +139,6 @@ if (isset($_POST['select_time'])
 	$available = get_room_open(	$mysqli_conn, $start_time, 
 								$end_time, $day_of_week, 
 								$semester, $campus);
-
-
-	/* Generate the XML document so the user can save the results */
-	$doc = new DOMDocument('1.0', 'UTF-8'); 
-	$doc->formatOutput = true;
-	
-	/* Add the style sheet */
-	$style = $doc->createProcessingInstruction( 'xml-stylesheet', 'type="text/xsl" href="time_slots.xsl"' );
-    $doc->appendChild( $style );
-    
-	$r = $doc->createElement( "TimeSlots" );
-	$r->setAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
-	$r->setAttribute("xsi:noNamespaceSchemaLocation", "time_slots.xsd");
-	$doc->appendChild( $r );
-
-	foreach( $available as $avail ) 
-	{ 
-		$b = $doc->createElement( "TimeSlot" ); 
-
-		$xml_name = $doc->createElement( "room" ); 
-		$xml_name->appendChild( $doc->createTextNode( $avail['room'] )); 
-		$b->appendChild( $xml_name ); 
-
-		$xml_campus = $doc->createElement( "campus" ); 
-		$xml_campus->appendChild( $doc->createTextNode( $campus )); 
-		$b->appendChild( $xml_campus ); 
-
-		$xml_start_time = $doc->createElement( "starttime" ); 
-		$xml_start_time->appendChild( $doc->createTextNode( $start_time )); 
-		$b->appendChild( $xml_start_time ); 
-
-		$xml_end_time = $doc->createElement( "endtime" ); 
-		$xml_end_time->appendChild( $doc->createTextNode( $end_time )); 
-		$b->appendChild( $xml_end_time ); 
-
-		$xml_date = $doc->createElement( "date" ); 
-		$xml_date->appendChild( $doc->createTextNode( $date )); 
-		$b->appendChild( $xml_date );
-
-		$xml_request_num_people = $doc->createElement( "request_num_people" ); 
-		$xml_request_num_people->appendChild( $doc->createTextNode( $num_people )); 
-		$b->appendChild( $xml_request_num_people ); 
-
-		$r->appendChild( $b ); 
-	}
-
-	/* Save the time slots XML file */
-	$doc->save("etc/time_slots.xml");
 }
 
 /* Invalid post data display error message */

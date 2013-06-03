@@ -12,10 +12,10 @@ import re
 re_course_info= re.compile(r'(^.*)\s*\-\s*(\d{5})\s*\-\s*([\w]{2,4})\s*(\d{4}[\w]{1})\s*\-*\s*(\d{0,3})')
 
 # Matches course term info, groups: school, term, year
-re_course_term = re.compile(r'^([A-Z]*)\s(\w*)\s(\d{4})')
+re_course_term = re.compile(r'^([A-Z]*)\s([\w/]*)\s(\d{4})')
 
 # Matches the course level info, ie. Post Secondary, Undergraduate, Graduate, etc.
-re_course_level = re.compile(r'\s*(Post\sSecondary|Undergraduate|Graduate)\s*')
+re_course_level = re.compile(r'\s*(Post\sSecondary|Continuing\sEducation|Undergraduate|Graduate|Professional)\s*')
 
 # Matches the prof name, groups: first name, last name
 #re_prof_name = re.compile(r'([A-Z]\w*|[\w\s\.\'\,\-]*[A-Z]\w*)\s\(|(TBA)')
@@ -32,7 +32,7 @@ re_course_type = re.compile(r'^\s([A-Za-z]*\s)')
 re_capacity = re.compile(r'^\d{1,3}$')
 
 # Matches the week1 or week2 info, if no week specified room used every week
-re_week_info = re.compile(r'(W1|W2|\&nbsp\;)')
+re_week_info = re.compile(r'(W1|W2|W3|\&nbsp\;)')
 
 # Matches the course start and end time for room, groups: start time, 
 # start AM/PM, end time, AM/PM end time
@@ -48,7 +48,8 @@ re_room = re.compile(r'\s*?([A-Z]{1,5}\d{1,4})\<\/td\>')
 
 # Matches rooms that do not exist, such as for online courses which can be 
 # labeled "TBA", "Online", "Virtual ONLINE", etc.
-re_room_online = re.compile(r'\s*TBA\s*|\s*Virtual\s*ONLINE\d*|\s*Virtual\s*|\s*Online\s*', re.IGNORECASE)
+re_room_online = re.compile(r'\s*TBA\s*|\s*Virtual\s*ONLINE\d*|\s*Virtual\s*|\s*Off\sSite\sLocation\s*|\s*Online\s*', re.IGNORECASE)
+
 
 # Matches the course start and end time, groups: start month, start day,
 # starting year, ending month, ending day, ending year

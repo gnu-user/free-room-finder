@@ -2,21 +2,8 @@
 /*
  *  Free Room Finder Website
  *
- *
- *  Authors -- Crow's Foot Group
- *  -------------------------------------------------------
- *
- *  Jonathan Gillett
- *  Joseph Heron
- *  Amit Jain
- *  Wesley Unwin
- *  Anthony Jihn
- * 
- *
- *  License
- *  -------------------------------------------------------
- *
- *  Copyright (C) 2012 Crow's Foot Group
+ *  Copyright (C) 2013 Jonathan Gillett and Joseph Heron
+ *  All rights reserved.
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Affero General Public License as
@@ -55,7 +42,7 @@
     <title>Free Room Finder</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Free Room Finder">
-    <meta name="author" content="Crow's Foot">
+    <meta name="author" content="Computer Science Club">
 
     <!-- CSS styles -->
     <link href="css/bootstrap.css" rel="stylesheet">
