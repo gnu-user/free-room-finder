@@ -12,10 +12,10 @@ semester = { 'winter': '01',
              'summer': '05' }
 
 # Dictionary mapping campuses to parts of the url search strings
-campuses = { 'ALL': '&sel_camp=dummy&sel_camp=%25',
-             'UON': '&sel_camp=UON&sel_camp=%25',
-             'UOD': '&sel_camp=UOD&sel_camp=%25',
-             'UOG': '&sel_camp=dummy&sel_camp=UOG%25' }
+campuses = { 'ALL': '&sel_camp=%25',
+             'UON': '&sel_camp=UON',
+             'UOD': '&sel_camp=UOD',
+             'UOG': '&sel_camp=dummy' }
 
 # Dictionary mapping campus acronyms to the full campus name
 campus_acronyms = { 'UON': 'North Oshawa Campus',

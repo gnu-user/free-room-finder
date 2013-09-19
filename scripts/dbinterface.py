@@ -326,14 +326,18 @@ def insert_class_type(con, class_type):
 #Get the class type given the acr 
 def get_class_type(con, class_type):
     try:
-        cur = con.cursor()
-        cur.execute("SELECT typeId FROM class_type WHERE acr LIKE '%s' ;" 
-            % (mdb.escape_string(class_type)))
-        re_id = cur.fetchone()
-        if re_id is None:
-            return 0
+        # new course type bug fix, will just default class type 1
+        if class_type != None:
+            cur = con.cursor()
+            cur.execute("SELECT typeId FROM class_type WHERE acr LIKE '%s' ;" 
+                % (mdb.escape_string(class_type)))
+            re_id = cur.fetchone()
+            if re_id is None:
+                return 0
+            else:
+                return re_id
         else:
-            return re_id
+            return 1;
     except mdb.Error, e:
         print "Error %d: %s" % (e.args[0],e.args[1])
         
