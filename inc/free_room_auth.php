@@ -33,7 +33,8 @@
 /* Database access */
 $db_user = '';
 $db_pass = '';
-$db_name = '';
+$db_name = 'free_room_finder';
+$db_login = 'ucsc_accounts';
 
 /* AES ENCRYPT/DECRYPT KEY */
 $AES_KEY = 'test123';

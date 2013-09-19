@@ -41,7 +41,7 @@ $date_table = "dates";
 $semester_table = "semesters";
 $class_type_table = "class_type";
 $campus_table = "campus";
-$user_table = "users";
+$user_table = "ucsc_members";
 $room_table = "rooms";
 $occupy_table = "occupied";
 $room_request_table = "room_requests";
@@ -269,6 +269,7 @@ function get_room_open_dur($mysqli_conn, $duration, $day, $term, $campus)
 
     for($i = 0; $i < $num_rooms-1; $i++)
     {
+      /* Move to the next class */
       if($rooms[$i]["endtime"] != "")
       {
         $i++;

@@ -131,10 +131,7 @@ function verify_login($mysqli_conn, $username, $password, $AES_KEY)
     /* If username found, verify the password provided for that username */
     if (strcasecmp($username, $user_match) === 0)
     {
-        
-        if ($stmt = $mysqli_conn->prepare("SELECT AES_DECRYPT(password, ?)
-                                                    FROM " . $user_table .
-                                                    " WHERE username LIKE ?" ))
+        if ($stmt = $mysqli_conn->prepare("SELECT AES_DECRYPT(password, ?) FROM ". $user_table ." WHERE username LIKE ?"))
         {
             /* bind parameters for markers */
             $stmt->bind_param('ss', $AES_KEY, $username);
@@ -152,7 +149,7 @@ function verify_login($mysqli_conn, $username, $password, $AES_KEY)
         }
 
         /* Verify the password, remove the salt from password stored in DB */
-        if(strcasecmp($password, $pass_match) === 0)
+        if (strcmp($password, substr($pass_match, 8)) === 0)
         {
             return true;
         }

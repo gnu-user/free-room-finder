@@ -56,6 +56,7 @@ session_start();
 
 /* Connect to the database */
 $mysqli_conn = new mysqli("localhost", $db_user, $db_pass, $db_name);
+$mysqli_login = new mysqli("localhost", $db_user, $db_pass, $db_login);
 
 /* check connection */
 if (mysqli_connect_errno()) {
@@ -65,29 +66,29 @@ if (mysqli_connect_errno()) {
 
 
 /* 1. If the user is not logged in or their session is invalid */
-if (verify_login_cookie($mysqli_conn, $SESSION_KEY) === false
+if (verify_login_cookie($mysqli_login, $SESSION_KEY) === false
 	&& (!isset($_SESSION['login'])
-	|| verify_login_session($mysqli_conn, $_SESSION['login'], $SESSION_KEY) === false))
+	|| verify_login_session($mysqli_login, $_SESSION['login'], $SESSION_KEY) === false))
 {
 	/* Redirect the user to the login page */
 	header('Location: login.php');
 }
 
 /* User has a valid login cookie set / has logged into the site with valid account */
-elseif (verify_login_cookie($mysqli_conn, $SESSION_KEY)
-		|| verify_login_session($mysqli_conn, $_SESSION['login'], $SESSION_KEY))
+elseif (verify_login_cookie($mysqli_login, $SESSION_KEY)
+		|| verify_login_session($mysqli_login, $_SESSION['login'], $SESSION_KEY))
 {
 	/* FIX, forgot to account for when user has login cookie set but there is no session
 	 * data, have to retrieve username from cookie and then set the session data
 	*/
-	if (verify_login_cookie($mysqli_conn, $SESSION_KEY))
+	if (verify_login_cookie($mysqli_login, $SESSION_KEY))
 	{
 		/* Get the login cookie data */
 		$login_cookie = htmlspecialchars($_COOKIE['login']);
 
 		/* Get the username from login cookie data and set session info */
-		$username = username_from_session($mysqli_conn, $login_cookie, $SESSION_KEY);
-		set_session_data($mysqli_conn, $username, $SESSION_KEY);
+		$username = username_from_session($mysqli_login, $login_cookie, $SESSION_KEY);
+		set_session_data($mysqli_login, $username, $SESSION_KEY);
 	}
 }
 

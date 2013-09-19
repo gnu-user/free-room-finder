@@ -27,7 +27,7 @@ require_once "inc/verify.php";
 session_start();
 
 /* Connect to the database */
-$mysqli_conn = new mysqli("localhost", $db_user, $db_pass, $db_name);
+$mysqli_login = new mysqli("localhost", $db_user, $db_pass, $db_login);
 
 /* check connection */
 if (mysqli_connect_errno()) {
@@ -51,17 +51,17 @@ if (isset($_POST['signout']))
 }
 
 /* 1. User is not logged in and has submitted their login information */
-if (verify_login_cookie($mysqli_conn, $SESSION_KEY) === false
+if (verify_login_cookie($mysqli_login, $SESSION_KEY) === false
 	&& (!isset($_SESSION['login'])
-			|| verify_login_session($mysqli_conn, $_SESSION['login'], $SESSION_KEY) === false)
+			|| verify_login_session($mysqli_login, $_SESSION['login'], $SESSION_KEY) === false)
 	&& isset($_POST['login_username'])
 	&& isset($_POST['login_password']))
 {
 	/* a) If the login information is valid and they entered the correct username/password  */
 	if (validate_username($_POST['login_username']) && validate_password($_POST['login_password'])
-			&& verify_login($mysqli_conn, $_POST['login_username'] , $_POST['login_password'], $AES_KEY))
+			&& verify_login($mysqli_login, $_POST['login_username'] , $_POST['login_password'], $AES_KEY))
 	{
-		set_session_data($mysqli_conn, $_POST['login_username'], $SESSION_KEY);
+		set_session_data($mysqli_login, $_POST['login_username'], $SESSION_KEY);
 
 		if ($_POST['login_remember'] == 1)
 		{
@@ -74,17 +74,18 @@ if (verify_login_cookie($mysqli_conn, $SESSION_KEY) === false
 	/* b) The login information is invalid display the invalid login page */
 	else
 	{
+
 		/* Invalid password entered, used by template to display error message */
 		$invalid = true;
-		
 		include 'templates/header.php';
+
 		include 'templates/login.php';
 	}
 }
 /* 2. User is not logged in, display the login page template */
-elseif (verify_login_cookie($mysqli_conn, $SESSION_KEY) === false
+elseif (verify_login_cookie($mysqli_login, $SESSION_KEY) === false
 		&& (!isset($_SESSION['login'])
-			|| verify_login_session($mysqli_conn, $_SESSION['login'], $SESSION_KEY) === false)
+			|| verify_login_session($mysqli_login, $_SESSION['login'], $SESSION_KEY) === false)
 		&& !isset($_POST['login_username'])
 		&& !isset($_POST['login_password']))
 {
