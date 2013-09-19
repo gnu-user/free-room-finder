@@ -70,12 +70,11 @@ function get_user($mysqli_conn, $username)
 					'first_name' => '',
 					'last_name' => '');
 
-	$user_match = '';
+	//$user_match = '';
 	
 	/* Get the users information from the database if it exists */
-	if ($stmt = $mysqli_conn->prepare(	"SELECT username
-                                        	FROM ".$user_table.
-										" WHERE username LIKE ?"))
+	if ($stmt = $mysqli_conn->prepare(	"SELECT access_account, first_name, last_name
+                                        	FROM ".$user_table. " WHERE username LIKE ?"))
 	{
 		/* bind parameters for markers */
 		$stmt->bind_param('s', $username);
@@ -84,37 +83,13 @@ function get_user($mysqli_conn, $username)
 		$stmt->execute();
 
 		/* bind result variables */
-		$stmt->bind_result($user_match);
+		$stmt->bind_result($user['access_account'], $user['first_name'], $user['last_name']);
 
 		/* fetch value */
 		$stmt->fetch();
 
 		/* close statement */
 		$stmt->close();
-	}
-
-	/* If username found, get primary key (access account), and name of the user */
-	if (strcasecmp($username, $user_match) === 0)
-	{
-		if ($stmt = $mysqli_conn->prepare(	"SELECT userId, first_name, last_name
-                                            	FROM ".$user_table.
-											" WHERE username LIKE ?"))
-		{
-			/* bind parameters for markers */
-			$stmt->bind_param('s', $username);
-
-			/* execute query */
-			$stmt->execute();
-
-			/* bind result variables */
-			$stmt->bind_result($user['access_account'], $user['first_name'], $user['last_name']);
-
-			/* fetch value */
-			$stmt->fetch();
-
-			/* close statement */
-			$stmt->close();
-		}
 	}
 
 	return $user;
