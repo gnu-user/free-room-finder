@@ -70,12 +70,15 @@
 									<input type="checkbox" id="login_remember" name="login_remember" checked="checked" value="1" > Remember me
 								</label>
 								<button type="submit" id="login_button" name="login_button" class="btn">Sign in</button>
+								<p>
+									<a target="_blank" href="http://www.cs-club.ca/reset">Forgot/Reset Password</a>
+								</p>
 							</div>
-						</div>
+						</div>						
 				</fieldset>
 			</form>
 			<br />
-			<form class="form-horizontal" action="register.php">
+			<form class="form-horizontal" action="https://www.cs-club.ca/register/">
 				<!-- 'Not a member...' and register button' -->
 				<h2>Not a Member?</h2>
 				<br />
