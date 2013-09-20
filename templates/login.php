@@ -30,66 +30,35 @@
  ?>
 
 <section id="login">
-	<div class="page-header">
-		<h1> Welcome to the Free Room Finder! </h1>
-	</div>
-	<div class="row">
-		<!--  Display an error if they entered invalid credentials -->
-		<?php
-			if (isset($invalid))
-			{
-				echo '<div class="alert alert-error span8">
-	              		<button type="button" class="close" data-dismiss="alert">×</button>
-	             	 	<strong>Invalid Credentials!</strong> Please enter a valid username and password.
-	            	  </div>';
-			}
-     	?>
-		<div class="well span8">
-			<form class="form-horizontal" action="login.php" method="post">
-				<h2> Please sign in</h2>
-				<br />
-				<!-- Username label and textbox -->
-				<fieldset>
-						<div class="control-group">
-							<label class="control-label">User name:</label>				
-							<div class="controls">
-								<input type="text" id="login_username" name="login_username" maxlength="31" pattern="^[A-Za-z][A-Za-z0-9]*(?:_[A-Za-z0-9]+)*$" placeholder="Username">      		
-							</div>
-						</div>
-						<!-- Password label and textbox -->
-						<div class="control-group">
-							<label class="control-label" for="inputPassword">Password</label>
-							<div class="controls">
-								<input type="password" id="login_password" name="login_password" maxlength="31" pattern="^[a-zA-Z0-9\!\$\%\^\&amp;\*\(\)\_\?]{6,31}$" placeholder="Password">
-							</div>
-						</div>
-						<!-- Remember me label and checkbox -->
-						<div class="control-group">
-							<div class="controls">
-								<label class="checkbox">
-									<input type="checkbox" id="login_remember" name="login_remember" checked="checked" value="1" > Remember me
-								</label>
-								<button type="submit" id="login_button" name="login_button" class="btn">Sign in</button>
-								<p>
-									<a target="_blank" href="http://www.cs-club.ca/reset">Forgot/Reset Password</a>
-								</p>
-							</div>
-						</div>						
-				</fieldset>
-			</form>
-			<br />
-			<form class="form-horizontal" action="https://www.cs-club.ca/register/">
-				<!-- 'Not a member...' and register button' -->
-				<h2>Not a Member?</h2>
-				<br />
-				<div class="control-group">
-					<div class="controls">	
-						<button type="submit" id="register_button" name="register_button" class="btn btn-large">Register!</button>
-					</div>
-				</div>
-			</form>
+		
+		<div class="hero-unit">
+			<h1>Free Room Finder</h1>
+			<br/>
+			<div class="row">
+			<!--  Display an error if they entered invalid credentials -->
+			<?php
+				if (isset($invalid))
+				{
+					echo '<div class="alert alert-error span8">
+		              		<button type="button" class="close" data-dismiss="alert">×</button>
+		             	 	<strong>Invalid Credentials!</strong> Please enter a valid username and password.
+		            	  </div>';
+				}
+	     	?>
+	     	</div>
+			
+			  <p> Thank you for visiting the Computer Science Club free room finder. Please login to gain instant 
+			  		access to available rooms all over campus. If you cannot remember your password please visit our 
+			  		<a href="https://cs-club.ca/reset/" target="_blank">password reset page</a>.
+			  </p>
+			  <p>
+			  		If you are currently not a club member and would like more information about the Computer
+			  		Science Club then please click below to visit the Computer Science Club website. If you
+			  		are a member who has been registered for at least one semester and for some reason cannot
+			  		login then please visit our <a target="_blank" href="http://cs-club.ca/contact">Contact Page</a>
+			  		and contact us about your issue.
+			  </p>
 		</div>
-	</div>
 </section>
 
 

@@ -22,6 +22,38 @@
  * Custom CSS styling
  */
 
+ /* Add sytling for the navbar drop down login menu as bootstrap does not
+ * provide any native styling for a login menu from the navbar
+ */
+div.login-dropdown {
+  padding: 15px;
+  padding-bottom: 0px;
+  color: #000;
+}
+
+input.login-form {
+  margin-bottom: 15px;
+}
+
+input.login-checkbox {
+  float: left;
+  margin-right: 10px;
+}
+
+input#login_button, .login-button {
+  clear: left;
+  width: 100%;
+  height: 32px;
+  font-size: 13px;
+}
+
+input#signout_button {
+  width: 93%;
+  height: 32px;
+  font-size: 13px;
+  margin-left: 6px;
+}
+
 /* Custom styling for the page padding */
 body {
 	padding-top: 60px;

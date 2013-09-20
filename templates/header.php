@@ -34,6 +34,14 @@
     <meta name="description" content="Free Room Finder">
     <meta name="author" content="Computer Science Club">
 
+	<!-- CSS styles -->
+		<style type="text/css">
+		  body {
+		    padding-top: 60px;
+		    padding-bottom: 20px;
+		  }
+		</style>
+
     <!-- CSS styles -->
     <link href="css/bootstrap.css" rel="stylesheet">
     <link href="css/bootstrap-responsive.css" rel="stylesheet">
@@ -41,7 +49,7 @@
     <link href="css/custom.css" rel="stylesheet">
 
 
-    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!-- HTML5 shiv, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
       <script src="js/html5shiv.js"></script>
     <![endif]-->
@@ -57,6 +65,27 @@
           <a class="brand" href="index.php">
             Free Room Finder
           </a>
+            <ul class="nav pull-right">
+              <li class="divider-vertical"></li>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                  Sign in
+                  <b class="caret"></b>
+                </a>
+                <div class="dropdown-menu login-dropdown">
+                    <form class="form-horizontal" action="login.php" method="post" accept-charset="UTF-8">
+                    <input id="login_username" class="input-large login-form" required type="text" maxlength="31" pattern="^[A-Za-z][A-Za-z0-9]*(?:_[A-Za-z0-9]+)*$" name="login_username" placeholder="Username" />
+                    <input id="login_password" class="input-large login-form" required type="password" maxlength="31" pattern="^[a-zA-Z0-9\`\~\!\@\#\$\%\^\&amp;\*\(\)\-\_\=\+\|\&lt;\&gt;\?]{6,31}$" name="login_password" placeholder="Password"/>
+                    <input id="login_remember" class="login-checkbox" type="checkbox" name="login_remember" checked="checked" value="1" />
+                    <label class="string optional" for="login_remember">Remember me</label>
+                    <input id="login_button" class="btn btn-primary" class="login-button" type="submit" name="login_button" value="Sign In" />
+                    <p>
+                      <a target="_blank" href="http://www.cs-club.ca/reset">Forgot/Reset Password</a>
+                    </p>
+                  </form>
+                </div>
+              </li>
+            </ul>
         </div>
       </div>
     </div>
