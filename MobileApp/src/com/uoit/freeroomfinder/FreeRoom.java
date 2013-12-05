@@ -9,7 +9,7 @@ public class FreeRoom extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_free_room);
+		setContentView(R.layout.login_screen);
 	}
 
 	@Override

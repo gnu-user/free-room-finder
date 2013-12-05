@@ -4,5 +4,10 @@
     <string name="app_name">FreeRoomFinder</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
+    <string name="submit_button">Submit</string>
+    <string name="password_reset">Reset</string>
+    <string name="username_hint">Username</string>
+    <string name="password_hint">Password</string>
+    <string name="login_heading">Login:</string>
 
 </resources>
