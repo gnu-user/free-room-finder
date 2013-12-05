@@ -1,10 +1,27 @@
 #!/usr/bin/env python2
 ################################################################################
-# 
-# A module containing all of the compiled regular expression objects used 
+#
+# A module containing all of the compiled regular expression objects used
 # by the free room to parse the data
 #
-################################################################################
+# Copyright (C) 2013, Jonathan Gillett, Joseph Heron, and Daniel Smullen
+# All rights reserved.
+#
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+###############################################################################
 import re
 
 
@@ -34,7 +51,7 @@ re_capacity = re.compile(r'^\d{1,3}$')
 # Matches the week1 or week2 info, if no week specified room used every week
 re_week_info = re.compile(r'(W1|W2|W3|\&nbsp\;)')
 
-# Matches the course start and end time for room, groups: start time, 
+# Matches the course start and end time for room, groups: start time,
 # start AM/PM, end time, AM/PM end time
 re_course_time = re.compile(r'(\d{1,2}\:\d{2})\s(\w{2})\s+\-\s+(\d{1,2}\:\d{2})\s(\w{2})')
 
@@ -46,7 +63,7 @@ re_course_day = re.compile(r'([MTWRF]{1})')
 # There are also rooms such as SQSH4, which has 4 chars
 re_room = re.compile(r'\s*?([A-Z]{1,5}\d{1,4})\<\/td\>')
 
-# Matches rooms that do not exist, such as for online courses which can be 
+# Matches rooms that do not exist, such as for online courses which can be
 # labeled "TBA", "Online", "Virtual ONLINE", etc.
 re_room_online = re.compile(r'\s*TBA\s*|\s*Virtual\s*ONLINE\d*|\s*Virtual\s*|\s*Off\sSite\sLocation\s*|\s*Online\s*', re.IGNORECASE)
 
