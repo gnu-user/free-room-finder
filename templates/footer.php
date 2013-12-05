@@ -36,10 +36,10 @@
     <!-- Javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="js/jquery-1.8.3.js"></script>
-    <script src="js/bootstrap.js"></script>
+    <script src="js/jquery-1.8.3.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
     <script src="js/bootstrap-datepicker.js"></script>
-    <script src="js/highcharts/highcharts.js"></script>
+    <script src="js/highcharts/highcharts.min.js"></script>
     <script>
       $(function(){
         $('#select_date').datepicker({

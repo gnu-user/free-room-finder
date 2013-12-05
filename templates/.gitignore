@@ -1,7 +1,0 @@
-# Ignore eclipse project files
-*.buildpath
-*.project
-.settings/
-
-# Ignore backup files
-*.*~
