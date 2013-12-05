@@ -10,10 +10,10 @@
     android:orientation="vertical" >
 
     <EditText
-        android:id="@+id/editText1"
+        android:id="@+id/username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/editText2"
+        android:layout_above="@+id/password"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:ems="10"
@@ -23,7 +23,7 @@
     </EditText>
 
     <EditText
-        android:id="@+id/editText2"
+        android:id="@+id/password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -37,20 +37,21 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/editText2"
+        android:layout_below="@+id/password"
         android:layout_centerHorizontal="true"
 		android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true" >
 
         <Button
-            android:id="@+id/button1"
+            android:id="@+id/submit"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1.0"
+            android:onClick="submit"
             android:text="@string/submit_button" />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/reset"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1.0"
@@ -62,8 +63,8 @@
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/editText1"
-        android:layout_alignLeft="@+id/editText1"
+        android:layout_above="@+id/username"
+        android:layout_alignLeft="@+id/username"
         android:text="@string/login_heading"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
