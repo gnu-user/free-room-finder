@@ -19,7 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once "inc/free_room_auth.php";
+require_once "inc/auth.php";
 require_once "inc/db_interface.php";
 require_once "inc/validate.php";
 require_once "inc/verify.php";
