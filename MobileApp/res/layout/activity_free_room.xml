@@ -9,8 +9,86 @@
     tools:context=".FreeRoom" >
 
     <TextView
+        android:id="@+id/time_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:text="@string/time_heading"
+        android:labelFor="@+id/time" />
+    
+    <EditText
+        android:id="@+id/time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/time_label"
+        android:ems="10"
+        android:inputType="time" />
+    
+	<TextView
+        android:id="@+id/duration_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:text="@string/duration_heading"
+        android:layout_below="@+id/time"
+        android:labelFor="@+id/duration" />
+    
+    <EditText
+        android:id="@+id/duration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/duration_label"
+        android:ems="10"
+        android:inputType="number" />
+    
+    <TextView
+        android:id="@+id/date_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:text="@string/date_heading"
+        android:layout_below="@+id/duration"
+        android:labelFor="@+id/date" />
 
+    <EditText
+        android:id="@+id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/date_label"
+        android:ems="10"
+        android:inputType="date" />
+
+	<TextView
+        android:id="@+id/campus_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:text="@string/campus_heading"
+        android:layout_below="@+id/date"
+        android:labelFor="@+id/campus" />
+    
+    <Spinner
+        android:id="@+id/campus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/campus_label" />
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/campus"
+        android:layout_below="@+id/campus"
+        android:text="@string/submit_button" />
+    
 </RelativeLayout>

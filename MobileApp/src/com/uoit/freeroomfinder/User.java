@@ -1,18 +1,18 @@
 package com.uoit.freeroomfinder;
 
+import java.util.regex.Pattern;
+
 public class User {
 
 	private String username;
 	private String password;
-	
-	public User()
-	{
+
+	public User() {
 		username = "";
 		password = "";
 	}
-	
-	public User(String username, String password)
-	{
+
+	public User(String username, String password) {
 		this.username = username;
 		this.password = password;
 	}
@@ -25,7 +25,8 @@ public class User {
 	}
 
 	/**
-	 * @param username the username to set
+	 * @param username
+	 *            the username to set
 	 */
 	public void setUsername(String username) {
 		this.username = username;
@@ -39,10 +40,32 @@ public class User {
 	}
 
 	/**
-	 * @param password the password to set
+	 * @param password
+	 *            the password to set
 	 */
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
+	public boolean validUsername() {
+
+		if (username != null && Pattern.matches(
+				"^[a-zA-Z][a-zA-Z0-9_]{6,31}$", username)) {
+			return true;
+		}
+
+		return false;
+	}
 	
+	public boolean validPassword()
+	{
+		if (password != null && Pattern.matches(
+				"^[a-zA-Z0-9\\!\\$\\%\\^\\&\\*\\(\\)\\_\\?]{6,31}$",
+				password)) {
+			return true;
+		}
+
+		return false;
+	}
+
 }
