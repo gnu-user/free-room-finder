@@ -20,4 +20,8 @@
     <string name="username_error">Username is invalid</string>
     <string name="username_password_error">Username &amp; Password are invalid</string>
 
+    <string name="time_heading">Time</string>
+    <string name="duration_heading">Duration</string>
+    <string name="date_heading">Date</string>
+    <string name="campus_heading">Campus</string>
 </resources>

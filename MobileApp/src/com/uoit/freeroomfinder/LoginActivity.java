@@ -20,9 +20,6 @@ public class LoginActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login_screen);
-
-		// Finish with the resquest code FreeRoom.LOGIN_SUCCESSFUL
-		// this.finishActivity(FreeRoom.LOGIN_SUCCESSFUL);
 	}
 
 	@Override
@@ -61,6 +58,12 @@ public class LoginActivity extends Activity {
 				}
 			}
 		}
+	}
+	
+	public void reset(View v)
+	{
+		//TODO open up the submit url
+		//https://www.cs-club.ca/reset/
 	}
 
 	private void showProgress(boolean show) {
@@ -105,7 +108,8 @@ public class LoginActivity extends Activity {
 			showProgress(false);
 
 			if (success) {
-				finishActivity(FreeRoom.LOGIN_SUCCESSFUL);
+				LoginActivity.this.setResult(FreeRoom.LOGIN_SUCCESSFUL);
+				LoginActivity.this.finish();
 			} else {
 				//TODO show error
 				
