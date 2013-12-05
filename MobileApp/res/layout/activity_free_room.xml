@@ -25,8 +25,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/time_label"
-        android:ems="10"
-        android:inputType="time" />
+        android:inputType="time"
+        />
     
 	<TextView
         android:id="@+id/duration_label"
@@ -37,15 +37,16 @@
         android:layout_below="@+id/time"
         android:labelFor="@+id/duration" />
     
-    <EditText
+    <Spinner
         android:id="@+id/duration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/duration_label"
-        android:ems="10"
-        android:inputType="number" />
+        android:entries="@array/duration_values"
+        android:prompt="@string/duration_heading"
+        />
     
     <TextView
         android:id="@+id/date_label"
@@ -81,14 +82,17 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/campus_label" />
+        android:layout_below="@+id/campus_label"
+        android:entries="@array/campus_names"
+        android:prompt="@string/campus_heading" />
 
     <Button
         android:id="@+id/button1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/campus"
-        android:layout_below="@+id/campus"
-        android:text="@string/submit_button" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:text="@string/search_button" />
     
 </RelativeLayout>
