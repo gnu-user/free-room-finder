@@ -50,7 +50,7 @@ Creating the Database from Scratch
 Configuring PHP 
 ----------------
 
-1.  Edit the authorization file, inc/free_room_auth.php, and set your username,
+1.  Edit the authorization file, inc/auth.php, and set your username,
     password, and database name. The following settings must be set in order to
     connect to the database
 
@@ -59,6 +59,7 @@ Configuring PHP
     $db_user = '';
     $db_pass = '';
     $db_name = '';
+	$db_login = '';
     ```
 
 2.  Next, configure the root URL for the statistics javascript file which uses the
