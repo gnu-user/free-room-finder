@@ -1,65 +1,63 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 ################################################################################
-# 
+#
 # A module containing the functions for interfacing with MySQL databases
 #
-################################################################################
+# Copyright (C) 2013, Jonathan Gillett, Joseph Heron, and Daniel Smullen
+# All rights reserved.
+#
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+###############################################################################
 import MySQLdb as mdb
 from acronyms import *
 
-################################################################################
-# 
-# Function that connects to the database specified and returns a connection
-# object
-#
-################################################################################
+
 def connect_db(user, passwd, domain, db_name):
+    """A function that connects to the database specified and returns a
+    connection object.
+    """
     try:
         con = mdb.connect(domain, user, passwd, db_name)
         return con
     except mdb.Error, e:
-        print "Error %d: %s" % (e.args[0],e.args[1])
-        
+        print "Error %d: %s" % (e.args[0], e.args[1])
+       
 
-#Doesnt create DB since the database is created from a Schema file once.
-
-################################################################################
-# 
-# Function that determines if a specified table already exists, returns True
-# if the table specifed exists
-#
-################################################################################    
 def table_exists(con, table):
+    """A function that determines if a specified table already exists, returns True
+    if the table specifed exists.
+    """
     try:
         cur = con.cursor()
         cur.execute("SHOW TABLES")
 
     except mdb.Error, e:
-        print "Error %d: %s" % (e.args[0],e.args[1])
+        print "Error %d: %s" % (e.args[0], e.args[1])
         
-
-    # Check if table exists 
+    # Check if table exists
     for row in cur.fetchall():
         if row[0] == table:
             return True
             
     return False
 
-################################################################################
-# 
-# Function that creates a table for the room number specified
-#
-################################################################################    
-#def insert_faculty(course_data):
-    #Use of Insert IGNORE is to allow for duplications to be silently skipped
-    #cur.execute("INSERT IGNORE")
 
-#################################################
-#Do a test with the data from the db-interface  #
-#################################################
-
-#insert the room into the database if it is not already there
 def insert_rooms(con, room_number, campus, capacity):
+    """Insert the room into the database if it is not already there.
+    """
     room_id = get_room_id(con, room_number)
     if room_id == 0:
         campus_id = insert_campus(con, campus)
@@ -85,7 +83,7 @@ def insert_rooms(con, room_number, campus, capacity):
             room_id = cur.lastrowid
             con.commit()
         except mdb.Error, e:
-            print "Error %d: %s" % (e.args[0],e.args[1])
+            print "Error %d: %s" % (e.args[0], e.args[1])
     
     # Hack to handle when it is a tuple
     if type(room_id) is tuple:
@@ -94,8 +92,9 @@ def insert_rooms(con, room_number, campus, capacity):
         return int(room_id)
 
 
-#Get the room id given the name of the room
 def get_room_id(con, room_number):
+    """Get the room id given the name of the room.
+    """
     try:
         cur = con.cursor()
         cur.execute("SELECT roomId FROM rooms WHERE name LIKE ('%s');" % (room_number))
@@ -105,21 +104,22 @@ def get_room_id(con, room_number):
         else:
             return re_id
     except mdb.Error, e:
-        print "Error %d: %s" % (e.args[0],e.args[1])
+        print "Error %d: %s" % (e.args[0], e.args[1])
         
 
-#Insert the campus if it is not already stored
 def insert_campus(con, campus):
+    """Insert the campus if it is not already stored.
+    """
     campus_id = get_campus_id(con, campus)
     if campus_id == 0:
         try:
             cur = con.cursor()
-            cur.execute("INSERT INTO campus (acr, name) VALUES ('%s', '%s');" 
+            cur.execute("INSERT INTO campus (acr, name) VALUES ('%s', '%s');"
                 % ( mdb.escape_string(campus), mdb.escape_string(campus_acronyms[campus] )))
             campus_id = cur.lastrowid
             con.commit()
         except mdb.Error, e:
-            print "Error %d: %s" % (e.args[0],e.args[1])
+            print "Error %d: %s" % (e.args[0], e.args[1])
     
     # Hack to handle when it is a tuple
     if type(campus_id) is tuple:
@@ -128,8 +128,9 @@ def insert_campus(con, campus):
         return int(campus_id)
 
 
-#Get the campus id 
 def get_campus_id(con, campus):
+    """Get the campus id.
+    """
     try:
         cur = con.cursor()
         cur.execute("SELECT campusID FROM campus WHERE acr LIKE '%s';" 
@@ -140,11 +141,12 @@ def get_campus_id(con, campus):
         else:
             return re_id
     except mdb.Error, e:
-        print "Error %d: %s" % (e.args[0],e.args[1])
+        print "Error %d: %s" % (e.args[0], e.args[1])
         
 
-#Insert the start and finish times if it is not already in the database
 def insert_time(con, start_time, finish_time):
+    """Insert the start and finish times if it is not already in the database.
+    """
     start_id = get_time_id(con, start_time)
     finish_id = get_time_id(con, finish_time)
     if start_id == 0:
@@ -154,7 +156,7 @@ def insert_time(con, start_time, finish_time):
             start_id = cur.lastrowid
             con.commit()
         except mdb.Error, e:
-            print "Error %d: %s" % (e.args[0],e.args[1])
+            print "Error %d: %s" % (e.args[0], e.args[1])
             
     if finish_id == 0:
         try:
@@ -162,7 +164,7 @@ def insert_time(con, start_time, finish_time):
             cur.execute("INSERT INTO times (time) VALUES ('%s');" % ( finish_time ))
             finish_id = cur.lastrowid
         except mdb.Error, e:
-            print "Error %d: %s" % (e.args[0],e.args[1])
+            print "Error %d: %s" % (e.args[0], e.args[1])
     
     # Hack to handle when it is a tuple
     if type(start_id) is tuple:
@@ -173,8 +175,9 @@ def insert_time(con, start_time, finish_time):
     return [int(start_id), int(finish_id)]
 
 
-#Get the time id given the time 
 def get_time_id(con, time):
+    """Get the time id given the time.
+    """
     try:
         cur = con.cursor()
         cur.execute("SELECT timeId FROM times WHERE time LIKE '%s';" % (time))
@@ -184,12 +187,13 @@ def get_time_id(con, time):
         else:
             return re_id
     except mdb.Error, e:
-        print "Error %d: %s" % (e.args[0],e.args[1])
+        print "Error %d: %s" % (e.args[0], e.args[1])
         
 
-# Insert the date into the database if it is not already in the database
-# NOTE: Courses that have been cancelled have the same start and end date
 def insert_date(con, start_date, finish_date):
+    """Insert the date into the database if it is not already in the database
+    NOTE: Courses that have been cancelled have the same start and end date
+    """
     start_id = get_date_id(con, start_date)
     if start_id == 0:
         try:
@@ -198,7 +202,7 @@ def insert_date(con, start_date, finish_date):
             start_id = cur.lastrowid
             con.commit()
         except mdb.Error, e:
-            print "Error %d: %s" % (e.args[0],e.args[1])
+            print "Error %d: %s" % (e.args[0], e.args[1])
 
     finish_id = get_date_id(con, finish_date)
     if finish_id == 0:
@@ -208,7 +212,7 @@ def insert_date(con, start_date, finish_date):
             finish_id = cur.lastrowid
             con.commit()
         except mdb.Error, e:
-            print "Error %d: %s" % (e.args[0],e.args[1])
+            print "Error %d: %s" % (e.args[0], e.args[1])
 
     # Hack to handle when it is a tuple
     if type(start_id) is tuple:
@@ -219,8 +223,9 @@ def insert_date(con, start_date, finish_date):
     return [int(start_id), int(finish_id)]
 
 
-#Get the date id given the date
 def get_date_id(con, date):
+    """Get the date id given the date.
+    """
     try:
         cur = con.cursor()
         cur.execute("SELECT dateId FROM dates WHERE date LIKE '%s';" % (date))
@@ -230,11 +235,12 @@ def get_date_id(con, date):
         else:
             return re_id
     except mdb.Error, e:
-        print "Error %d: %s" % (e.args[0],e.args[1])
+        print "Error %d: %s" % (e.args[0], e.args[1])
         
 
-#Insert the faculty into the database if it is not already in the database
 def insert_faculty(con, faculty):
+    """Insert the faculty into the database if it is not already in the database.
+    """
     faculty_id = get_faculty_id(con, faculty)
     if faculty_id == 0:
         try:
@@ -244,7 +250,7 @@ def insert_faculty(con, faculty):
             faculty_id = cur.lastrowid
             con.commit()
         except mdb.Error, e:
-            print "Error %d: %s" % (e.args[0],e.args[1])
+            print "Error %d: %s" % (e.args[0], e.args[1])
     
     # Hack to handle when it is a tuple
     if type(faculty_id) is tuple:
@@ -253,8 +259,9 @@ def insert_faculty(con, faculty):
         return int(faculty_id)
 
 
-#Get the faculty id given the faculty code
 def get_faculty_id(con, faculty):
+    """Get the faculty id given the faculty code.
+    """
     try:
         cur = con.cursor()
         cur.execute("SELECT facultyId FROM faculties WHERE code LIKE '%s';" 
@@ -265,11 +272,12 @@ def get_faculty_id(con, faculty):
         else:
             return re_id
     except mdb.Error, e:
-        print "Error %d: %s" % (e.args[0],e.args[1])
+        print "Error %d: %s" % (e.args[0], e.args[1])
         
 
-#Insert the semesters and years if they are not already in the database
 def insert_semesters(con, year, semester):
+    """Insert the semesters and years if they are not already in the database.
+    """
     semester_id = get_semesters_id(con, year, semester) 
     #print (semester_id)
     if semester_id == 0:
@@ -279,7 +287,7 @@ def insert_semesters(con, year, semester):
             semester_id = cur.lastrowid
             con.commit()
         except mdb.Error, e:
-            print "Error %d: %s" % (e.args[0],e.args[1])
+            print "Error %d: %s" % (e.args[0], e.args[1])
 
     # Hack to handle when it is a tuple
     if type(semester_id) is tuple:
@@ -288,8 +296,9 @@ def insert_semesters(con, year, semester):
         return int(semester_id)  
 
 
-#Get the semester id given the year and semester
 def get_semesters_id(con, year, semester):
+    """Get the semester id given the year and semester.
+    """
     try:
         cur = con.cursor()
         cur.execute("""SELECT semesterId FROM semesters WHERE year LIKE '%s' AND semester 
@@ -300,11 +309,12 @@ def get_semesters_id(con, year, semester):
         else:
             return re_id
     except mdb.Error, e:
-        print "Error %d: %s" % (e.args[0],e.args[1])
+        print "Error %d: %s" % (e.args[0], e.args[1])
         
 
-#Insert the class type given the acr if it is not already within the database
 def insert_class_type(con, class_type):
+    """Insert the class type given the acr if it is not already within the database.
+    """
     class_type_id = get_class_type(con, class_type) 
     if class_type_id == 0:
         try:
@@ -314,7 +324,7 @@ def insert_class_type(con, class_type):
             class_type_id = cur.lastrowid
             con.commit()
         except mdb.Error, e:
-            print "Error %d: %s" % (e.args[0],e.args[1])
+            print "Error %d: %s" % (e.args[0], e.args[1])
     
     # Hack to handle when it is a tuple
     if type(class_type_id) is tuple:
@@ -323,8 +333,9 @@ def insert_class_type(con, class_type):
         return int(class_type_id)
 
 
-#Get the class type given the acr 
 def get_class_type(con, class_type):
+    """Get the class type given the acr.
+    """
     try:
         # new course type bug fix, will just default class type 1
         if class_type != None:
@@ -339,13 +350,14 @@ def get_class_type(con, class_type):
         else:
             return 1;
     except mdb.Error, e:
-        print "Error %d: %s" % (e.args[0],e.args[1])
+        print "Error %d: %s" % (e.args[0], e.args[1])
         
 
-#Insert the professor if it is not already in the database
-# TODO if we could ever link professors to faculties this may avoid
-# the inevitable conflict where two profs have same first & last name
 def insert_professor(con, professor):
+    """Insert the professor if it is not already in the database
+    TODO if we could ever link professors to faculties this may avoid
+    the inevitable conflict where two profs have same first & last name.
+    """
     prof_id = get_prof_id(con, professor)
     if prof_id == 0:
         try:
@@ -355,7 +367,7 @@ def insert_professor(con, professor):
             prof_id = cur.lastrowid
             con.commit()
         except mdb.Error, e:
-            print "Error %d: %s" % (e.args[0],e.args[1])
+            print "Error %d: %s" % (e.args[0], e.args[1])
 
      # Hack to handle when it is a tuple
     if type(prof_id) is tuple:
@@ -364,8 +376,9 @@ def insert_professor(con, professor):
         return int(prof_id)
 
 
-#Get the professor id given the professor name
 def get_prof_id(con, professor):
+    """Get the professor id given the professor name.
+    """
     try:
         cur = con.cursor()
         cur.execute("""SELECT profid FROM professors WHERE name LIKE '%s';""" 
@@ -376,11 +389,12 @@ def get_prof_id(con, professor):
         else:
             return re_id
     except mdb.Error, e:
-        print "Error %d: %s" % (e.args[0],e.args[1])
+        print "Error %d: %s" % (e.args[0], e.args[1])
         
 
-#Insert the course in the database given the database
 def insert_course(con, name, course_code, level, program_code):
+    """Insert the course in the database given the database.
+    """
     course_id = get_course_id(con, name)
     if course_id == 0:
         faculty_id = insert_faculty(con, program_code)
@@ -405,17 +419,18 @@ def insert_course(con, name, course_code, level, program_code):
             course_id = cur.lastrowid
             con.commit()
         except mdb.Error, e:
-            print "Error %d: %s" % (e.args[0],e.args[1])
+            print "Error %d: %s" % (e.args[0], e.args[1])
     
-     # Hack to handle when it is a tuple
+    # Hack to handle when it is a tuple
     if type(course_id) is tuple:
         return int(course_id[0])
     else:
         return int(course_id)
 
 
-#Get course id given the course name
 def get_course_id(con, name):
+    """Get course id given the course name.
+    """
     try:
         cur = con.cursor()
         cur.execute("SELECT courseId FROM courses WHERE name LIKE '%s' " 
@@ -426,39 +441,36 @@ def get_course_id(con, name):
         else:
             return re_id
     except mdb.Error, e:
-        print "Error %d: %s" % (e.args[0],e.args[1])
+        print "Error %d: %s" % (e.args[0], e.args[1])
         
 
-################################################################################
-# Insert the offerings into the database along with the rest of tables are 
-# filled to
-#
-# The offerings argument is a dictionary with the following parameters
-# offerings = { 'course_name':      'Introductory Sociology',
-#               'crn':              '70483',
-#               'program_code':     'SOCI',
-#               'course_code':      '1000U',
-#               'course_section':   '001',
-#               'level':            'Undergraduate',
-#               'class_type':       'LEC',
-#               'teacher_name':     'Mihai Beligan',
-#               'room_number':      'UA1350', 
-#               'campus':           'UON', 
-#               'capacity':         250,
-#               'registered':       236,
-#               'start_time':       '08:10:00',
-#               'finish_time':      '10:00:00', 
-#               'start_date':       '2012-01-09',
-#               'finish_date':      '2012-04-13',
-#               'day':              'M',
-#               'week_alt':         'None/True/False',    
-#               'year':             '2012',
-#               'semester':         'Fall'
-#             }
-# 
-################################################################################
 def insert_offering(con, offerings):
+    """Insert the offerings into the database along with the rest of tables are
+    filled to
 
+    The offerings argument is a dictionary with the following parameters
+    offerings = { 'course_name':      'Introductory Sociology',
+                  'crn':              '70483',
+                  'program_code':     'SOCI',
+                  'course_code':      '1000U',
+                  'course_section':   '001',
+                  'level':            'Undergraduate',
+                  'class_type':       'LEC',
+                  'teacher_name':     'Mihai Beligan',
+                  'room_number':      'UA1350',
+                  'campus':           'UON',
+                  'capacity':         250,
+                  'registered':       236,
+                  'start_time':       '08:10:00',
+                  'finish_time':      '10:00:00',
+                  'start_date':       '2012-01-09',
+                  'finish_date':      '2012-04-13',
+                  'day':              'M',
+                  'week_alt':         'None/True/False',
+                  'year':             '2012',
+                  'semester':         'Fall'
+                }
+    """
     # Get the course id FK
     course_id = insert_course(  con, 
                                 offerings['course_name'],
@@ -475,32 +487,31 @@ def insert_offering(con, offerings):
     # this should NOT ever be NULL
     type_id = insert_class_type(con, offerings['class_type'])
 
-
     # Do not insert/get the FK of items that do not have a teacher name
     if offerings['teacher_name'] is not None:
         prof_id = insert_professor(con, offerings['teacher_name'])
 
     # Do not insert/get the FK of items that do not have a room (such as web courses)
     if offerings['room_number'] is not None:
-        room_id = insert_rooms( con, 
-                                offerings['room_number'], 
-                                offerings['campus'], 
+        room_id = insert_rooms( con,
+                                offerings['room_number'],
+                                offerings['campus'],
                                 offerings['capacity'])
 
     # Do not insert/get the FK of items that do not have a time (such as web courses)
     if offerings['start_time'] is not None and offerings['finish_time'] is not None:
-        time = insert_time( con, 
-                            offerings['start_time'], 
+        time = insert_time( con,
+                            offerings['start_time'],
                             offerings['finish_time'])
 
     # Every course should ALWAYS have a start and finish date
-    date = insert_date( con, 
-                        offerings['start_date'], 
+    date = insert_date( con,
+                        offerings['start_date'],
                         offerings['finish_date'])
 
     # Get the FK for the the year and semester
-    semester_id = insert_semesters( con, 
-                                    offerings['year'], 
+    semester_id = insert_semesters( con,
+                                    offerings['year'],
                                     offerings['semester'])
 
     # Set any offerings items that are None as the equivalent NULL type in SQL
@@ -582,7 +593,7 @@ def insert_offering(con, offerings):
                         semester_id ))
         con.commit()
     except mdb.Error, e:
-        print "Error %d: %s" % (e.args[0],e.args[1])
+        print "Error %d: %s" % (e.args[0], e.args[1])
 
 
 """
