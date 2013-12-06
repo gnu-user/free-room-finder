@@ -93,6 +93,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:text="@string/search_button" />
+        android:text="@string/search_button"
+        android:onClick="search" />
     
 </RelativeLayout>
