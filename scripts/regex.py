@@ -26,7 +26,7 @@ import re
 
 
 # Matches the course info, groups: course name, CRN, program code, course code, course section
-re_course_info = re.compile(r'(^.*)\s*\-\s*(\d{5})\s*\-\s*([\w]{2,4})\s*(\d{4}[\w]{1})\s*\-*\s*(\d{0,3})')
+re_course_info = re.compile(r'(^.*)\s*\-\s*(\d{5})\s*\-\s*([\w]{2,4})\s*(\d{4}[\w]{0,1})\s*\-*\s*(\d{0,3})')
 
 # Matches course term info, groups: school, term, year
 re_course_term = re.compile(r'^([A-Z]*)\s([\w/]*)\s(\d{4})')
@@ -39,7 +39,7 @@ re_course_level = re.compile(r'\s*(Post\sSecondary,\sUndergraduate|Post\sSeconda
 re_prof_name = re.compile(r'([a-zA-Z\w\s\.\'\,\-]*?)\s\(|(TBA)')
 
 # Matches the campus, group: campus
-re_campus = re.compile(r'UOIT[\s]*\-(Off)*[\s]*([A-Za-z\-\s]*)')
+re_campus = re.compile(r'UOIT[\s]*\-(Off)*[\s]*([A-Za-z\-\s]*)|(Oshawa\sCampus)')
 
 # NOTE THIS REGEX NEEDS TO BE MORE SPECIFIC
 # Matches the course type, group: course type

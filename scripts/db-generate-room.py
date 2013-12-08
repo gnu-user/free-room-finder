@@ -264,11 +264,18 @@ def parse_course_info(course_content, course_data):
             if match is not None:
                 # Store the acronym for each campus, lookup acronym in dictionary
                 #print "campus", idx_key
-                course_data[idx_key]['campus'] = reverse_lookup(campus_acronyms, match.group(2).strip())
+                if match.group(2) is not None:
+                    course_data[idx_key]['campus'] = reverse_lookup(campus_acronyms, match.group(2).strip())
+                # Case where UOIT North Oshawa Campus (UON) is shown as just Oshawa Campus
+                elif match.group(3) is not None:
+                    if match.group(3).strip() == "Oshawa Campus":
+                        course_data[idx_key]['campus'] = reverse_lookup(campus_acronyms, "North Oshawa Campus")
+                    else:
+                        course_data[idx_key]['campus'] = None
                 idx_key += 1
             # TODO this needs to be handled because online courses are still linked to campus even thoug there is no room
             else:
-               course_data[idx_key]['campus'] = None 
+                course_data[idx_key]['campus'] = None
 
         # Parse the professors name
         idx_key = 0
