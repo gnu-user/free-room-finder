@@ -279,12 +279,13 @@ def parse_course_info(course_content, course_data):
                 for column in row.findAll('td', {'class': "dbdefault"}, True)[7:8]:
                     match = re_prof_name.search(str(column).strip())
                     
-                    # Professors name is listed
-                    if match.group(1) is not None:
-                        course_data[idx_key]['teacher_name'] = match.group(1)
-                    # professor listed as TBA, None specfied for course
-                    elif match.group(2) is not None:
-                        course_data[idx_key]['teacher_name'] = None
+                    if match is not None:
+                        # Professors name is listed
+                        if match.group(1) is not None:
+                            course_data[idx_key]['teacher_name'] = match.group(1)
+                        # professor listed as TBA, None specfied for course
+                        elif match.group(2) is not None:
+                            course_data[idx_key]['teacher_name'] = None
                     # No professor name listed, None specfied for course
                     else:
                         course_data[idx_key]['teacher_name'] = None
@@ -425,19 +426,19 @@ db_name = 'test'
 # Current month, year semester
 #cur_month = datetime.now().month
 #cur_year = str(datetime.now().year)     # Year is ALWAYS used as a string
-cur_month = 10
-cur_year = "2013"
-cur_semester = None
+#cur_month = int(sys.argv[1])
+cur_semester = str(sys.argv[1])
+cur_year = str(sys.argv[2])
 
 
 # Get the current semester based on the current month, anything from 01 - 04
 # is winter, 05 - 08 is summer, 09 - 12 is winter
-if cur_month >= 1 and cur_month < 5:
-    cur_semester = 'winter'
-elif cur_month >= 5 and cur_month < 9:
-    cur_semester = 'summer'
-else:
-    cur_semester = 'fall'
+#if cur_month >= 1 and cur_month < 5:
+#    cur_semester = 'winter'
+#elif cur_month >= 5 and cur_month < 9:
+#    cur_semester = 'summer'
+#else:
+#    cur_semester = 'fall'
 
 
 # Create a new database for the current semester and year, if
@@ -450,6 +451,7 @@ con = connect_db(user, passwd, domain, db_name)
 
 # Get the course data for each faculty and store it in the database
 for faculty in faculties:
+    print "PARSING %s" % (faculty)
     course_data = get_course_data('ALL', faculty, semester[cur_semester], cur_year)
     store_course_data(con, course_data)
 
