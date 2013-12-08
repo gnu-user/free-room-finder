@@ -31,9 +31,9 @@
  */
 
 /* Database access */
-$db_user = 'rms';
-$db_pass = '';
-$db_name = 'free_room_finder';
+$db_user = 'jon';
+$db_pass = 'test123';
+$db_name = 'test';
 $db_login = 'ucsc_accounts';
 
 /* AES ENCRYPT/DECRYPT KEY */

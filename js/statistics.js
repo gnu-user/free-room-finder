@@ -104,7 +104,7 @@ function plotEnrollmentAll(data) {
         },
         plotOptions: {
             area: {
-                pointStart: 2003,
+                pointStart: 2005,
                 marker: {
                     enabled: false,
                     symbol: 'circle',
@@ -119,8 +119,7 @@ function plotEnrollmentAll(data) {
         },
         series: [{
             name: 'UOIT',
-			/* Approximation of the number of students from previous years */
-            data: [ 300, 546, 1349, 2188, 4210, 5832]
+            data: []
         }]
     };
     

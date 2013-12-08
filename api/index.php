@@ -23,6 +23,7 @@ require_once "../inc/auth.php";
 require_once "../inc/db_interface.php";
 require_once "../inc/validate.php";
 require_once "../inc/verify.php";
+require_once "../inc/utility.php";
 require 'Slim/Slim.php';
 
 /*
@@ -41,6 +42,9 @@ $app->get('/totalregistered', 'getTotalRegistered');
 
 /* Gets the total number of registered students per faculty per semester per year */
 $app->get('/totalregisteredfaculty', 'getTotalRegisteredFaculty');
+
+/* Search for available rooms */
+$app->get('/availablerooms/:time/:date/:campus(/:duration)', 'getAvailableRooms');
 
 $app->run();
 
@@ -136,4 +140,40 @@ function getTotalRegisteredFaculty()
 	echo json_encode($total_reg_fac);
 	echo '}}';
 }
+
+/**
+ * Get the rooms that are open given the time, date, campus, and duration
+ *
+ * @param $time The time the user wants the room
+ * @param $date The date the user wants the room
+ * @param $campus the campus desired, the full campus name
+ * @param $duration The duration the room is needed for, default is 1 hour
+ *
+ * @return The room that are available
+ */
+function getAvailableRooms($time, $date, $campus, $duration = 1)
+{
+    global $db_user, $db_pass, $db_name;
+
+    /* Connect to the database */
+    $mysqli_conn = new mysqli("localhost", $db_user, $db_pass, $db_name);
+
+    /* check connection */
+    if (mysqli_connect_errno()) {
+            printf("Connect failed: %s\n", mysqli_connect_error());
+            exit();
+    }
+
+    $end_time =  get_end_time($time, $duration);
+    $day_of_week = get_day_of_week($date);
+    $semester = get_semester($date);
+
+	/* Get the available rooms */ 
+	$available = get_room_open(	$mysqli_conn, $time, $end_time, 
+								$day_of_week, $semester, $campus);
+    echo '{"availableRooms": ';
+    echo json_encode($available);
+    echo '}';
+}
+
 ?>
