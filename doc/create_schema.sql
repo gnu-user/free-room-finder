@@ -230,7 +230,7 @@ CREATE TABLE courses
     courseId    INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
     name        VARCHAR(64) NOT NULL,
     course_code VARCHAR(4) NOT NULL,
-    level       VARCHAR(32) NOT NULL,
+    level       VARCHAR(64) NOT NULL,
     facultyId   INTEGER UNSIGNED,
     PRIMARY KEY(courseId),
     FOREIGN KEY(facultyId) REFERENCES faculties(facultyId)
