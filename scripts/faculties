@@ -1,8 +1,10 @@
+ACHL - Ancient History and Classics
 AEDT - Adult Education & Digital Tech
 ALSU - Academic Learning & Success
 ANTH - Anthropology
 APBS - Applied Bioscience
 AUTE - Automotive Engineering
+BIOC - Biochemistry
 BIOL - Biology
 BUSI - Business
 CANN - Canadian Studies
@@ -10,6 +12,8 @@ CDEV - Community Development
 CDPS - Community Dev & Policy Studies
 CHEM - Chemistry
 CHIN - Chinese Studies
+CLLI - Classical Literature
+CLST - Cultural Studies
 COMM - Communications
 CSCI - Computer Science
 CURS - Curriculum Studies
@@ -29,14 +33,19 @@ HLSC - Health Science
 HSST - Hispanic Studies
 IDST - Interdisciplinery Studies
 INFR - Information Technology
+JSTS - Justice Studies
+LAPT - Mobile Learning
 LGLS - Legal Studies
 MANE - Manufacturing Engineering
 MATH - Mathematics
 MCSC - Modelling & Computational Scie
 MECE - Mechanical Engineering
+MEET - Scheduled Meetings
 MITS - Masters of IT Security
+MLAL - Modern Languages
 MLSC - Medical Lab Science
 MTSC - Materials Science
+NAST - Native Studies
 NUCL - Nuclear
 NURS - Nursing
 PHIL - Philosophy
@@ -51,4 +60,6 @@ SOCI - Sociology
 SOFE - Software Engineering
 SSCI - Social Science
 STAT - Statistics
+WEB - Web
 WMST - Women Studies
+WRIT - Writing
