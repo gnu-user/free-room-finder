@@ -270,6 +270,8 @@ def parse_course_info(course_content, course_data):
                 elif match.group(3) is not None:
                     if match.group(3).strip() == "Oshawa Campus":
                         course_data[idx_key]['campus'] = reverse_lookup(campus_acronyms, "North Oshawa Campus")
+                    elif match.group(3).strip() == "Offsite Campus":
+                        course_data[idx_key]['campus'] = reverse_lookup(campus_acronyms, "Other Campus")
                     else:
                         course_data[idx_key]['campus'] = None
                 idx_key += 1

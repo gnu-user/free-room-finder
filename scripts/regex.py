@@ -39,7 +39,7 @@ re_course_level = re.compile(r'\s*(Post\sSecondary,\sUndergraduate|Post\sSeconda
 re_prof_name = re.compile(r'([a-zA-Z\w\s\.\'\,\-]*?)\s\(|(TBA)')
 
 # Matches the campus, group: campus
-re_campus = re.compile(r'UOIT[\s]*\-(Off)*[\s]*([A-Za-z\-\s]*)|(Oshawa\sCampus)')
+re_campus = re.compile(r'UOIT[\s]*\-(Off)*[\s]*([A-Za-z\-\s]*)|(Oshawa\sCampus|Offsite\sCampus)')
 
 # NOTE THIS REGEX NEEDS TO BE MORE SPECIFIC
 # Matches the course type, group: course type
