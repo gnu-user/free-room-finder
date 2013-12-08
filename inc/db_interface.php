@@ -290,12 +290,17 @@ function get_room_open_dur($mysqli_conn, $duration, $day, $term, $campus)
  */
 function get_room_open($mysqli_conn, $start_time, $end_time, $day, $term, $campus)
 {
+    /* Get the list of rooms that are used */
     $rooms = get_rooms_taken($mysqli_conn, $day, $term, $campus);
 
     $free = TRUE;
     $prev_room = $rooms[0]["room"];
-    $possible_rooms = array( array("room" => ""));
+    $prev_starttime = $rooms[0]["starttime"];
+    $prev_endtime = $rooms[0]["endtime"];
+    $possible_rooms = array( array("room" => "", "starttime" => "", "endtime" => ""));
     $index = 0;
+
+    /* Find empty gaps in the room time slots, when they're available */
     foreach($rooms as $room)
     {
         if($room["room"] != $prev_room)
@@ -303,19 +308,22 @@ function get_room_open($mysqli_conn, $start_time, $end_time, $day, $term, $campu
         	if($free)
         	{
         		$possible_rooms[$index]["room"] = $prev_room;
+            $possible_rooms[$index]["starttime"] = $prev_starttime;
+            $possible_rooms[$index]["endtime"] = $prev_endtime;
         		$index++;
         	}
         	$free = TRUE;
         	$prev_room = $room["room"];
+          $prev_starttime = $room["starttime"];
+          $prev_endtime = $room["endtime"];
         }
         
         if(((($start_time >= $room["starttime"] && $start_time < $room["endtime"])
         		|| ($end_time > $room["starttime"] && $end_time <= $room["endtime"]))
-        		|| ($start_time <= $room["starttime"] && $end_time >= $room["endtime"]))&& $free)
+        		|| ($start_time <= $room["starttime"] && $end_time >= $room["endtime"])) && $free)
         {
           /* Room is not free */
-          $free = FALSE;
-          
+          $free = FALSE; 
         }
     }
     return $possible_rooms;
