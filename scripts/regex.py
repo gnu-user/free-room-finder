@@ -26,7 +26,7 @@ import re
 
 
 # Matches the course info, groups: course name, CRN, program code, course code, course section
-re_course_info= re.compile(r'(^.*)\s*\-\s*(\d{5})\s*\-\s*([\w]{2,4})\s*(\d{4}[\w]{1})\s*\-*\s*(\d{0,3})')
+re_course_info = re.compile(r'(^.*)\s*\-\s*(\d{5})\s*\-\s*([\w]{2,4})\s*(\d{4}[\w]{1})\s*\-*\s*(\d{0,3})')
 
 # Matches course term info, groups: school, term, year
 re_course_term = re.compile(r'^([A-Z]*)\s([\w/]*)\s(\d{4})')
