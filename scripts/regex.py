@@ -32,7 +32,7 @@ re_course_info = re.compile(r'(^.*)\s*\-\s*(\d{5})\s*\-\s*([\w]{2,4})\s*(\d{4}[\
 re_course_term = re.compile(r'^([A-Z]*)\s([\w/]*)\s(\d{4})')
 
 # Matches the course level info, ie. Post Secondary, Undergraduate, Graduate, etc.
-re_course_level = re.compile(r'\s*(Post\sSecondary|Continuing\sEducation|Undergraduate|Graduate|Professional)\s*')
+re_course_level = re.compile(r'\s*(Post\sSecondary,\sUndergraduate|Post\sSecondary|Continuing\sEducation|Graduate,\sUndergraduate|Undergraduate|Graduate|Professional)\s*')
 
 # Matches the prof name, groups: first name, last name
 #re_prof_name = re.compile(r'([A-Z]\w*|[\w\s\.\'\,\-]*[A-Z]\w*)\s\(|(TBA)')

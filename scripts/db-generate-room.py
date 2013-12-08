@@ -230,8 +230,8 @@ def parse_course_info(course_content, course_data):
                 #print "course info", idx_key
                 # Store the course information parsed 3-D dictionary, course_data
                 (course_name, crn, program_code, course_code, course_section) = match.group(1, 2, 3, 4, 5)
-                # Remove all punctuation for the course name
-                course_data[idx_key] = {'course_name': course_name.translate(string.maketrans("",""), string.punctuation)}
+                # Remove all punctuation for the course name, replace "amp" with &
+                course_data[idx_key] = {'course_name': course_name.replace("&amp;", "&")}
                 course_data[idx_key]['crn'] = crn
                 course_data[idx_key]['program_code'] = program_code
                 course_data[idx_key]['course_code'] = course_code
@@ -419,12 +419,14 @@ con = None
 user = 'jon'
 passwd = 'test123'
 domain = 'localhost'
-db_name = 'free_room_finder'
+db_name = 'test'
 
 
 # Current month, year semester
-cur_month = datetime.now().month
-cur_year = str(datetime.now().year)     # Year is ALWAYS used as a string
+#cur_month = datetime.now().month
+#cur_year = str(datetime.now().year)     # Year is ALWAYS used as a string
+cur_month = 10
+cur_year = "2013"
 cur_semester = None
 
 
