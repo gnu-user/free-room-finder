@@ -24,4 +24,20 @@
     <string name="duration_heading">Duration</string>
     <string name="date_heading">Date</string>
     <string name="campus_heading">Campus</string>
+    
+    <string-array name="campus_names">
+        <item >North Oshawa Campus</item>
+        <item >Downtown Oshawa Campus</item>
+        <item >Campus-Georgian Campus</item>
+    </string-array>
+    
+    <string-array name="duration_values">
+        <item >1</item>
+        <item >2</item>
+        <item >3</item>
+    </string-array>
+    
+    <string name="search_button">Search</string>
+    
+    
 </resources>
