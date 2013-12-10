@@ -15,12 +15,9 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name="com.uoit.freeroomfinder.FreeRoom"
-            android:label="@string/app_name" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            android:label="@string/app_name"
+            android:windowSoftInputMode="stateAlwaysHidden" >
+            
         </activity>
 
         <provider
@@ -33,6 +30,15 @@
         <activity
             android:name="com.uoit.freeroomfinder.LoginActivity"
             android:label="@string/title_activity_login" >
+        </activity>
+        <activity
+            android:name="com.uoit.freeroomfinder.MainActivity"
+            android:label="@string/title_activity_main" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 

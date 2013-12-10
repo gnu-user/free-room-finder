@@ -9,7 +9,6 @@
     <string name="username_hint">Username</string>
     <string name="password_hint">Password</string>
     <string name="title_activity_login">Sign in</string>
-
     <string name="login_heading">Sign in</string>
     <string name="action_forgot_password">Recover lost password</string>
     <string name="login_progress_signing_in">Signing in&#8230;</string>
@@ -19,25 +18,48 @@
     <string name="password_error">Password is invalid</string>
     <string name="username_error">Username is invalid</string>
     <string name="username_password_error">Username &amp; Password are invalid</string>
-
     <string name="time_heading">Time</string>
     <string name="duration_heading">Duration</string>
     <string name="date_heading">Date</string>
     <string name="campus_heading">Campus</string>
-    
+
     <string-array name="campus_names">
-        <item >North Oshawa Campus</item>
-        <item >Downtown Oshawa Campus</item>
-        <item >Campus-Georgian Campus</item>
+        <item>North Oshawa Campus</item>
+        <item>Downtown Oshawa Campus</item>
+        <item>Campus-Georgian Campus</item>
     </string-array>
-    
     <string-array name="duration_values">
-        <item >1</item>
-        <item >2</item>
-        <item >3</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
     </string-array>
-    
+    <string-array name="time_values">
+        <item>08:00:00</item>
+        <item>09:00:00</item>
+        <item>10:00:00</item>
+        <item>11:00:00</item>
+        <item>12:00:00</item>
+        <item>13:00:00</item>
+        <item>14:00:00</item>
+        <item>15:00:00</item>
+        <item>16:00:00</item>
+        <item>17:00:00</item>
+        <item>18:00:00</item>
+        <item>19:00:00</item>
+        <item>20:00:00</item>
+        <item>21:00:00</item>
+        <item>22:00:00</item>
+    </string-array>
+
     <string name="search_button">Search</string>
+    <string name="hours_label">Hours</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_section1">Search</string>
+    <string name="title_section2">Results</string>
+    <string name="title_section3">Section 3</string>
     
-    
+    <string name="room_title">Room</string>
+    <string name="start_time_title">Start Time</string>
+    <string name="end_time_title">End Time</string>
+
 </resources>

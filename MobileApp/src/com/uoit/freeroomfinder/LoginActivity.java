@@ -1,5 +1,7 @@
 package com.uoit.freeroomfinder;
 
+import java.util.Date;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -15,11 +17,15 @@ public class LoginActivity extends Activity {
 
 	private UserLoginTask authTask = null;
 	private ProgressDialog dialog;
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login_screen);
+
+		//TODO remove
+		//Toast.makeText(this, DateTimeUtility.sdf.format(new Date()), Toast.LENGTH_LONG).show();
 	}
 
 	@Override

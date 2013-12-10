@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+     android:id="@+id/tableRow2"
+     android:layout_width="wrap_content"
+     android:layout_height="wrap_content" >
+
+     <TextView
+         android:id="@+id/room"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:text="UA1020" />
+
+     <TextView
+         android:id="@+id/stime1"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:paddingLeft="16dp"
+         android:text="17:00:00" />
+
+     <TextView
+         android:id="@+id/etime"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:paddingLeft="16dp"
+         android:text="19:00:00" />
+
+     <RadioButton
+         android:id="@+id/radio0"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:checked="true" />
+
+ </TableRow>
