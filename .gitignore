@@ -49,5 +49,6 @@ nosetests.xml
 ./logs/
 
 # Android
-com/
-bin/
+MobileApp/com/
+MobileApp/bin/
+MobileApp/gen/
