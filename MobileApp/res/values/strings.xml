@@ -33,6 +33,9 @@
         <item>2</item>
         <item>3</item>
     </string-array>
+    
+    <string name="time_prompt">Start Time</string>
+    
     <string-array name="time_values">
         <item>08:00:00</item>
         <item>09:00:00</item>

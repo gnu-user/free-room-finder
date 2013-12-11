@@ -1,5 +1,9 @@
 package com.uoit.freeroomfinder;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -12,7 +16,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 
 public class FreeRoom extends Fragment {
 	
@@ -51,12 +57,25 @@ public class FreeRoom extends Fragment {
 			authTask.execute((Void) null);
 		}
 		
+		
+		//TODO put this stuff in the other part once the login is actually set up
+		//Set up the time spinner to include the current time
+		Spinner timeSpinner = (Spinner)rootView.findViewById(R.id.time);
+		ArrayList<String> spinnerArray = new ArrayList<String>(Arrays.asList(this.getResources().getStringArray(R.array.time_values)));
+		spinnerArray.add(0, DateTimeUtility.stf.format(new Date()));
+		
+		ArrayAdapter<String> sa = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, spinnerArray);
+		sa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		timeSpinner.setAdapter(sa);
+		
+		
+		//TODO decided if a button is really needed
 		Button search = (Button)rootView.findViewById(R.id.search);
 		search.setOnClickListener(new OnClickListener(){
 
 			@Override
 			public void onClick(View v) {
-				//TODO Do something
+				//TODO Launch query with dialog and on result go to the results tab activity.
 			}
 		});
 

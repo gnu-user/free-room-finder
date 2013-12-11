@@ -51,6 +51,9 @@ public class Results extends Fragment {
 				container, false);
 		
 		
+		//TODO handle an empty results query
+		//TODO set up the request thread to be read for implementation.
+		//TODO set up the bookings page and the settings page	
 		
 		//FrameLayout fl = (FrameLayout)rootView.findViewById(R.id.result_layout);
 		

@@ -19,7 +19,7 @@
         
     <RelativeLayout
         android:id="@+id/relview"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content" >
 
         <TextView
@@ -27,19 +27,30 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:labelFor="@+id/time"
             android:text="@string/time_heading" />
 
-        <EditText
+        <Spinner
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/time_label"
+            android:layout_alignParentRight="true"
+            android:entries="@array/time_values"
+            android:prompt="@string/time_prompt" />
+
+        <!-- <Spinner
             android:id="@+id/time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentRight="true"
             android:layout_below="@+id/time_label"
-            android:inputType="time" />
+            android:entries="@array/time_values"
+            android:prompt="@string/time_prompt" />
+            -->
 
         <TextView
             android:id="@+id/duration_label"
@@ -113,6 +124,7 @@
             android:layout_below="@+id/campus_label"
             android:entries="@array/campus_names"
             android:prompt="@string/campus_heading" />
+
     </RelativeLayout>
     
    	</ScrollView>
