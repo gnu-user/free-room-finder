@@ -30,7 +30,7 @@
          android:layout_height="fill_parent"
          android:layout_weight="1"
          android:paddingLeft="@dimen/table_horizontal_margin"
-          android:paddingRight="@dimen/table_horizontal_margin"
+         android:paddingRight="@dimen/table_horizontal_margin"
          android:text="19:00:00" />
 
      <RelativeLayout

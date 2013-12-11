@@ -1,7 +1,5 @@
 package com.uoit.freeroomfinder;
 
-import java.util.Date;
-
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;

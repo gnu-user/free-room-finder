@@ -2,8 +2,6 @@ package com.uoit.freeroomfinder;
 
 import java.util.Date;
 
-import android.text.format.Time;
-
 public class Request {
 	
 	private long time;
@@ -11,6 +9,7 @@ public class Request {
 	private Date date;
 	private int campus;
 	
+	//Pass the date and time as formated strings
 	public Request(long time, int duration, Date date, int campus)
 	{
 		this.time = time;
