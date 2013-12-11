@@ -9,7 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.RadioButton;
+import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -25,8 +27,10 @@ import android.widget.TextView;
 public class Results extends Fragment {
 	
 	private static RadioButton checked = null;
-	private static boolean isChecked = false;
+	private static boolean isNotChecked = true;
 	private static long timeNow = (new Date()).getTime();
+	
+	private static Button book;
 	
 	private static final ArrayList<Rooms> results = new ArrayList<Rooms>();
 	static{
@@ -52,7 +56,9 @@ public class Results extends Fragment {
 		
 		TableLayout tl = (TableLayout)rootView.findViewById(R.id.TableLayout1);
 		
+		book = (Button)rootView.findViewById(R.id.book);
 		
+		book.setEnabled(false);
 		
 		//View v = fl.getChildAt(0);
 		
@@ -88,15 +94,24 @@ public class Results extends Fragment {
 					}
 					checked = rb;
 					rb.setChecked(true);
+					isNotChecked = false;
 				}
 				else if(checked == rb)
 				{
-					rb.setChecked(isChecked);
+					rb.setChecked(isNotChecked);
 					checked = rb;
 					v = (View) rb;
-					isChecked = !isChecked;
+					isNotChecked = !isNotChecked;
 				}
 				
+				if(isNotChecked)
+				{
+					book.setEnabled(false);
+				}
+				else
+				{
+					book.setEnabled(true);
+				}
 				
 				rb.refreshDrawableState();
 			}			
@@ -110,9 +125,23 @@ public class Results extends Fragment {
 		room.setText(first.getRoom());
 		start.setText(DateTimeUtility.stf.format(new Date(first.getStartTime())));
 		end.setText(DateTimeUtility.stf.format(new Date(first.getEndTime())));
+
+		TableRow tr = (TableRow)newView.findViewById(R.id.tableRow2);
 		
+		tr.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				TableRow d= (TableRow) v;
+				
+				// Note the location of the relative layout is hard coded here as the last element in the table row
+				// Also, the radio button is hard coded here as the first (and only) element in the relative layout
+				((RelativeLayout) d.getChildAt(d.getChildCount()-1)).getChildAt(0).performClick();
+			}
+			
+		});
 		
-		return (TableRow)newView.findViewById(R.id.tableRow2);
+		return tr;
 	}
 	
 	
