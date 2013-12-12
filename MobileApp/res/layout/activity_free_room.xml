@@ -96,7 +96,7 @@
             android:labelFor="@+id/date"
             android:text="@string/date_heading" />
 
-        <EditText
+        <TextView
             android:id="@+id/date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -104,8 +104,13 @@
             android:layout_alignParentRight="true"
             android:layout_below="@+id/date_label"
             android:ems="10"
-            android:inputType="date" />
-
+            android:paddingBottom="@dimen/text_view_vertical_margin"
+            android:paddingLeft="@dimen/text_view_horizontal_margin"
+            android:paddingTop="@dimen/text_view_vertical_margin"
+            android:focusable="false"
+            android:background="?android:attr/selectableItemBackground"        
+			android:textSize="18sp" />
+        <!-- android:textAppearance="@android:attr/text" -->
         <TextView
             android:id="@+id/campus_label"
             android:layout_width="wrap_content"

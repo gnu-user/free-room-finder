@@ -18,8 +18,9 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class FreeRoom extends Fragment {
 	
@@ -70,8 +71,19 @@ public class FreeRoom extends Fragment {
 		sa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		timeSpinner.setAdapter(sa);
 		
-		EditText date = (EditText)rootView.findViewById(R.id.date);
+		TextView date = (TextView)rootView.findViewById(R.id.date);
 		date.setText(DateTimeUtility.sdf.format(new Date()));
+		
+		
+		date.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				Toast.makeText(FreeRoom.this.getActivity().getBaseContext(), "HERE", Toast.LENGTH_LONG).show();
+				
+			}
+			
+		});
 		
 		
 		//TODO decided if a button is really needed
@@ -173,3 +185,4 @@ public class FreeRoom extends Fragment {
 	}
 
 }
+
