@@ -16,6 +16,10 @@ public class LoginActivity extends Activity {
 	private UserLoginTask authTask = null;
 	private ProgressDialog dialog;
 	
+	private static final User test = new User("database", "test123");
+	
+	private static User user = null;
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +43,7 @@ public class LoginActivity extends Activity {
 
 		if (username.getText() != null && password.getText() != null) {
 			
-			User user = new User(username.getText().toString(), password
+			user = new User(username.getText().toString(), password
 					.getText().toString());
 			if (user.validUsername() && user.validPassword()) {
 				
@@ -60,6 +64,7 @@ public class LoginActivity extends Activity {
 				{
 					Toast.makeText(this, R.string.username_password_error, Toast.LENGTH_LONG).show();
 				}
+				user = null;
 			}
 		}
 	}
@@ -103,7 +108,19 @@ public class LoginActivity extends Activity {
 				return false;
 			}
 			
-			return true;
+			//TODO replace this primitive test with the rest call
+			if(user != null && test != null && test.equals(user))
+			{
+				
+				//Insert the user into the database
+				DatabaseInterface dbi = new DatabaseInterface(LoginActivity.this.getBaseContext());
+				dbi.insertUser(user);
+				
+				return true;
+			}
+			
+			
+			return false;
 		}
 
 		@Override
@@ -116,7 +133,7 @@ public class LoginActivity extends Activity {
 				LoginActivity.this.finish();
 			} else {
 				//TODO show error
-				
+				Toast.makeText(LoginActivity.this, "Invalid Account", Toast.LENGTH_LONG).show();
 			}
 		}
 

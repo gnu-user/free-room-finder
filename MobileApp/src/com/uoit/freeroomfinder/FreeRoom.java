@@ -18,6 +18,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 
 public class FreeRoom extends Fragment {
@@ -50,8 +51,9 @@ public class FreeRoom extends Fragment {
 			Intent loginActivity = new Intent(this.getActivity().getBaseContext(), LoginActivity.class);
 			this.startActivityForResult(loginActivity, LOGIN_SUCCESSFUL);
 		}
-		else
+		else if (!MainActivity.loggedIn)
 		{
+			//TODO possibly move away from have to login to only have to login to search for rooms.
 			showProgress(true);
 			authTask = new UserLoginTask();
 			authTask.execute((Void) null);
@@ -67,6 +69,9 @@ public class FreeRoom extends Fragment {
 		ArrayAdapter<String> sa = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, spinnerArray);
 		sa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		timeSpinner.setAdapter(sa);
+		
+		EditText date = (EditText)rootView.findViewById(R.id.date);
+		date.setText(DateTimeUtility.sdf.format(new Date()));
 		
 		
 		//TODO decided if a button is really needed
@@ -152,7 +157,8 @@ public class FreeRoom extends Fragment {
 			showProgress(false);
 
 			if (success) {
-				FreeRoom.this.getActivity().setResult(FreeRoom.LOGIN_SUCCESSFUL);
+				//FreeRoom.this.getActivity().setResult(FreeRoom.LOGIN_SUCCESSFUL);
+				MainActivity.loggedIn = true;
 			} else {
 				//TODO show error
 				

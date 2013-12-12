@@ -25,14 +25,14 @@ public class DatabaseInterface {
 
 	public void deleteUser() {
 		// Delete all rows
-		context.getContentResolver().delete(DatabaseProvider.CONTENT_URI, null,
+		context.getContentResolver().delete(DatabaseProvider.CONTENT_URI, null, 
 				null);
 	}
 
 	public User getUser() {
 		Cursor cur = context.getContentResolver().query(DatabaseProvider.CONTENT_URI, 
 				new String[] { SQLiteHelper.KEY_USERNAME,
-				SQLiteHelper.KEY_USERNAME }, null, null, null);
+				SQLiteHelper.KEY_PASSWORD }, null, null, null);
 
 		User user = null;
 
