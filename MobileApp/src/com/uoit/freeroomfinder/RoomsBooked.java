@@ -43,6 +43,9 @@ public class RoomsBooked extends Fragment {
 		
 		TableLayout tl = (TableLayout)rootView.findViewById(R.id.TableLayout1);
 		
+		//TODO create menu option for share
+		//TODO implement long click for each row (to mark for share or delete)
+		
 		//TODO set up to make use of the query to populate the rows
 		tl.addView(SetupUpTableView(inflater, container, 0));
 		tl.addView(SetupUpTableView(inflater, container, 1));
