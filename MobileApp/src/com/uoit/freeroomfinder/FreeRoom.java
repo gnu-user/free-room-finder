@@ -1,10 +1,13 @@
 package com.uoit.freeroomfinder;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
@@ -18,9 +21,9 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class FreeRoom extends Fragment {
 	
@@ -35,6 +38,8 @@ public class FreeRoom extends Fragment {
 	private UserLoginTask authTask = null;
 	private ProgressDialog dialog;
 	
+	public static String datepicked = "";
+	
 	public FreeRoom() {}
 
 	@Override
@@ -42,7 +47,7 @@ public class FreeRoom extends Fragment {
 			Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
 		
-		View rootView = inflater.inflate(R.layout.activity_free_room,
+		final View rootView = inflater.inflate(R.layout.activity_free_room,
 				container, false);
 		
 		DatabaseInterface dbi = new DatabaseInterface(this.getActivity().getBaseContext());
@@ -52,51 +57,86 @@ public class FreeRoom extends Fragment {
 			Intent loginActivity = new Intent(this.getActivity().getBaseContext(), LoginActivity.class);
 			this.startActivityForResult(loginActivity, LOGIN_SUCCESSFUL);
 		}
-		else if (!MainActivity.loggedIn)
+		else
 		{
-			//TODO possibly move away from have to login to only have to login to search for rooms.
-			showProgress(true);
-			authTask = new UserLoginTask();
-			authTask.execute((Void) null);
+			//Set up the time spinner to include the current time
+			Spinner timeSpinner = (Spinner)rootView.findViewById(R.id.time);
+			ArrayList<String> spinnerArray = new ArrayList<String>(Arrays.asList(this.getResources().getStringArray(R.array.time_values)));
+			spinnerArray.add(0, DateTimeUtility.stf.format(new Date()));
+			
+			ArrayAdapter<String> sa = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, spinnerArray);
+			sa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+			timeSpinner.setAdapter(sa);
+			
+			Date curDate = new Date();
+			
+			TextView date = (TextView)rootView.findViewById(R.id.date);
+			date.setText(DateTimeUtility.sdf.format(curDate));
+			
+			datepicked = DateTimeUtility.sdf.format(curDate);
+			
+			
+			date.setOnClickListener(new OnClickListener(){
+	
+				@Override
+				public void onClick(View v) {
+					
+					Date d = null;
+					try {
+						d = DateTimeUtility.sdf.parse(datepicked);
+						
+					} catch (ParseException e) {
+						e.printStackTrace();
+					}
+					
+					Calendar c = Calendar.getInstance();
+					
+					if(d != null)
+					{
+						c.setTime(d);
+					}
+		            int yy = c.get(Calendar.YEAR);
+		            int mm = c.get(Calendar.MONTH);
+		            int dd = c.get(Calendar.DAY_OF_MONTH);				
+		            
+					DatePickerDialog alert = new DatePickerDialog(rootView.getContext(),
+							new DatePickerDialog.OnDateSetListener() {
+						
+						@Override
+						public void onDateSet(DatePicker view, int year, int monthOfYear,
+								int dayOfMonth) {
+	
+							datepicked = year + "-" + monthOfYear + "-" + dayOfMonth;
+							TextView date = (TextView)rootView.findViewById(R.id.date);
+							date.setText(datepicked);
+						}
+					}, yy, mm, dd);
+						 
+					alert.show();
+				}
+				
+			});
+			
+			Button search = (Button)rootView.findViewById(R.id.search);
+			search.setOnClickListener(new OnClickListener(){
+	
+				@Override
+				public void onClick(View v) {
+					Spinner timeSpinner = (Spinner)rootView.findViewById(R.id.time);
+					Spinner durationSpinner = (Spinner)rootView.findViewById(R.id.duration);
+					Spinner campusSpinner = (Spinner)rootView.findViewById(R.id.campus);
+					
+					Request req = new Request(timeSpinner.getSelectedItem().toString(),
+							Integer.valueOf(durationSpinner.getSelectedItem().toString())
+							, datepicked, campusSpinner.getSelectedItemPosition());
+					
+					//TODO Launch query with dialog and on result go to the results tab activity.
+				}
+			});
 		}
 		
-		
-		//TODO put this stuff in the other part once the login is actually set up
-		//Set up the time spinner to include the current time
-		Spinner timeSpinner = (Spinner)rootView.findViewById(R.id.time);
-		ArrayList<String> spinnerArray = new ArrayList<String>(Arrays.asList(this.getResources().getStringArray(R.array.time_values)));
-		spinnerArray.add(0, DateTimeUtility.stf.format(new Date()));
-		
-		ArrayAdapter<String> sa = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, spinnerArray);
-		sa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		timeSpinner.setAdapter(sa);
-		
-		TextView date = (TextView)rootView.findViewById(R.id.date);
-		date.setText(DateTimeUtility.sdf.format(new Date()));
-		
-		
-		date.setOnClickListener(new OnClickListener(){
-
-			@Override
-			public void onClick(View v) {
-				Toast.makeText(FreeRoom.this.getActivity().getBaseContext(), "HERE", Toast.LENGTH_LONG).show();
-				
-			}
-			
-		});
-		
-		
-		//TODO decided if a button is really needed
-		Button search = (Button)rootView.findViewById(R.id.search);
-		search.setOnClickListener(new OnClickListener(){
-
-			@Override
-			public void onClick(View v) {
-				//TODO Launch query with dialog and on result go to the results tab activity.
-			}
-		});
-
 		return rootView;
+		
 	}
 
 	/*@Override

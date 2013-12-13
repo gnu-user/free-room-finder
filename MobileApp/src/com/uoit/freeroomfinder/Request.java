@@ -1,16 +1,15 @@
 package com.uoit.freeroomfinder;
 
-import java.util.Date;
 
 public class Request {
 	
-	private long time;
+	private String time;
 	private int duration;
-	private Date date;
+	private String date;
 	private int campus;
 	
 	//Pass the date and time as formated strings
-	public Request(long time, int duration, Date date, int campus)
+	public Request(String time, int duration, String date, int campus)
 	{
 		this.time = time;
 		this.duration = duration;
@@ -21,14 +20,14 @@ public class Request {
 	/**
 	 * @return the time
 	 */
-	public long getTime() {
+	public String getTime() {
 		return time;
 	}
 
 	/**
 	 * @param time the time to set
 	 */
-	public void setTime(long time) {
+	public void setTime(String time) {
 		this.time = time;
 	}
 
@@ -49,14 +48,14 @@ public class Request {
 	/**
 	 * @return the date
 	 */
-	public Date getDate() {
+	public String getDate() {
 		return date;
 	}
 
 	/**
 	 * @param date the date to set
 	 */
-	public void setDate(Date date) {
+	public void setDate(String date) {
 		this.date = date;
 	}
 
