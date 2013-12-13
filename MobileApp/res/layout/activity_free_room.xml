@@ -75,6 +75,7 @@
                 android:layout_weight="1"
                 android:gravity="center_vertical"
                 android:text="@string/hours_label"
+                android:paddingLeft="@dimen/hours_title_padding"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                  />
         </LinearLayout>
