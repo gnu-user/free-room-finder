@@ -5,12 +5,21 @@ public class Rooms {
 	private String room;
 	private long startTime;
 	private long endTime;
+	private long date;
 	
 	public Rooms(String room, long startTime, long endTime)
 	{
 		this.room = room;
 		this.startTime = startTime;
 		this.endTime = endTime;
+	}
+	
+	public Rooms(String room, long startTime, long endTime, long date)
+	{
+		this.room = room;
+		this.startTime = startTime;
+		this.endTime = endTime;
+		this.date = date;
 	}
 
 	/**
@@ -53,6 +62,20 @@ public class Rooms {
 	 */
 	public void setEndTime(long endTime) {
 		this.endTime = endTime;
+	}
+
+	/**
+	 * @return the date
+	 */
+	public long getDate() {
+		return date;
+	}
+
+	/**
+	 * @param date the date to set
+	 */
+	public void setDate(long date) {
+		this.date = date;
 	}
 	
 }

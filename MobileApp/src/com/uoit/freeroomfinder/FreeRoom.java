@@ -70,6 +70,7 @@ public class FreeRoom extends Fragment {
 			
 			Date curDate = new Date();
 			
+			//TODO change to "now"
 			TextView date = (TextView)rootView.findViewById(R.id.date);
 			date.setText(DateTimeUtility.sdf.format(curDate));
 			
@@ -106,7 +107,7 @@ public class FreeRoom extends Fragment {
 						public void onDateSet(DatePicker view, int year, int monthOfYear,
 								int dayOfMonth) {
 	
-							datepicked = year + "-" + monthOfYear + "-" + dayOfMonth;
+							datepicked = year + "-" + (monthOfYear+1) + "-" + dayOfMonth;
 							TextView date = (TextView)rootView.findViewById(R.id.date);
 							date.setText(datepicked);
 						}

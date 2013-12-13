@@ -8,57 +8,45 @@
     android:addStatesFromChildren="true" >
 
      <TextView
-         android:id="@+id/room"
+         android:id="@+id/book_room"
          android:layout_width="0dp"
          android:layout_height="wrap_content"
-         android:layout_weight="1"
+         android:layout_weight="0.8"
          android:paddingTop="@dimen/activity_vertical_margin"
          android:paddingBottom="@dimen/table_vertical_margin"
          android:paddingRight="@dimen/table_horizontal_margin"
-          />
+         android:text="UA1123" />
 
      <TextView
-         android:id="@+id/stime"
+         android:id="@+id/book_stime"
          android:layout_width="0dp"
          android:layout_height="wrap_content"
          android:paddingLeft="@dimen/table_horizontal_margin"
          android:paddingRight="@dimen/table_horizontal_margin"
          android:paddingTop="@dimen/activity_vertical_margin"
          android:paddingBottom="@dimen/table_vertical_margin"
-         android:layout_weight="1"
-          />
+         android:layout_weight="0.8"
+         android:text="11:12:20" />
 
      <TextView
-         android:id="@+id/etime"
+         android:id="@+id/book_etime"
          android:layout_width="0dp"
-         android:layout_height="fill_parent"
-         android:layout_weight="1"
+         android:layout_height="wrap_content"
+         android:layout_weight="0.8"
          android:paddingLeft="@dimen/table_horizontal_margin"
          android:paddingRight="@dimen/table_horizontal_margin"
          android:paddingTop="@dimen/activity_vertical_margin"
          android:paddingBottom="@dimen/table_vertical_margin"
-          />
+         android:text="11:30:30" />
 
-     <RelativeLayout
-         android:id="@+id/radio_layout"
+     <TextView
+         android:id="@+id/book_date"
          android:layout_width="0dp"
          android:layout_height="wrap_content"
-         
          android:layout_weight="1"
-         
-         >
-
-         <RadioButton
-             android:id="@+id/radio_button"
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             android:paddingTop="@dimen/activity_vertical_margin"
-         	 android:paddingBottom="@dimen/table_vertical_margin"
-             android:layout_alignParentRight="true"
-             android:layout_alignParentTop="true"
-             android:background="@null"
-             android:checked="false" />
-
-     </RelativeLayout>
+         android:paddingLeft="@dimen/table_horizontal_margin"
+         android:paddingTop="@dimen/activity_vertical_margin"
+         android:paddingBottom="@dimen/table_vertical_margin"
+         android:text="2013-12-12" />
 
  </TableRow>

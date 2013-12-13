@@ -41,17 +41,6 @@
             android:entries="@array/time_values"
             android:prompt="@string/time_prompt" />
 
-        <!-- <Spinner
-            android:id="@+id/time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/time_label"
-            android:entries="@array/time_values"
-            android:prompt="@string/time_prompt" />
-            -->
-
         <TextView
             android:id="@+id/duration_label"
             android:layout_width="wrap_content"
@@ -78,13 +67,16 @@
                 android:entries="@array/duration_values"
                 android:prompt="@string/duration_heading" />
             
-            <Button
-                android:id="@+id/button1"
+            <TextView
+                android:id="@+id/TextView1"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:enabled="false"
                 android:layout_weight="1"
-                android:text="@string/hours_label" />
+                android:gravity="center_vertical"
+                android:text="@string/hours_label"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                 />
         </LinearLayout>
 
         <TextView

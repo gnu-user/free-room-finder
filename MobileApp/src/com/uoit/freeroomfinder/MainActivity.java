@@ -130,6 +130,10 @@ public class MainActivity extends FragmentActivity implements
 			{
 				fragment = new Results();
 			}
+			else if(position == 2)
+			{
+				fragment = new RoomsBooked();
+			}
 			
 			return fragment;
 		}

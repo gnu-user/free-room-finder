@@ -65,6 +65,7 @@ public class Results extends Fragment {
 		
 		//View v = fl.getChildAt(0);
 		
+		//TODO change to loop
 		tl.addView(SetupUpTableView(inflater, container, 0));
 		tl.addView(SetupUpTableView(inflater, container, 1));
 		tl.addView(SetupUpTableView(inflater, container, 2));
@@ -136,6 +137,7 @@ public class Results extends Fragment {
 			@Override
 			public void onClick(View v) {
 				TableRow d= (TableRow) v;
+				//TODO set index as the identifier for the row that is clicked.
 				
 				// Note the location of the relative layout is hard coded here as the last element in the table row
 				// Also, the radio button is hard coded here as the first (and only) element in the relative layout
