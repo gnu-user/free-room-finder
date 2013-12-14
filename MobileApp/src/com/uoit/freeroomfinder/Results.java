@@ -32,6 +32,11 @@ public class Results extends Fragment {
 	
 	private static Button book;
 	
+	private LayoutInflater inflater;
+	private ViewGroup container;
+	private TableLayout tl;
+	
+	
 	private static final ArrayList<Rooms> results = new ArrayList<Rooms>();
 	static{
 		results.add(new Rooms("UA1030", timeNow, timeNow + 10000));
@@ -50,6 +55,8 @@ public class Results extends Fragment {
 		View rootView = inflater.inflate(R.layout.fragment_results,
 				container, false);
 		
+		this.inflater = inflater;
+		this.container = container;
 		
 		//TODO handle an empty results query
 		//TODO set up the request thread to be read for implementation.
@@ -57,21 +64,33 @@ public class Results extends Fragment {
 		
 		//FrameLayout fl = (FrameLayout)rootView.findViewById(R.id.result_layout);
 		
-		TableLayout tl = (TableLayout)rootView.findViewById(R.id.TableLayout1);
+		tl = (TableLayout)rootView.findViewById(R.id.TableLayout1);
 		
 		book = (Button)rootView.findViewById(R.id.book);
 		
 		book.setEnabled(false);
 		
 		//View v = fl.getChildAt(0);
-		
 		//TODO change to loop
 		tl.addView(SetupUpTableView(inflater, container, 0));
 		tl.addView(SetupUpTableView(inflater, container, 1));
 		tl.addView(SetupUpTableView(inflater, container, 2));
+		
 			
 		// Inflate the layout for this fragment
 		return rootView;
+	}
+	
+	public void onResume()
+	{
+		refreshList();
+		super.onResume();
+	}
+	
+	public void refreshList()
+	{
+		//TODO clear table
+		//TODO add rows back to table
 	}
 
 	public TableRow SetupUpTableView(LayoutInflater inflater, ViewGroup container, int index)

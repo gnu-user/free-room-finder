@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.Preference;
+import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
@@ -95,9 +97,26 @@ public class SettingsActivity extends PreferenceActivity {
 
 		// Add 'general' preferences.
 		addPreferencesFromResource(R.xml.pref_general);
+
+		PreferenceDialog deleteAccount = (PreferenceDialog)this.findPreference("delete_account");
 		
-		((PreferenceDialog)this.findPreference("delete_account"))
-			.setOnPreferenceDialogClosedListener(
+		
+		DatabaseInterface dbi = new DatabaseInterface(getBaseContext());
+		
+		// Disable delete account if user does not have an account 
+		if(dbi.getUser() == null)
+		{
+			deleteAccount.setEnabled(false);
+			deleteAccount.setSelectable(false);
+		}
+		else
+		{
+			deleteAccount.setEnabled(true);
+			deleteAccount.setSelectable(true);
+		}
+		
+		
+		deleteAccount.setOnPreferenceDialogClosedListener(
 			new OnPreferenceDialogClosedListener(){
 
 			@Override
@@ -107,8 +126,6 @@ public class SettingsActivity extends PreferenceActivity {
 				if(positiveResult) {
 					DatabaseInterface dbi = new DatabaseInterface(getBaseContext());
 					dbi.deleteUser();
-					
-					//TODO make sure that rather then user login is checked in the other activity.
 				}
 			}
 	
@@ -120,6 +137,19 @@ public class SettingsActivity extends PreferenceActivity {
 		fakeHeader.setTitle(R.string.pref_header_notifications);
 		getPreferenceScreen().addPreference(fakeHeader);
 		addPreferencesFromResource(R.xml.pref_notification);
+		
+		findPreference("army_clock").setOnPreferenceChangeListener(new OnPreferenceChangeListener(){
+
+			@Override
+			public boolean onPreferenceChange(Preference preference,
+					Object newValue) {
+				
+				MainActivity.datetimeFormater.setArmyClock(Boolean.valueOf(newValue.toString()));
+				
+				return true;
+			}
+			
+		});
 
 		// Add 'data and sync' preferences, and a corresponding header.
 		fakeHeader = new PreferenceCategory(this);

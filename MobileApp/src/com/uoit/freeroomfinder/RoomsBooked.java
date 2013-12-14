@@ -53,6 +53,19 @@ public class RoomsBooked extends Fragment {
 		return rootView;
 	}
 	
+	public void onResume()
+	{
+		refreshList();
+		super.onResume();
+	}
+	
+	public void refreshList()
+	{
+		//TODO clear table
+		//TODO add rows back to table
+	}
+	
+	
 	public TableRow SetupUpTableView(LayoutInflater inflater, ViewGroup container, int index)
 	{
 		View newView = inflater.inflate(R.layout.room_book_item,
@@ -72,7 +85,7 @@ public class RoomsBooked extends Fragment {
 
 		TableRow tr = (TableRow)newView.findViewById(R.id.tableRow2);
 		
-		TableLayout tb = new TableLayout(getActivity().getBaseContext());
+		//TableLayout tb = new TableLayout(getActivity().getBaseContext());
 		tr.setOnClickListener(new OnClickListener(){
 
 			@Override

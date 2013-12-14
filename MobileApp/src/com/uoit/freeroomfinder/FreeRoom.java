@@ -12,8 +12,10 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,6 +40,10 @@ public class FreeRoom extends Fragment {
 	private UserLoginTask authTask = null;
 	private ProgressDialog dialog;
 	
+	private SharedPreferences sharedPrefs;
+	private Date curDate;
+	private Spinner timeSpinner;
+	
 	public static String datepicked = "";
 	
 	public FreeRoom() {}
@@ -50,16 +56,11 @@ public class FreeRoom extends Fragment {
 		final View rootView = inflater.inflate(R.layout.activity_free_room,
 				container, false);
 		
-		//Set up the time spinner to include the current time
-		Spinner timeSpinner = (Spinner)rootView.findViewById(R.id.time);
-		ArrayList<String> spinnerArray = new ArrayList<String>(Arrays.asList(this.getResources().getStringArray(R.array.time_values)));
-		spinnerArray.add(0, DateTimeUtility.stf.format(new Date()));
 		
-		ArrayAdapter<String> sa = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, spinnerArray);
-		sa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		timeSpinner.setAdapter(sa);
+		sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this.getActivity().getBaseContext());
+		curDate = new Date();
 		
-		Date curDate = new Date();
+		timeSpinner = (Spinner)rootView.findViewById(R.id.time);
 		
 		//TODO change to "now"
 		TextView date = (TextView)rootView.findViewById(R.id.date);
@@ -140,6 +141,23 @@ public class FreeRoom extends Fragment {
 			Intent loginActivity = new Intent(this.getActivity().getBaseContext(), LoginActivity.class);
 			this.startActivityForResult(loginActivity, LOGIN_SUCCESSFUL);
 		}
+		
+		//Set up the time spinner to include the current time
+		int timeValues = R.array.time_values;
+		
+		if(!sharedPrefs.getBoolean("army_clock", true))
+		{
+			timeValues = R.array.army_time_values;
+		}
+		
+		//TODO change string defined time stamps to use only hh:mm
+		ArrayList<String> spinnerArray = new ArrayList<String>(Arrays.asList(this.getResources().getStringArray(timeValues)));
+		spinnerArray.add(0, DateTimeUtility.stf.format(curDate));
+		
+		ArrayAdapter<String> sa = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, spinnerArray);
+		sa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		timeSpinner.setAdapter(sa);		
+		
 		super.onResume();
 	}
 
