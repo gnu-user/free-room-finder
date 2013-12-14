@@ -1,25 +1,21 @@
 package com.uoit.freeroomfinder;
 
+import java.util.List;
+
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.Configuration;
-import android.media.Ringtone;
-import android.media.RingtoneManager;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.ListPreference;
-import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
-import android.preference.PreferenceManager;
-import android.preference.RingtonePreference;
-import android.text.TextUtils;
-import android.view.MenuItem;
 import android.support.v4.app.NavUtils;
+import android.util.Log;
+import android.view.MenuItem;
 
-import java.util.List;
+import com.uoit.freeroomfinder.preferences.OnPreferenceDialogClosedListener;
+import com.uoit.freeroomfinder.preferences.PreferenceDialog;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On
@@ -99,6 +95,25 @@ public class SettingsActivity extends PreferenceActivity {
 
 		// Add 'general' preferences.
 		addPreferencesFromResource(R.xml.pref_general);
+		
+		((PreferenceDialog)this.findPreference("delete_account"))
+			.setOnPreferenceDialogClosedListener(
+			new OnPreferenceDialogClosedListener(){
+
+			@Override
+			public void onPreferenceDialogClosed(
+					boolean positiveResult) {
+				
+				if(positiveResult) {
+					DatabaseInterface dbi = new DatabaseInterface(getBaseContext());
+					dbi.deleteUser();
+					
+					//TODO make sure that rather then user login is checked in the other activity.
+				}
+			}
+	
+		});
+		
 
 		// Add 'notifications' preferences, and a corresponding header.
 		PreferenceCategory fakeHeader = new PreferenceCategory(this);
@@ -118,7 +133,7 @@ public class SettingsActivity extends PreferenceActivity {
 		//bindPreferenceSummaryToValue(findPreference("example_text"));
 		//bindPreferenceSummaryToValue(findPreference("example_list"));
 		//bindPreferenceSummaryToValue(findPreference("notifications_new_message_ringtone"));
-		bindPreferenceSummaryToValue(findPreference("sync_frequency"));
+		//bindPreferenceSummaryToValue(findPreference("sync_frequency"));
 	}
 
 	/** {@inheritDoc} */
@@ -161,7 +176,7 @@ public class SettingsActivity extends PreferenceActivity {
 	 * A preference value change listener that updates the preference's summary
 	 * to reflect its new value.
 	 */
-	private static Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = new Preference.OnPreferenceChangeListener() {
+	/*private static Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = new Preference.OnPreferenceChangeListener() {
 		@Override
 		public boolean onPreferenceChange(Preference preference, Object value) {
 			String stringValue = value.toString();
@@ -207,7 +222,7 @@ public class SettingsActivity extends PreferenceActivity {
 			}
 			return true;
 		}
-	};
+	};*/
 
 	/**
 	 * Binds a preference's summary to its value. More specifically, when the
@@ -218,7 +233,7 @@ public class SettingsActivity extends PreferenceActivity {
 	 * 
 	 * @see #sBindPreferenceSummaryToValueListener
 	 */
-	private static void bindPreferenceSummaryToValue(Preference preference) {
+	/*private static void bindPreferenceSummaryToValue(Preference preference) {
 		// Set the listener to watch for value changes.
 		//preference
 		//		.setOnPreferenceChangeListener(sBindPreferenceSummaryToValueListener);
@@ -230,8 +245,8 @@ public class SettingsActivity extends PreferenceActivity {
 				PreferenceManager.getDefaultSharedPreferences(
 						preference.getContext()).getString(preference.getKey(),
 						""));
-						*/
-	}
+						
+	}*/
 
 	/**
 	 * This fragment shows general preferences only. It is used when the
@@ -243,13 +258,21 @@ public class SettingsActivity extends PreferenceActivity {
 		public void onCreate(Bundle savedInstanceState) {
 			super.onCreate(savedInstanceState);
 			addPreferencesFromResource(R.xml.pref_general);
+		
+			
+			
+			/*this.findPreference("delete_account").setOnPreferenceClickListener(
+					new OnPreferenceClickListener(){
 
-			// Bind the summaries of EditText/List/Dialog/Ringtone preferences
-			// to their values. When their values change, their summaries are
-			// updated to reflect the new value, per the Android Design
-			// guidelines.
-			bindPreferenceSummaryToValue(findPreference("example_text"));
-			bindPreferenceSummaryToValue(findPreference("example_list"));
+				@Override
+				public boolean onPreferenceClick(Preference preference) {
+					//TODO handle making dialog and deleting their account on confirmation.
+					//TODO change EditTextPreference to Preference
+					Toast.makeText(GeneralPreferenceFragment.this.getActivity().getBaseContext(), "HERE", Toast.LENGTH_LONG).show();
+					return false;
+				}
+				
+			});*/
 		}
 	}
 
@@ -288,7 +311,7 @@ public class SettingsActivity extends PreferenceActivity {
 			// to their values. When their values change, their summaries are
 			// updated to reflect the new value, per the Android Design
 			// guidelines.
-			bindPreferenceSummaryToValue(findPreference("sync_frequency"));
+			//bindPreferenceSummaryToValue(findPreference("sync_frequency"));
 		}
 	}
 }

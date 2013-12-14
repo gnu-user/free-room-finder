@@ -7,7 +7,7 @@ public class DateTimeUtility {
 	//public static Array<>
 	
 	//TODO add local
-	public static SimpleDateFormat stf = new SimpleDateFormat("hh:mm:ss aa");
+	public static SimpleDateFormat stf = new SimpleDateFormat("hh:mm aa");
 	//public static SimpleDateFormat stf = new SimpleDateFormat("kk:mm:ss");
 	
 //	public static SimpleDateFormat stf = new SimpleDateFormat("kk:mm");

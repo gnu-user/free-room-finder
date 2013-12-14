@@ -11,7 +11,7 @@
          android:id="@+id/book_room"
          android:layout_width="0dp"
          android:layout_height="wrap_content"
-         android:layout_weight="0.8"
+         android:layout_weight="0.75"
          android:paddingTop="@dimen/activity_vertical_margin"
          android:paddingBottom="@dimen/table_vertical_margin"
          android:paddingRight="@dimen/table_horizontal_margin"
@@ -25,14 +25,14 @@
          android:paddingRight="@dimen/table_horizontal_margin"
          android:paddingTop="@dimen/activity_vertical_margin"
          android:paddingBottom="@dimen/table_vertical_margin"
-         android:layout_weight="0.8"
+         android:layout_weight="0.9"
          android:text="11:12:20" />
 
      <TextView
          android:id="@+id/book_etime"
          android:layout_width="0dp"
          android:layout_height="wrap_content"
-         android:layout_weight="0.8"
+         android:layout_weight="0.9"
          android:paddingLeft="@dimen/table_horizontal_margin"
          android:paddingRight="@dimen/table_horizontal_margin"
          android:paddingTop="@dimen/activity_vertical_margin"

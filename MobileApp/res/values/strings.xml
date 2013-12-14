@@ -62,21 +62,21 @@
     </string-array>
     
     <string-array name="time_values">
-        <item>08:00:00 am</item>
-        <item>09:00:00 am</item>
-        <item>10:00:00 am</item>
-        <item>11:00:00 am</item>
-        <item>12:00:00 am</item>
-        <item>1:00:00 pm</item>
-        <item>2:00:00 pm</item>
-        <item>3:00:00 pm</item>
-        <item>4:00:00 pm</item>
-        <item>5:00:00 pm</item>
-        <item>6:00:00 pm</item>
-        <item>7:00:00 pm</item>
-        <item>8:00:00 pm</item>
-        <item>9:00:00 pm</item>
-        <item>10:00:00 pm</item>
+        <item>08:00:00 AM</item>
+        <item>09:00:00 AM</item>
+        <item>10:00:00 AM</item>
+        <item>11:00:00 AM</item>
+        <item>12:00:00 AM</item>
+        <item>1:00:00 PM</item>
+        <item>2:00:00 PM</item>
+        <item>3:00:00 PM</item>
+        <item>4:00:00 PM</item>
+        <item>5:00:00 PM</item>
+        <item>6:00:00 PM</item>
+        <item>7:00:00 PM</item>
+        <item>8:00:00 PM</item>
+        <item>9:00:00 PM</item>
+        <item>10:00:00 PM</item>
     </string-array>
 
     <string name="search_button">Search</string>

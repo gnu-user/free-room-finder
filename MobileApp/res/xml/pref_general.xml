@@ -2,7 +2,7 @@
 
     
     <!-- TODO add Delete account -->
-    <EditTextPreference
+    <!-- <EditTextPreference
         android:dialogTitle="@string/delete_account_title"
         android:key="delete_account"
         android:summary="@string/delete_account_summary"
@@ -10,6 +10,18 @@
         android:dialogLayout="@layout/empty"
         android:positiveButtonText="@android:string/yes"
         android:negativeButtonText="@android:string/no"/>
+        -->
+        
+     <com.uoit.freeroomfinder.preferences.PreferenceDialog
+        android:dialogTitle="@string/delete_account_title"
+        android:key="delete_account"
+        android:summary="@string/delete_account_summary"
+        android:title="@string/delete_account_title"
+        android:dialogLayout="@layout/empty"
+        android:positiveButtonText="@android:string/yes"
+        android:negativeButtonText="@android:string/no"
+        android:defaultValue="false"/>    
+        
     <!-- TODO Maximum # of messages saved -->
     
     <EditTextPreference
