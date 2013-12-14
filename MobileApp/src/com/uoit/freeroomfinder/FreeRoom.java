@@ -58,7 +58,17 @@ public class FreeRoom extends Fragment {
 		
 		
 		sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this.getActivity().getBaseContext());
+		
+	
+		
 		curDate = new Date();
+		
+		//Set up default values
+		Spinner campus = (Spinner)rootView.findViewById(R.id.campus);
+		campus.setSelection(Integer.valueOf(sharedPrefs.getString("default_campus", "0"))-1);
+		
+		Spinner duration = (Spinner)rootView.findViewById(R.id.duration);
+		duration.setSelection(Integer.valueOf(sharedPrefs.getString("default_duration", "0"))-1);
 		
 		timeSpinner = (Spinner)rootView.findViewById(R.id.time);
 		
