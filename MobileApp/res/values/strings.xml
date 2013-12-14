@@ -97,12 +97,12 @@
     	<!-- General -->
     <string name="are_you_sure">Are you sure you want to delete your account?</string>
     <string name="delete_account_title">Delete Account</string>
-	<string name="delete_account_summary">Click to delete your account</string>
+	<string name="delete_account_summary">Delete your FRF account</string>
 	<string name="maximum_rooms_title">Maximum Rooms</string>
 	<string name="maximum_rooms_summary">Maximum number of rooms to keep saved</string>
 	
 		<!-- Search -->
-	<string name="army_clock_title">12 hour clock</string>
+	<string name="army_clock_title">Clock Settings</string>
 	<string name="army_clock_summary_on">Use 24 hour clock</string>
 	<string name="army_clock_summary_off">Use 12 hour clock</string>
 	<string name="default_campus_title">Default Campus</string>

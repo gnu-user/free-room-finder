@@ -19,4 +19,4 @@ CREATE TABLE bookings
 INSERT INTO bookings (room_name, start_time, end_time, book_date) VALUES("UA2010", 134242, 234232, 232424);
 INSERT INTO bookings (room_name, start_time, end_time, book_date) VALUES("UA1010", 4435534, 435435, 2343242);
 
-SELECT * FROM bookings WHERE id = (SELECT id FROM bookings ORDER BY book_date LIMIT 1);
+DELETE * FROM bookings WHERE id = (SELECT id FROM bookings ORDER BY book_date LIMIT 1);

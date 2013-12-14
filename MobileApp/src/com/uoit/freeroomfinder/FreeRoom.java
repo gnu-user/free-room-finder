@@ -59,8 +59,6 @@ public class FreeRoom extends Fragment {
 		
 		sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this.getActivity().getBaseContext());
 		
-	
-		
 		curDate = new Date();
 		
 		//Set up default values
