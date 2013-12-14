@@ -28,7 +28,14 @@
         <item>Downtown Oshawa Campus</item>
         <item>Campus-Georgian Campus</item>
     </string-array>
+    
     <string-array name="duration_values">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+    
+    <string-array name="campus_index">
         <item>1</item>
         <item>2</item>
         <item>3</item>
@@ -36,7 +43,7 @@
 
     <string name="time_prompt">Start Time</string>
 
-    <string-array name="time_values">
+    <string-array name="army_time_values">
         <item>08:00:00</item>
         <item>09:00:00</item>
         <item>10:00:00</item>
@@ -53,18 +60,38 @@
         <item>21:00:00</item>
         <item>22:00:00</item>
     </string-array>
+    
+    <string-array name="time_values">
+        <item>08:00:00 am</item>
+        <item>09:00:00 am</item>
+        <item>10:00:00 am</item>
+        <item>11:00:00 am</item>
+        <item>12:00:00 am</item>
+        <item>1:00:00 pm</item>
+        <item>2:00:00 pm</item>
+        <item>3:00:00 pm</item>
+        <item>4:00:00 pm</item>
+        <item>5:00:00 pm</item>
+        <item>6:00:00 pm</item>
+        <item>7:00:00 pm</item>
+        <item>8:00:00 pm</item>
+        <item>9:00:00 pm</item>
+        <item>10:00:00 pm</item>
+    </string-array>
 
     <string name="search_button">Search</string>
     <string name="hours_label">Hours</string>
     <string name="title_activity_main">Free Room Finder</string>
     <string name="title_section1">Search</string>
     <string name="title_section2">Results</string>
-    <string name="title_section3">Booked</string>
+    <string name="title_section3">Bookings</string>
     <string name="room_title">Room</string>
     <string name="start_time_title">Start</string>
     <string name="end_time_title">End</string>
     <string name="book_button_title">Book</string>
     <string name="date_picker_title">Pick Date</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    
+    <string name="are_you_sure">Are you sure you want to delete your account?</string>
 
 </resources>

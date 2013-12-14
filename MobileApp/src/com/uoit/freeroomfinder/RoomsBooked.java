@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 /**
  * A simple {@link android.support.v4.app.Fragment} subclass.
@@ -89,8 +88,6 @@ public class RoomsBooked extends Fragment {
 				//((RelativeLayout) d.getChildAt(d.getChildCount()-1)).getChildAt(0).performClick();
 			}
 		});
-		
-		
 		
 		return tr;
 	}

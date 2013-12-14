@@ -75,8 +75,7 @@ public class FreeRoom extends Fragment {
 			date.setText(DateTimeUtility.sdf.format(curDate));
 			
 			datepicked = DateTimeUtility.sdf.format(curDate);
-			
-			
+
 			date.setOnClickListener(new OnClickListener(){
 	
 				@Override
@@ -211,7 +210,7 @@ public class FreeRoom extends Fragment {
 
 			if (success) {
 				//FreeRoom.this.getActivity().setResult(FreeRoom.LOGIN_SUCCESSFUL);
-				MainActivity.loggedIn = true;
+				//MainActivity.loggedIn = true;
 			} else {
 				//TODO show error
 				

@@ -11,5 +11,8 @@
     
     <dimen name="text_view_vertical_margin">8dp</dimen>
     <dimen name="text_view_horizontal_margin">10dp</dimen>
+    
+    <dimen name="dialog_text_size">18sp</dimen>
+    <dimen name="dialog_padding_size">16sp</dimen>
 
 </resources>
