@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 /**
  * A simple {@link android.support.v4.app.Fragment} subclass.
@@ -54,6 +53,19 @@ public class RoomsBooked extends Fragment {
 		return rootView;
 	}
 	
+	public void onResume()
+	{
+		refreshList();
+		super.onResume();
+	}
+	
+	public void refreshList()
+	{
+		//TODO clear table
+		//TODO add rows back to table
+	}
+	
+	
 	public TableRow SetupUpTableView(LayoutInflater inflater, ViewGroup container, int index)
 	{
 		View newView = inflater.inflate(R.layout.room_book_item,
@@ -67,13 +79,13 @@ public class RoomsBooked extends Fragment {
 		Rooms first = results.get(index);
 		
 		room.setText(first.getRoom());
-		start.setText(DateTimeUtility.stf.format(new Date(first.getStartTime())));
-		end.setText(DateTimeUtility.stf.format(new Date(first.getEndTime())));
-		date.setText(DateTimeUtility.sdf.format(first.getDate()));
+		start.setText(MainActivity.datetimeFormater.formatTime(new Date(first.getStartTime())));
+		end.setText(MainActivity.datetimeFormater.formatTime(new Date(first.getEndTime())));
+		date.setText(MainActivity.datetimeFormater.formatDate(first.getDate()));
 
 		TableRow tr = (TableRow)newView.findViewById(R.id.tableRow2);
 		
-		TableLayout tb = new TableLayout(getActivity().getBaseContext());
+		//TableLayout tb = new TableLayout(getActivity().getBaseContext());
 		tr.setOnClickListener(new OnClickListener(){
 
 			@Override
@@ -89,8 +101,6 @@ public class RoomsBooked extends Fragment {
 				//((RelativeLayout) d.getChildAt(d.getChildCount()-1)).getChildAt(0).performClick();
 			}
 		});
-		
-		
 		
 		return tr;
 	}

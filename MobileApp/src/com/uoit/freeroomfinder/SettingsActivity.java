@@ -1,25 +1,25 @@
 package com.uoit.freeroomfinder;
 
+import java.util.List;
+
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
-import android.media.Ringtone;
-import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.ListPreference;
 import android.preference.Preference;
+import android.preference.Preference.OnPreferenceChangeListener;
+import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
-import android.preference.PreferenceManager;
-import android.preference.RingtonePreference;
-import android.text.TextUtils;
-import android.view.MenuItem;
 import android.support.v4.app.NavUtils;
+import android.view.MenuItem;
 
-import java.util.List;
+import com.uoit.freeroomfinder.preferences.OnPreferenceDialogClosedListener;
+import com.uoit.freeroomfinder.preferences.PreferenceDialog;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On
@@ -68,9 +68,6 @@ public class SettingsActivity extends PreferenceActivity {
 			// more details, see the Navigation pattern on Android Design:
 			//
 			// http://developer.android.com/design/patterns/navigation.html#up-vs-back
-			//
-			// TODO: If Settings has multiple levels, Up should navigate up
-			// that hierarchy.
 			NavUtils.navigateUpFromSameTask(this);
 			return true;
 		}
@@ -100,25 +97,85 @@ public class SettingsActivity extends PreferenceActivity {
 		// Add 'general' preferences.
 		addPreferencesFromResource(R.xml.pref_general);
 
+		PreferenceDialog deleteAccount = (PreferenceDialog)this.findPreference("delete_account");
+		
+		
+		DatabaseInterface dbi = new DatabaseInterface(getBaseContext());
+		
+		// Disable delete account if user does not have an account 
+		if(dbi.getUser() == null)
+		{
+			deleteAccount.setEnabled(false);
+			deleteAccount.setSelectable(false);
+		}
+		else
+		{
+			deleteAccount.setEnabled(true);
+			deleteAccount.setSelectable(true);
+		}
+		
+		
+		deleteAccount.setOnPreferenceDialogClosedListener(
+			new OnPreferenceDialogClosedListener(){
+
+			@Override
+			public void onPreferenceDialogClosed(
+					boolean positiveResult) {
+				
+				if(positiveResult) {
+					DatabaseInterface dbi = new DatabaseInterface(getBaseContext());
+					dbi.deleteUser();
+				}
+			}
+	
+		});
+		
+
 		// Add 'notifications' preferences, and a corresponding header.
 		PreferenceCategory fakeHeader = new PreferenceCategory(this);
 		fakeHeader.setTitle(R.string.pref_header_notifications);
 		getPreferenceScreen().addPreference(fakeHeader);
 		addPreferencesFromResource(R.xml.pref_notification);
+		
+		findPreference("army_clock").setOnPreferenceChangeListener(new OnPreferenceChangeListener(){
+
+			@Override
+			public boolean onPreferenceChange(Preference preference,
+					Object newValue) {
+				
+				MainActivity.datetimeFormater.setArmyClock(Boolean.valueOf(newValue.toString()));
+				
+				return true;
+			}
+			
+		});
 
 		// Add 'data and sync' preferences, and a corresponding header.
 		fakeHeader = new PreferenceCategory(this);
 		fakeHeader.setTitle(R.string.pref_header_data_sync);
 		getPreferenceScreen().addPreference(fakeHeader);
 		addPreferencesFromResource(R.xml.pref_data_sync);
+		
+		findPreference("source_code").setOnPreferenceClickListener(new OnPreferenceClickListener(){
+
+			@Override
+			public boolean onPreferenceClick(Preference preference) {
+				
+				Intent i = new Intent(Intent.ACTION_VIEW);
+	    		i.setData(Uri.parse(SettingsActivity.this.getString(R.string.source_code_site)));
+	    		SettingsActivity.this.startActivity(i);
+				return true;
+			}
+			
+		});
 
 		// Bind the summaries of EditText/List/Dialog/Ringtone preferences to
 		// their values. When their values change, their summaries are updated
 		// to reflect the new value, per the Android Design guidelines.
-		bindPreferenceSummaryToValue(findPreference("example_text"));
-		bindPreferenceSummaryToValue(findPreference("example_list"));
-		bindPreferenceSummaryToValue(findPreference("notifications_new_message_ringtone"));
-		bindPreferenceSummaryToValue(findPreference("sync_frequency"));
+		//bindPreferenceSummaryToValue(findPreference("example_text"));
+		//bindPreferenceSummaryToValue(findPreference("example_list"));
+		//bindPreferenceSummaryToValue(findPreference("notifications_new_message_ringtone"));
+		//bindPreferenceSummaryToValue(findPreference("sync_frequency"));
 	}
 
 	/** {@inheritDoc} */
@@ -161,7 +218,7 @@ public class SettingsActivity extends PreferenceActivity {
 	 * A preference value change listener that updates the preference's summary
 	 * to reflect its new value.
 	 */
-	private static Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = new Preference.OnPreferenceChangeListener() {
+	/*private static Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = new Preference.OnPreferenceChangeListener() {
 		@Override
 		public boolean onPreferenceChange(Preference preference, Object value) {
 			String stringValue = value.toString();
@@ -207,7 +264,7 @@ public class SettingsActivity extends PreferenceActivity {
 			}
 			return true;
 		}
-	};
+	};*/
 
 	/**
 	 * Binds a preference's summary to its value. More specifically, when the
@@ -218,19 +275,20 @@ public class SettingsActivity extends PreferenceActivity {
 	 * 
 	 * @see #sBindPreferenceSummaryToValueListener
 	 */
-	private static void bindPreferenceSummaryToValue(Preference preference) {
+	/*private static void bindPreferenceSummaryToValue(Preference preference) {
 		// Set the listener to watch for value changes.
-		preference
-				.setOnPreferenceChangeListener(sBindPreferenceSummaryToValueListener);
+		//preference
+		//		.setOnPreferenceChangeListener(sBindPreferenceSummaryToValueListener);
 
 		// Trigger the listener immediately with the preference's
 		// current value.
-		sBindPreferenceSummaryToValueListener.onPreferenceChange(
+		/*sBindPreferenceSummaryToValueListener.onPreferenceChange(
 				preference,
 				PreferenceManager.getDefaultSharedPreferences(
 						preference.getContext()).getString(preference.getKey(),
 						""));
-	}
+						
+	}*/
 
 	/**
 	 * This fragment shows general preferences only. It is used when the
@@ -242,13 +300,7 @@ public class SettingsActivity extends PreferenceActivity {
 		public void onCreate(Bundle savedInstanceState) {
 			super.onCreate(savedInstanceState);
 			addPreferencesFromResource(R.xml.pref_general);
-
-			// Bind the summaries of EditText/List/Dialog/Ringtone preferences
-			// to their values. When their values change, their summaries are
-			// updated to reflect the new value, per the Android Design
-			// guidelines.
-			bindPreferenceSummaryToValue(findPreference("example_text"));
-			bindPreferenceSummaryToValue(findPreference("example_list"));
+		
 		}
 	}
 
@@ -268,7 +320,7 @@ public class SettingsActivity extends PreferenceActivity {
 			// to their values. When their values change, their summaries are
 			// updated to reflect the new value, per the Android Design
 			// guidelines.
-			bindPreferenceSummaryToValue(findPreference("notifications_new_message_ringtone"));
+			//bindPreferenceSummaryToValue(findPreference("notifications_new_message_ringtone"));
 		}
 	}
 
@@ -287,7 +339,7 @@ public class SettingsActivity extends PreferenceActivity {
 			// to their values. When their values change, their summaries are
 			// updated to reflect the new value, per the Android Design
 			// guidelines.
-			bindPreferenceSummaryToValue(findPreference("sync_frequency"));
+			//bindPreferenceSummaryToValue(findPreference("sync_frequency"));
 		}
 	}
 }

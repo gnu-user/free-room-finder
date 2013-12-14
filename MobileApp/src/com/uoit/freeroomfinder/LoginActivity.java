@@ -3,10 +3,13 @@ package com.uoit.freeroomfinder;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.DialogInterface.OnCancelListener;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -33,9 +36,22 @@ public class LoginActivity extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.login, menu);
+		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
+	
+    @Override
+    public boolean onOptionsItemSelected(final MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+            
+                this.startActivity(new Intent(this, SettingsActivity.class));
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
 	public void submit(View v) {
 		EditText username = (EditText) findViewById(R.id.username);
@@ -72,7 +88,10 @@ public class LoginActivity extends Activity {
 	public void reset(View v)
 	{
 		//TODO open up the submit url
-		//https://www.cs-club.ca/reset/
+		//reset_site
+		Intent i = new Intent(Intent.ACTION_VIEW);
+		i.setData(Uri.parse(this.getString(R.string.reset_site)));
+		this.startActivity(i);
 	}
 
 	private void showProgress(boolean show) {

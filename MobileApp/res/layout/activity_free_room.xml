@@ -103,7 +103,7 @@
             android:focusable="false"
             android:background="?android:attr/selectableItemBackground"        
 			android:textSize="18sp" />
-        <!-- android:textAppearance="@android:attr/text" -->
+
         <TextView
             android:id="@+id/campus_label"
             android:layout_width="wrap_content"

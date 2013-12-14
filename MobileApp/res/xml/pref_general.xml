@@ -1,35 +1,37 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <CheckBoxPreference
-        android:defaultValue="true"
-        android:key="example_checkbox"
-        android:summary="@string/pref_description_social_recommendations"
-        android:title="@string/pref_title_social_recommendations" />
-
-    <!-- NOTE: EditTextPreference accepts EditText attributes. -->
-    <!-- NOTE: EditTextPreference's summary should be set to its value by the activity code. -->
+    
+    <!-- TODO add Delete account -->
+    <!-- <EditTextPreference
+        android:dialogTitle="@string/delete_account_title"
+        android:key="delete_account"
+        android:summary="@string/delete_account_summary"
+        android:title="@string/delete_account_title"
+        android:dialogLayout="@layout/empty"
+        android:positiveButtonText="@android:string/yes"
+        android:negativeButtonText="@android:string/no"/>
+        -->
+        
+     <com.uoit.freeroomfinder.preferences.PreferenceDialog
+        android:dialogTitle="@string/delete_account_title"
+        android:key="delete_account"
+        android:summary="@string/delete_account_summary"
+        android:title="@string/delete_account_title"
+        android:dialogLayout="@layout/empty"
+        android:positiveButtonText="@android:string/yes"
+        android:negativeButtonText="@android:string/no"
+        android:defaultValue="false"/>    
+        
+    <!-- TODO Maximum # of messages saved -->
+    
     <EditTextPreference
-        android:capitalize="words"
-        android:defaultValue="@string/pref_default_display_name"
-        android:inputType="textCapWords"
-        android:key="example_text"
-        android:maxLines="1"
-        android:selectAllOnFocus="true"
-        android:singleLine="true"
-        android:title="@string/pref_title_display_name" />
-
-    <!--
-         NOTE: Hide buttons to simplify the UI. Users can touch outside the dialog to
-         dismiss it.
-    -->
-    <!-- NOTE: ListPreference's summary should be set to its value by the activity code. -->
-    <ListPreference
-        android:defaultValue="-1"
-        android:entries="@array/pref_example_list_titles"
-        android:entryValues="@array/pref_example_list_values"
-        android:key="example_list"
-        android:negativeButtonText="@null"
-        android:positiveButtonText="@null"
-        android:title="@string/pref_title_add_friends_to_messages" />
+        android:dialogTitle="@string/maximum_rooms_title"
+        android:key="max_rooms"
+        android:summary="@string/maximum_rooms_summary"
+        android:title="@string/maximum_rooms_title"
+        android:inputType="number"
+        android:defaultValue="50"
+        android:positiveButtonText="@android:string/yes"
+        android:negativeButtonText="@android:string/no"/>
 
 </PreferenceScreen>

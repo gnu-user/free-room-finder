@@ -5,7 +5,9 @@ import java.util.Locale;
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -21,7 +23,9 @@ import android.widget.TextView;
 public class MainActivity extends FragmentActivity implements
 		ActionBar.TabListener {
 	
-	public static boolean loggedIn = false;
+	//public static boolean loggedIn = false;
+	public static DateTimeUtility datetimeFormater;
+	public static SharedPreferences sharedPrefs;
 
 	/**
 	 * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -43,6 +47,13 @@ public class MainActivity extends FragmentActivity implements
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
+		sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+		
+		//Set up the date time formatter
+		datetimeFormater = new DateTimeUtility(sharedPrefs.getBoolean("army_clock", true),
+				this.getResources().getConfiguration().locale);
+		
+		
 		// Set up the action bar.
 		final ActionBar actionBar = getActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
