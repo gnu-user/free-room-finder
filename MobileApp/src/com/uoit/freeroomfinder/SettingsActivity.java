@@ -4,16 +4,18 @@ import java.util.List;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
+import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
 import android.support.v4.app.NavUtils;
-import android.util.Log;
 import android.view.MenuItem;
 
 import com.uoit.freeroomfinder.preferences.OnPreferenceDialogClosedListener;
@@ -66,9 +68,6 @@ public class SettingsActivity extends PreferenceActivity {
 			// more details, see the Navigation pattern on Android Design:
 			//
 			// http://developer.android.com/design/patterns/navigation.html#up-vs-back
-			//
-			// TODO: If Settings has multiple levels, Up should navigate up
-			// that hierarchy.
 			NavUtils.navigateUpFromSameTask(this);
 			return true;
 		}
@@ -156,6 +155,19 @@ public class SettingsActivity extends PreferenceActivity {
 		fakeHeader.setTitle(R.string.pref_header_data_sync);
 		getPreferenceScreen().addPreference(fakeHeader);
 		addPreferencesFromResource(R.xml.pref_data_sync);
+		
+		findPreference("source_code").setOnPreferenceClickListener(new OnPreferenceClickListener(){
+
+			@Override
+			public boolean onPreferenceClick(Preference preference) {
+				
+				Intent i = new Intent(Intent.ACTION_VIEW);
+	    		i.setData(Uri.parse(SettingsActivity.this.getString(R.string.source_code_site)));
+	    		SettingsActivity.this.startActivity(i);
+				return true;
+			}
+			
+		});
 
 		// Bind the summaries of EditText/List/Dialog/Ringtone preferences to
 		// their values. When their values change, their summaries are updated
@@ -289,20 +301,6 @@ public class SettingsActivity extends PreferenceActivity {
 			super.onCreate(savedInstanceState);
 			addPreferencesFromResource(R.xml.pref_general);
 		
-			
-			
-			/*this.findPreference("delete_account").setOnPreferenceClickListener(
-					new OnPreferenceClickListener(){
-
-				@Override
-				public boolean onPreferenceClick(Preference preference) {
-					//TODO handle making dialog and deleting their account on confirmation.
-					//TODO change EditTextPreference to Preference
-					Toast.makeText(GeneralPreferenceFragment.this.getActivity().getBaseContext(), "HERE", Toast.LENGTH_LONG).show();
-					return false;
-				}
-				
-			});*/
 		}
 	}
 

@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.DialogInterface.OnCancelListener;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
@@ -87,7 +88,10 @@ public class LoginActivity extends Activity {
 	public void reset(View v)
 	{
 		//TODO open up the submit url
-		//https://www.cs-club.ca/reset/
+		//reset_site
+		Intent i = new Intent(Intent.ACTION_VIEW);
+		i.setData(Uri.parse(this.getString(R.string.reset_site)));
+		this.startActivity(i);
 	}
 
 	private void showProgress(boolean show) {

@@ -3,7 +3,6 @@
 
     <string name="app_name">FreeRoomFinder</string>
     <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
     <string name="submit_button">Submit</string>
     <string name="password_reset">Reset</string>
     <string name="username_hint">Username</string>
@@ -22,6 +21,8 @@
     <string name="duration_heading">Duration</string>
     <string name="date_heading">Date</string>
     <string name="campus_heading">Campus</string>
+    
+    <string name="reset_site">https://www.cs-club.ca/reset/</string>
 
     <string-array name="campus_names">
         <item>North Oshawa Campus</item>
@@ -117,5 +118,8 @@
 	<string name="get_source_summary">Contribute to Free Room Finder</string>
 	<string name="donate_title">Donate</string>
 	<string name="donate_summary">Support the Developers</string>
+	
+	<string name="source_code_site">https://github.com/gnu-user/free-room-website</string>
+
 	
 </resources>

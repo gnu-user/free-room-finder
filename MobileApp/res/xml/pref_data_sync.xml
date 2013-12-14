@@ -12,13 +12,15 @@
     <!-- TODO Get source code -->
     <Preference
         android:title="@string/get_source_title"
-        android:summary="@string/get_source_summary" >
+        android:summary="@string/get_source_summary"
+        android:key="source_code">
     </Preference>
     
 	<!-- TODO Donate -->
     <Preference
 		android:title="@string/donate_title"
-        android:summary="@string/donate_summary">
+        android:summary="@string/donate_summary"
+        android:key="donate">
     </Preference>
     
 
