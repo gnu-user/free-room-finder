@@ -1,18 +1,18 @@
 package com.uoit.freeroomfinder;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
 
 public class DateTimeUtility {
 
-	//public static Array<>
+	private static final String ARMY_TIME = "kk:mm";
+	private static final String NORMAL_TIME = "hh:mm aa";
+	private static final String DATE = "yyyy-MM-dd";
 	
-	//TODO add local
-	public static SimpleDateFormat stf = new SimpleDateFormat("hh:mm aa");
-	//public static SimpleDateFormat stf = new SimpleDateFormat("kk:mm:ss");
-	
-//	public static SimpleDateFormat stf = new SimpleDateFormat("kk:mm");
-	public static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	private SimpleDateFormat stf;
+	private SimpleDateFormat sdf;
 	
 	private Locale locale;
 	private boolean notUseArmyClock;
@@ -21,13 +21,13 @@ public class DateTimeUtility {
 	{
 		if(notUseArmyClock)
 		{
-			stf = new SimpleDateFormat("hh:mm aa", locale);
+			stf = new SimpleDateFormat(NORMAL_TIME, locale);
 		}
 		else
 		{
-			stf = new SimpleDateFormat("kk:mm", locale);
+			stf = new SimpleDateFormat(ARMY_TIME, locale);
 		}
-		sdf = new SimpleDateFormat("yyyy-MM-dd", locale);
+		sdf = new SimpleDateFormat(DATE, locale);
 		
 		this.locale = locale;
 		this.notUseArmyClock = notUseArmyClock;
@@ -41,13 +41,33 @@ public class DateTimeUtility {
 			
 			if(notUseArmyClock)
 			{
-				stf = new SimpleDateFormat("hh:mm aa", locale);
+				stf = new SimpleDateFormat(NORMAL_TIME, locale);
 			}
 			else
 			{
-				stf = new SimpleDateFormat("kk:mm", locale);
+				stf = new SimpleDateFormat(ARMY_TIME, locale);
 			}
 		}
+	}
+	
+	public String formatDate(Date date)
+	{
+		return sdf.format(date);
+	}
+	
+	public String formatDate(long date)
+	{
+		return sdf.format(date);
+	}
+	
+	public Date parseDate(String date) throws ParseException
+	{
+		return sdf.parse(date);
+	}
+	
+	public String formatTime(Date date)
+	{
+		return stf.format(date);
 	}
 	
 }

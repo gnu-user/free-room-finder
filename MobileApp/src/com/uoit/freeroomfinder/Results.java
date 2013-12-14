@@ -146,8 +146,8 @@ public class Results extends Fragment {
 		Rooms first = results.get(index);
 		
 		room.setText(first.getRoom());
-		start.setText(DateTimeUtility.stf.format(new Date(first.getStartTime())));
-		end.setText(DateTimeUtility.stf.format(new Date(first.getEndTime())));
+		start.setText(MainActivity.datetimeFormater.formatTime(new Date(first.getStartTime())));
+		end.setText(MainActivity.datetimeFormater.formatTime(new Date(first.getEndTime())));
 
 		TableRow tr = (TableRow)newView.findViewById(R.id.tableRow2);
 		

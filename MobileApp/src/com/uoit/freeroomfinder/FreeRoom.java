@@ -74,9 +74,9 @@ public class FreeRoom extends Fragment {
 		
 		//TODO change to "now"
 		TextView date = (TextView)rootView.findViewById(R.id.date);
-		date.setText(DateTimeUtility.sdf.format(curDate));
+		date.setText(MainActivity.datetimeFormater.formatDate(curDate));
 		
-		datepicked = DateTimeUtility.sdf.format(curDate);
+		datepicked = MainActivity.datetimeFormater.formatDate(curDate);
 
 		date.setOnClickListener(new OnClickListener(){
 
@@ -85,7 +85,7 @@ public class FreeRoom extends Fragment {
 				
 				Date d = null;
 				try {
-					d = DateTimeUtility.sdf.parse(datepicked);
+					d = MainActivity.datetimeFormater.parseDate(datepicked);
 					
 				} catch (ParseException e) {
 					e.printStackTrace();
@@ -162,7 +162,7 @@ public class FreeRoom extends Fragment {
 		
 		//TODO change string defined time stamps to use only hh:mm
 		ArrayList<String> spinnerArray = new ArrayList<String>(Arrays.asList(this.getResources().getStringArray(timeValues)));
-		spinnerArray.add(0, DateTimeUtility.stf.format(curDate));
+		spinnerArray.add(0, MainActivity.datetimeFormater.formatTime(curDate));
 		
 		ArrayAdapter<String> sa = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, spinnerArray);
 		sa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
