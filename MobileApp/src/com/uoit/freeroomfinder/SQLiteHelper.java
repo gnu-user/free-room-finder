@@ -10,7 +10,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 	
 	private static final int DATABASE_VERSION = 2;
 	
-	/* Table Name */
+	/* Table Names */
 	public static final String USER_TABLE_NAME = "user";
 	public static final String BOOKING_TABLE_NAME = "bookings";
 	

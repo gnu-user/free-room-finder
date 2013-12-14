@@ -15,10 +15,13 @@ import android.net.Uri;
 public class DatabaseProvider extends ContentProvider {
 	public static final String AUTHORITY = "com.uoit.freeroomfinder.provider";
 	public static final String BASE_PATH_USER = "user";
-	public static final String BASE_PATH_BOOKING = "user";
+	public static final String BASE_PATH_BOOKING = "booking";
 	
-	public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY
+	public static final Uri USER_CONTENT_URI = Uri.parse("content://" + AUTHORITY
 			+ "/" + SQLiteHelper.USER_TABLE_NAME);
+	public static final Uri BOOKING_CONTENT_URI = Uri.parse("content://" + AUTHORITY
+			+ "/" + SQLiteHelper.BOOKING_TABLE_NAME);
+	
 	HashSet<String> validUserRows = new HashSet<String>(Arrays.asList(new String[] {
 			SQLiteHelper.KEY_ID, SQLiteHelper.KEY_USERNAME, SQLiteHelper.KEY_PASSWORD }));
 	HashSet<String> validBookingRows = new HashSet<String>(Arrays.asList(new String[] {
