@@ -1,30 +1,24 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <!-- SECTION Feedback -->
-    <!-- TODO Donate -->
-    <!-- TODO Get source code -->
     <!-- TODO Enable Bugsense -->   
-    
-    
-
-    <!--
-         This preference simply launches an intent when selected. Use this UI sparingly, per
-         design guidelines.
-    -->
     <CheckBoxPreference
         android:key="enable_bugsense"
-        android:title="Bugsense"
-        android:summaryOn="Disable Bug Reporting"
-        android:summaryOff="Enable Bug Reporting" android:defaultValue="true"/>
+        android:title="@string/bugsense_title"
+        android:summaryOn="@string/busense_summary_on"
+        android:summaryOff="@string/busense_summary_off"
+        android:defaultValue="true"/>
     
+    <!-- TODO Get source code -->
     <Preference
-        android:title="Get Source Code"
-        android:summary="Contribute to Free Room Finder" >
+        android:title="@string/get_source_title"
+        android:summary="@string/get_source_summary" >
     </Preference>
     
+	<!-- TODO Donate -->
     <Preference
-		android:title="Donate"
-        android:summary="Support the Developers">
+		android:title="@string/donate_title"
+        android:summary="@string/donate_summary">
     </Preference>
     
 

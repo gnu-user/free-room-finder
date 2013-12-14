@@ -3,25 +3,23 @@
     
     <!-- TODO add Delete account -->
     <EditTextPreference
-        android:dialogTitle="Delete Account"
+        android:dialogTitle="@string/delete_account_title"
         android:key="delete_account"
-        android:summary="Click to delete your account."
-        android:title="Delete Account"
+        android:summary="@string/delete_account_summary"
+        android:title="@string/delete_account_title"
         android:dialogLayout="@layout/empty"
         android:positiveButtonText="@android:string/yes"
         android:negativeButtonText="@android:string/no"/>
     <!-- TODO Maximum # of messages saved -->
     
     <EditTextPreference
-        android:dialogTitle="Maximum Rooms"
+        android:dialogTitle="@string/maximum_rooms_title"
         android:key="max_rooms"
-        android:summary="Maximum number of rooms to keep saved."
-        android:title="Maximum Rooms"
+        android:summary="@string/maximum_rooms_summary"
+        android:title="@string/maximum_rooms_title"
         android:inputType="number"
         android:defaultValue="50"
         android:positiveButtonText="@android:string/yes"
         android:negativeButtonText="@android:string/no"/>
-
-	
 
 </PreferenceScreen>

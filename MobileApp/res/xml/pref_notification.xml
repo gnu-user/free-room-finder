@@ -4,29 +4,32 @@
     <CheckBoxPreference
         android:defaultValue="true"
         android:key="army_clock"
-        android:summary="Use 12 hour clock"
-        android:title="12-hour Clock" />
+        android:summaryOff="@string/army_clock_summary_off"
+        android:summaryOn="@string/army_clock_summary_on"
+        android:title="@string/army_clock_title" />
     
     <!-- TODO Set Campus default preference -->
     <ListPreference
-        android:dialogTitle="Default Campus"
+        android:dialogTitle="@string/default_campus_title"
         android:key="default_campus"
-        android:summary="Default Campus for Searching"
-        android:title="Default Campus"
+        android:summary="@string/default_campus_summary"
+        android:title="@string/default_campus_title"
         android:positiveButtonText="@android:string/yes"
         android:negativeButtonText="@android:string/no"
         android:entries="@array/campus_names"
-        android:defaultValue="1" android:entryValues="@array/campus_index"/>
+        android:entryValues="@array/campus_index"
+        android:defaultValue="1"/>
      
      <!-- TODO Set duration default preference -->
      <ListPreference 
-        android:dialogTitle="Default Duration"
+        android:dialogTitle="@string/default_duration_title"
         android:key="default_duration"
-        android:summary="Default Duration for Searching"
-        android:title="Default Duration"
+        android:summary="@string/default_duration_summary"
+        android:title="@string/default_duration_title"
         android:positiveButtonText="@android:string/yes"
         android:negativeButtonText="@android:string/no"
         android:entries="@array/duration_values"
-        android:defaultValue="1" android:entryValues="@array/duration_values"/> 
+        android:entryValues="@array/duration_values"
+        android:defaultValue="1"/> 
 
 </PreferenceScreen>
