@@ -1,5 +1,12 @@
 package com.uoit.freeroomfinder;
 
+import java.util.List;
+
+import retrofit.RestAdapter;
+import retrofit.http.GET;
+import retrofit.http.Path;
+import android.util.Log;
+
 
 public class Request {
 	
@@ -7,6 +14,23 @@ public class Request {
 	private int duration;
 	private String date;
 	private int campus;
+	
+	private static final String API_URL = "http://cs-club.ca/free-room-website/api";
+	
+	static class Profs
+	{
+	    String professor;
+	    String studentNum;
+	}
+	
+	
+	interface BusyProfs
+	{
+	    @GET("/busyprofs/{count}")
+	    List<Profs> profStudents(
+	        @Path("count") int count
+	    );
+	}
 	
 	//Pass the date and time as formated strings
 	public Request(String time, int duration, String date, int campus)
@@ -73,4 +97,22 @@ public class Request {
 		this.campus = campus;
 	}
 
+	
+	public void getBusyProfs(int count)
+	{	    
+	    // Create a very simple REST adapter which points the GitHub API endpoint.
+	    RestAdapter restAdapter = new RestAdapter.Builder()
+	        .setServer(API_URL)
+	        .build();
+	    
+	    // Create an instance of our GitHub API interface.
+	    BusyProfs busyProfs = restAdapter.create(BusyProfs.class);
+
+	    // Fetch and print a list of the contributors to this library.
+	    List<Profs> profs = busyProfs.profStudents(count);
+	    for (Profs prof : profs)
+	    {
+	        Log.v("REST", prof.professor + " (" + prof.studentNum + ")");
+	    }
+	}
 }
