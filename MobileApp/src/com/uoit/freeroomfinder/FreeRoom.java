@@ -37,7 +37,7 @@ public class FreeRoom extends Fragment {
 	
 	public static final int LOGIN_SUCCESSFUL = 100;
 	
-	private UserLoginTask authTask = null;
+	private SearchTask searchTask = null;
 	private ProgressDialog dialog;
 	
 	private SharedPreferences sharedPrefs;
@@ -46,6 +46,8 @@ public class FreeRoom extends Fragment {
 	
 	public static String datepicked = "";
 	
+	private static View rootView;
+	
 	public FreeRoom() {}
 
 	@Override
@@ -53,8 +55,7 @@ public class FreeRoom extends Fragment {
 			Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
 		
-		final View rootView = inflater.inflate(R.layout.activity_free_room,
-				container, false);
+		rootView = inflater.inflate(R.layout.activity_free_room, container, false);
 		
 		
 		sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this.getActivity().getBaseContext());
@@ -86,6 +87,7 @@ public class FreeRoom extends Fragment {
 					d = MainActivity.datetimeFormater.parseDate(datepicked);
 					
 				} catch (ParseException e) {
+				    
 					e.printStackTrace();
 				}
 				
@@ -131,6 +133,9 @@ public class FreeRoom extends Fragment {
 						, datepicked, campusSpinner.getSelectedItemPosition());
 				
 				//TODO Launch query with dialog and on result go to the results tab activity.
+				showProgress(true);
+                searchTask = new SearchTask();
+                searchTask.execute(req);
 			}
 		});
 		
@@ -202,7 +207,7 @@ public class FreeRoom extends Fragment {
 		
 		if(show)
 		{
-			dialog = ProgressDialog.show(this.getActivity(),
+			dialog = ProgressDialog.show(rootView.getContext(),
 					getString(R.string.login_heading),
 					getString(R.string.login_progress_signing_in), true, true,
 					new OnCancelListener() {
@@ -219,24 +224,17 @@ public class FreeRoom extends Fragment {
 
 	}
 	
-	public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+	public class SearchTask extends AsyncTask<Request, Void, Boolean> {
 		@Override
-		protected Boolean doInBackground(Void... params) {
-			// TODO: attempt authentication against a network service.
-			// TODO: login via restful call
-			try {
-				// Simulate network access.
-				Thread.sleep(2000);
-			} catch (InterruptedException e) {
-				return false;
-			}
-			
+		protected Boolean doInBackground(Request... params) {
+		    // Get the busiest prof (1)
+			params[0].getBusyProfs(1);	
 			return true;
 		}
 
 		@Override
 		protected void onPostExecute(final Boolean success) {
-			authTask = null;
+			searchTask = null;
 			showProgress(false);
 
 			if (success) {
@@ -250,7 +248,7 @@ public class FreeRoom extends Fragment {
 
 		@Override
 		protected void onCancelled() {
-			authTask = null;
+			searchTask = null;
 			showProgress(false);
 		}
 	}
