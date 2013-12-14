@@ -1,17 +1,22 @@
 
-CREATE TABLE USER_TABLE_NAME  
+CREATE TABLE user  
 (
-    KEY_ID              INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE NOT NULL, 
-    KEY_USERNAME        TEXT, 
-    KEY_PASSWORD        TEXT
+    id              INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE NOT NULL, 
+    username        TEXT, 
+    password        TEXT
 );
 
 
 CREATE TABLE bookings
 (
-    booking_id         INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE NOT NULL,
+    id         INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE NOT NULL,
     room_name          TEXT,
     start_time         INTEGER,
     end_time           INTEGER,
     book_date          INTEGER
 );
+
+INSERT INTO bookings (room_name, start_time, end_time, book_date) VALUES("UA2010", 134242, 234232, 232424);
+INSERT INTO bookings (room_name, start_time, end_time, book_date) VALUES("UA1010", 4435534, 435435, 2343242);
+
+SELECT * FROM bookings WHERE id = (SELECT id FROM bookings ORDER BY book_date LIMIT 1);
