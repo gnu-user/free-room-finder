@@ -50,6 +50,89 @@ public class FreeRoom extends Fragment {
 		final View rootView = inflater.inflate(R.layout.activity_free_room,
 				container, false);
 		
+		//Set up the time spinner to include the current time
+		Spinner timeSpinner = (Spinner)rootView.findViewById(R.id.time);
+		ArrayList<String> spinnerArray = new ArrayList<String>(Arrays.asList(this.getResources().getStringArray(R.array.time_values)));
+		spinnerArray.add(0, DateTimeUtility.stf.format(new Date()));
+		
+		ArrayAdapter<String> sa = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, spinnerArray);
+		sa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		timeSpinner.setAdapter(sa);
+		
+		Date curDate = new Date();
+		
+		//TODO change to "now"
+		TextView date = (TextView)rootView.findViewById(R.id.date);
+		date.setText(DateTimeUtility.sdf.format(curDate));
+		
+		datepicked = DateTimeUtility.sdf.format(curDate);
+
+		date.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				
+				Date d = null;
+				try {
+					d = DateTimeUtility.sdf.parse(datepicked);
+					
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+				
+				Calendar c = Calendar.getInstance();
+				
+				if(d != null)
+				{
+					c.setTime(d);
+				}
+	            int yy = c.get(Calendar.YEAR);
+	            int mm = c.get(Calendar.MONTH);
+	            int dd = c.get(Calendar.DAY_OF_MONTH);				
+	            
+				DatePickerDialog alert = new DatePickerDialog(rootView.getContext(),
+						new DatePickerDialog.OnDateSetListener() {
+					
+					@Override
+					public void onDateSet(DatePicker view, int year, int monthOfYear,
+							int dayOfMonth) {
+
+						datepicked = year + "-" + (monthOfYear+1) + "-" + dayOfMonth;
+						TextView date = (TextView)rootView.findViewById(R.id.date);
+						date.setText(datepicked);
+					}
+				}, yy, mm, dd);
+					 
+				alert.show();
+			}
+			
+		});
+		
+		Button search = (Button)rootView.findViewById(R.id.search);
+		search.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				Spinner timeSpinner = (Spinner)rootView.findViewById(R.id.time);
+				Spinner durationSpinner = (Spinner)rootView.findViewById(R.id.duration);
+				Spinner campusSpinner = (Spinner)rootView.findViewById(R.id.campus);
+				
+				Request req = new Request(timeSpinner.getSelectedItem().toString(),
+						Integer.valueOf(durationSpinner.getSelectedItem().toString())
+						, datepicked, campusSpinner.getSelectedItemPosition());
+				
+				//TODO Launch query with dialog and on result go to the results tab activity.
+			}
+		});
+		
+		return rootView;
+		
+	}
+	
+	@Override
+	public void onResume()
+	{
+		//This should allow for a more robust login check
 		DatabaseInterface dbi = new DatabaseInterface(this.getActivity().getBaseContext());
 		
 		if(dbi.getUser() == null)
@@ -57,86 +140,7 @@ public class FreeRoom extends Fragment {
 			Intent loginActivity = new Intent(this.getActivity().getBaseContext(), LoginActivity.class);
 			this.startActivityForResult(loginActivity, LOGIN_SUCCESSFUL);
 		}
-		else
-		{
-			//Set up the time spinner to include the current time
-			Spinner timeSpinner = (Spinner)rootView.findViewById(R.id.time);
-			ArrayList<String> spinnerArray = new ArrayList<String>(Arrays.asList(this.getResources().getStringArray(R.array.time_values)));
-			spinnerArray.add(0, DateTimeUtility.stf.format(new Date()));
-			
-			ArrayAdapter<String> sa = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, spinnerArray);
-			sa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-			timeSpinner.setAdapter(sa);
-			
-			Date curDate = new Date();
-			
-			//TODO change to "now"
-			TextView date = (TextView)rootView.findViewById(R.id.date);
-			date.setText(DateTimeUtility.sdf.format(curDate));
-			
-			datepicked = DateTimeUtility.sdf.format(curDate);
-
-			date.setOnClickListener(new OnClickListener(){
-	
-				@Override
-				public void onClick(View v) {
-					
-					Date d = null;
-					try {
-						d = DateTimeUtility.sdf.parse(datepicked);
-						
-					} catch (ParseException e) {
-						e.printStackTrace();
-					}
-					
-					Calendar c = Calendar.getInstance();
-					
-					if(d != null)
-					{
-						c.setTime(d);
-					}
-		            int yy = c.get(Calendar.YEAR);
-		            int mm = c.get(Calendar.MONTH);
-		            int dd = c.get(Calendar.DAY_OF_MONTH);				
-		            
-					DatePickerDialog alert = new DatePickerDialog(rootView.getContext(),
-							new DatePickerDialog.OnDateSetListener() {
-						
-						@Override
-						public void onDateSet(DatePicker view, int year, int monthOfYear,
-								int dayOfMonth) {
-	
-							datepicked = year + "-" + (monthOfYear+1) + "-" + dayOfMonth;
-							TextView date = (TextView)rootView.findViewById(R.id.date);
-							date.setText(datepicked);
-						}
-					}, yy, mm, dd);
-						 
-					alert.show();
-				}
-				
-			});
-			
-			Button search = (Button)rootView.findViewById(R.id.search);
-			search.setOnClickListener(new OnClickListener(){
-	
-				@Override
-				public void onClick(View v) {
-					Spinner timeSpinner = (Spinner)rootView.findViewById(R.id.time);
-					Spinner durationSpinner = (Spinner)rootView.findViewById(R.id.duration);
-					Spinner campusSpinner = (Spinner)rootView.findViewById(R.id.campus);
-					
-					Request req = new Request(timeSpinner.getSelectedItem().toString(),
-							Integer.valueOf(durationSpinner.getSelectedItem().toString())
-							, datepicked, campusSpinner.getSelectedItemPosition());
-					
-					//TODO Launch query with dialog and on result go to the results tab activity.
-				}
-			});
-		}
-		
-		return rootView;
-		
+		super.onResume();
 	}
 
 	/*@Override
@@ -146,6 +150,7 @@ public class FreeRoom extends Fragment {
 		return true;
 	}*/
 	
+	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data)
 	{
 		if(requestCode == LOGIN_SUCCESSFUL)
