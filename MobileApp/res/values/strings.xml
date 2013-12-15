@@ -98,22 +98,22 @@
     <string name="are_you_sure">Are you sure you want to delete your account?</string>
     <string name="delete_account_title">Delete Account</string>
 	<string name="delete_account_summary">Delete your FRF account</string>
-	<string name="maximum_rooms_title">Maximum Rooms</string>
-	<string name="maximum_rooms_summary">Maximum number of rooms to keep saved</string>
+	<string name="maximum_rooms_title">Bookings List</string>
+	<string name="maximum_rooms_summary">Number of bookings to keep saved</string>
 	
 		<!-- Search -->
 	<string name="army_clock_title">Clock Settings</string>
-	<string name="army_clock_summary_on">Use 24 hour clock</string>
-	<string name="army_clock_summary_off">Use 12 hour clock</string>
+	<string name="army_clock_summary_on">Use 12 hour clock</string>
+	<string name="army_clock_summary_off">Use 24 hour clock</string>
 	<string name="default_campus_title">Default Campus</string>
-	<string name="default_campus_summary">Default Campus for Searching</string>
+	<string name="default_campus_summary">Select the default campus to search for</string>
 	<string name="default_duration_title">Default Duration</string>
-	<string name="default_duration_summary">Default Duration for Searching</string>
+	<string name="default_duration_summary">Select the default booking duration</string>
 	
 		<!-- Feedback -->
-	<string name="bugsense_title">Bugsense</string>
-	<string name="busense_summary_on">Disable Bug Reporting</string>
-	<string name="busense_summary_off">Enable Bug Reporting</string>
+	<string name="bugsense_title">BugSense</string>
+	<string name="busense_summary_on">Bug Reporting is enabled</string>
+	<string name="busense_summary_off">Bug Reporting is disabled</string>
 	<string name="get_source_title">Get Source Code</string>
 	<string name="get_source_summary">Contribute to Free Room Finder</string>
 	<string name="donate_title">Donate</string>
