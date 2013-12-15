@@ -126,17 +126,28 @@ public class FreeRoom extends Fragment {
 
 			@Override
 			public void onClick(View v) {
+				Date curDate = new Date();
+				
 				Spinner timeSpinner = (Spinner)rootView.findViewById(R.id.time);
 				Spinner durationSpinner = (Spinner)rootView.findViewById(R.id.duration);
 				Spinner campusSpinner = (Spinner)rootView.findViewById(R.id.campus);
 				
                 try
                 {
-                    Request req = new Request(
-                            MainActivity.datetimeFormater.formatFullTime(timeSpinner.getSelectedItem().toString()), 
-                            datepicked, 
-                            rootView.getResources().getStringArray(R.array.campus_names)[campusSpinner.getSelectedItemPosition()],
-                            Integer.valueOf(durationSpinner.getSelectedItem().toString()));
+                	Request req;
+                	if (timeSpinner.getSelectedItem().toString().compareTo("Now") == 0){
+                		req = new Request(
+                                MainActivity.datetimeFormater.formatFullTime(MainActivity.datetimeFormater.formatTime(curDate)), 
+                                datepicked, 
+                                rootView.getResources().getStringArray(R.array.campus_names)[campusSpinner.getSelectedItemPosition()],
+                                Integer.valueOf(durationSpinner.getSelectedItem().toString()));
+					}else{
+						req = new Request(
+	                            MainActivity.datetimeFormater.formatFullTime(timeSpinner.getSelectedItem().toString()), 
+	                            datepicked, 
+	                            rootView.getResources().getStringArray(R.array.campus_names)[campusSpinner.getSelectedItemPosition()],
+	                            Integer.valueOf(durationSpinner.getSelectedItem().toString())); 
+					}
                     
                     
                     //TODO Launch query with dialog and on result go to the results tab activity.
@@ -181,7 +192,7 @@ public class FreeRoom extends Fragment {
 		
 		//TODO change string defined time stamps to use only hh:mm
 		ArrayList<String> spinnerArray = new ArrayList<String>(Arrays.asList(this.getResources().getStringArray(timeValues)));
-		spinnerArray.add(0, MainActivity.datetimeFormater.formatTime(curDate));
+		spinnerArray.add(0, "Now");
 		
 		ArrayAdapter<String> sa = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, spinnerArray);
 		sa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
