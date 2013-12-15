@@ -136,7 +136,9 @@ public class MainActivity extends FragmentActivity implements
         }
     }
     
-    //TODO document
+    /**
+     * Ensure user is logged in.
+     */
     public void ensureLogin()
     {
 		//This should allow for a more robust login check
@@ -149,7 +151,11 @@ public class MainActivity extends FragmentActivity implements
 		}
     }
     
-    //TODO document
+    /**
+     * The method for handling a login completion.
+     * @param requestCode The expected return code
+     * @param resultCode The result code of the activity.
+     */
     public void onLogin(int requestCode, int resultCode)
     {
 		if(requestCode == LoginActivity.LOGIN_SUCCESSFUL)
