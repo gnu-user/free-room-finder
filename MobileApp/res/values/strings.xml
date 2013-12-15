@@ -99,7 +99,7 @@
 	
 		<!-- Search -->
 	<string name="army_clock_title">Clock Settings</string>
-	<string name="army_clock_summary_on">Use 12 hour clock</string>
+	<string name="army_clock_summary_on">Use 12 hour clock (using 12 hour clock)</string>
 	<string name="army_clock_summary_off">Use 12 hour clock (using 24 hour clock)</string>
 	<string name="default_campus_title">Default Campus</string>
 	<string name="default_campus_summary">Select the default campus to search in</string>
