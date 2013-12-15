@@ -57,7 +57,7 @@ public abstract class Request
 	/* REST API interface for getting login credentials */
 	private static interface LoginCredentials
 	{
-	    @GET("login/{username}/{password}")
+	    @GET("/login/{username}/{password}")
 	    Credentials loginCredentials(
 	        @Path("username") String username,
 	        @Path("password") String password
