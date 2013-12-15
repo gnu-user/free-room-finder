@@ -156,11 +156,11 @@ function getTotalRegisteredFaculty()
  */
 function getLoginCredentials($username, $password)
 {
-	global $db_user, $db_pass, $db_name, $AES_KEY;
+	global $db_user, $db_pass, $db_login, $AES_KEY;
 	$credentials = array("credentials" => false);
 
 	/* Connect to the database */
-	$mysqli_conn = new mysqli("localhost", $db_user, $db_pass, $db_name);
+	$mysqli_conn = new mysqli("localhost", $db_user, $db_pass, $db_login);
 
 	/* check connection */
 	if (mysqli_connect_errno()) {
