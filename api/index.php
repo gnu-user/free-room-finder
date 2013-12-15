@@ -173,7 +173,6 @@ function getAvailableRooms($time, $date, $campus, $duration = 1)
 								$day_of_week, $semester, $campus);
 
     echo json_encode($available);
-    echo '}';
 }
 
 ?>
