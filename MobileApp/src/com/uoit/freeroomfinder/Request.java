@@ -31,29 +31,42 @@ import retrofit.http.GET;
 import retrofit.http.Path;
 
 
-public class Request {
-	
-	private String time;
-	private String date;
-	private String campus;
-	private int duration;
-
+public abstract class Request
+{
     /* Formatter for the time from the REST api */
     @SuppressLint("SimpleDateFormat")
-    private static SimpleDateFormat tf = new SimpleDateFormat("hh:mm:ss");
+    private static final SimpleDateFormat tf = new SimpleDateFormat("hh:mm:ss");
     
 	private static final String API_URL = "http://cs-club.ca/free-room-website/api";
 
+	
+	/* Static class representing the JSON encoded login credentials */
+    private static class Credentials
+    {
+        boolean credentials = false;
+    }
+    	
 	/* Static class representing the JSON encoded rooms */
-	static class Room
+	private static class Room
 	{
 	    String room;
 	    String starttime;
 	    String endtime;
 	}
 	
-	/* Rest API interface, used for making the GET requests */
-	interface AvailableRooms
+	/* REST API interface for getting login credentials */
+	private static interface LoginCredentials
+	{
+	    @GET("login/{username}/{password}")
+	    Credentials loginCredentials(
+	        @Path("username") String username,
+	        @Path("password") String password
+        );
+	}
+	
+
+	/* REST API interface for searching for rooms */
+	private static interface AvailableRooms
 	{
 	    @GET("/availablerooms/{time}/{date}/{campus}/{duration}")
 	    List<Room> availableRooms(
@@ -64,85 +77,50 @@ public class Request {
 	    );
 	}
 	
-	/* Pass the date and time as formated strings */
-	public Request(String time, String date, String campus, int duration)
-	{
-		this.time = time;
-		this.date = date;
-		this.campus = campus;
-        this.duration = duration;
-	}
-
-	/**
-	 * Get the time
-	 * @return the time
-	 */
-	public String getTime() {
-		return time;
-	}
-
-	/**
-	 * Set the time
-	 * @param time the time to set
-	 */
-	public void setTime(String time) {
-		this.time = time;
-	}
-
-	/**
-	 * Get the duration
-	 * @return the duration
-	 */
-	public int getDuration() {
-		return duration;
-	}
-
-	/**
-	 * Set the duration
-	 * @param duration the duration to set
-	 */
-	public void setDuration(int duration) {
-		this.duration = duration;
-	}
-
-	/**
-	 * Get the date
-	 * @return the date
-	 */
-	public String getDate() {
-		return date;
-	}
-
-	/**
-	 * Set the date
-	 * @param date the date to set
-	 */
-	public void setDate(String date) {
-		this.date = date;
-	}
-
-	/**
-	 * Get the campus
-	 * @return the campus
-	 */
-	public String getCampus() {
-		return campus;
-	}
-
-	/**
-	 * Set the campus
-	 * @param campus the campus to set
-	 */
-	public void setCampus(String campus) {
-		this.campus = campus;
-	}
-
 	
 	/**
-	 * Search for the rooms using the api
-	 * @return The list of rooms.
+	 * Validates the login credentials of the user.
+	 * 
+	 * @param username The user's username
+	 * @param password The user's password
+	 * @return TRUE if the credentials are valid, FALSE otherwise
 	 */
-	public ArrayList<Rooms> searchRooms()
+	public static boolean validateCredentials(String username, String password)
+	{
+	    Credentials credentials = new Credentials();
+	    
+	    RestAdapter restAdapter = new RestAdapter.Builder()
+	        .setServer(API_URL)
+	        .build();
+	    
+	    try
+	    {
+	        /* Create an instance of the REST API interface */
+	        LoginCredentials loginCredentials = restAdapter.create(LoginCredentials.class);
+	        
+	        /* Validate the credentials */   
+	        credentials = loginCredentials.loginCredentials(username, password);        
+	    }
+	    catch (Exception e)
+	    {
+	        e.printStackTrace();
+	    }
+	    
+	    return credentials.credentials;
+	}
+	
+	
+	/**
+     * Simplified interface to search for the rooms using the REST API.
+     * 
+	 * @param time The time that a room is needed
+	 * @param date The date that a room is needed
+	 * @param campus The campus the room is needed on
+	 * @param duration The length of time the room is needed for
+	 * 
+	 * @return The list of available rooms
+	 */
+	public static ArrayList<Rooms> searchRooms(String time, String date, String campus, int duration)
 	{	    
 	    ArrayList<Rooms> results = new ArrayList<Rooms>();
 	    
