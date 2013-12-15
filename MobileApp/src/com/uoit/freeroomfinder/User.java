@@ -2,22 +2,32 @@ package com.uoit.freeroomfinder;
 
 import java.util.regex.Pattern;
 
+//TODO document
 public class User {
 
 	private String username;
 	private String password;
 
+	/**
+	 * Create an empty user
+	 */
 	public User() {
 		username = "";
 		password = "";
 	}
 
+	/**
+	 * Create a new user
+	 * @param username the username
+	 * @param password the password
+	 */
 	public User(String username, String password) {
 		this.username = username;
 		this.password = password;
 	}
 
 	/**
+	 * Get the username
 	 * @return the username
 	 */
 	public String getUsername() {
@@ -25,14 +35,15 @@ public class User {
 	}
 
 	/**
-	 * @param username
-	 *            the username to set
+	 * Set the username
+	 * @param username the username to set
 	 */
 	public void setUsername(String username) {
 		this.username = username;
 	}
 
 	/**
+	 * Get the password
 	 * @return the password
 	 */
 	public String getPassword() {
@@ -40,6 +51,7 @@ public class User {
 	}
 
 	/**
+	 * Set the password
 	 * @param password
 	 *            the password to set
 	 */
@@ -47,6 +59,10 @@ public class User {
 		this.password = password;
 	}
 
+	/**
+	 * Ensure the username is valid
+	 * @return Whether the user name is valid or not.
+	 */
 	public boolean validUsername() {
 
 		if (username != null
@@ -57,6 +73,10 @@ public class User {
 		return false;
 	}
 
+	/**
+	 * Ensure the password is valid
+	 * @return Whether the password is valid or not.
+	 */
 	public boolean validPassword() {
 		if (password != null
 				&& Pattern.matches(
