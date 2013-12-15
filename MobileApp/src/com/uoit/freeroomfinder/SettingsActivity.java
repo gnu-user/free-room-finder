@@ -124,7 +124,7 @@ public class SettingsActivity extends PreferenceActivity {
 				
 				if(positiveResult) {
 					DatabaseInterface dbi = new DatabaseInterface(getBaseContext());
-					dbi.deleteUser();
+					dbi.deleteAll();
 				}
 			}
 	

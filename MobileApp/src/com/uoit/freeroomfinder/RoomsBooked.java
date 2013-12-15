@@ -3,7 +3,6 @@ package com.uoit.freeroomfinder;
 import java.util.ArrayList;
 import java.util.Date;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -18,27 +17,33 @@ import android.widget.TextView;
  * A simple {@link android.support.v4.app.Fragment} subclass.
  * 
  */
-public class RoomsBooked extends Fragment {
+public class RoomsBooked extends Fragment implements OnFinshedTaskListener{
 	
-	private static long timeNow = (new Date()).getTime();
+	//private static long timeNow = (new Date()).getTime();
 	
-	private LoadTask loadTask = null;
+	public static QueryTask loadTask = null;
 	private TableLayout tl;
 	private TableRow header;
 	private LayoutInflater inflater;
 	private ViewGroup container;
+
 	
-	private static final ArrayList<Rooms> results = new ArrayList<Rooms>();
-	static{
+	public static ArrayList<Rooms> results = new ArrayList<Rooms>();
+	/*static{
 		results.add(new Rooms("UA1030", timeNow, timeNow + 10000, timeNow));
 		results.add(new Rooms("UA1020", timeNow, timeNow + 10000, timeNow));
 		results.add(new Rooms("UA1010", timeNow, timeNow + 10000, timeNow));
-	}
+	}*/
 
 	public RoomsBooked() {
-		// Required empty public constructor
+		// Required empty public constructor	
 	}
 
+	public void onCreate(Bundle savedInstanceState)
+	{
+		super.onCreate(savedInstanceState);
+	}
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -58,15 +63,37 @@ public class RoomsBooked extends Fragment {
 		return rootView;
 	}
 	
+	public void onFinishedTaskListener()
+	{
+		if(this.getView() != null)
+		{
+			refreshList();
+		}
+	}
+	
 	public void onResume()
 	{
-		refreshList();
+		loadTask = new QueryTask();
+		loadTask.setOnFinshedTaskListener(this);
+        loadTask.execute(this.getActivity().getBaseContext());
 		super.onResume();
+		
+	}
+	
+	public void OnPause()
+	{
+		super.onPause();
+	}
+	
+	public void onDestroy()
+	{
+		super.onDestroy();
 	}
 	
 	public void refreshList()
 	{
 		// Delete all children for the table
+		
 		tl = (TableLayout)this.getView().findViewById(R.id.TableLayout1);
 		tl.removeAllViews();
 
@@ -122,32 +149,8 @@ public class RoomsBooked extends Fragment {
 		return tr;
 	}
 	
-	public class LoadTask extends AsyncTask<Request, Void, Boolean> {
-		@Override
-		protected Boolean doInBackground(Request... params) {
-			
-			return true;
-		}
+    
+	
 
-		@Override
-		protected void onPostExecute(final Boolean success) {
-			loadTask = null;
-			((MainActivity) RoomsBooked.this.getActivity()).showProgress(false);
-
-			if (success) {
-				//FreeRoom.this.getActivity().setResult(FreeRoom.LOGIN_SUCCESSFUL);
-				//MainActivity.loggedIn = true;
-			} else {
-				//TODO show error
-				
-			}
-		}
-
-		@Override
-		protected void onCancelled() {
-			loadTask = null;
-			((MainActivity) RoomsBooked.this.getActivity()).showProgress(false);
-		}
-	}
 
 }

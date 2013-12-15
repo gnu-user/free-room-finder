@@ -31,6 +31,8 @@ public class MainActivity extends FragmentActivity implements
 	public static SharedPreferences sharedPrefs;
 	private ProgressDialog dialog;
 
+	public static ActionBar actionBar;
+	
 	/**
 	 * The {@link android.support.v4.view.PagerAdapter} that will provide
 	 * fragments for each of the sections. We use a
@@ -39,12 +41,12 @@ public class MainActivity extends FragmentActivity implements
 	 * intensive, it may be best to switch to a
 	 * {@link android.support.v4.app.FragmentStatePagerAdapter}.
 	 */
-	SectionsPagerAdapter mSectionsPagerAdapter;
+	static SectionsPagerAdapter mSectionsPagerAdapter;
 
 	/**
 	 * The {@link ViewPager} that will host the section contents.
 	 */
-	ViewPager mViewPager;
+	static ViewPager mViewPager;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -59,11 +61,11 @@ public class MainActivity extends FragmentActivity implements
 		
 		
 		// Set up the action bar.
-		final ActionBar actionBar = getActionBar();
+		actionBar = getActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
 		// Create the adapter that will return a fragment for each of the three
-		// primary sections of the app.
+		// primary sectiodatetimeFormaterns of the app.
 		mSectionsPagerAdapter = new SectionsPagerAdapter(
 				getSupportFragmentManager());
 
@@ -92,6 +94,14 @@ public class MainActivity extends FragmentActivity implements
 					.setText(mSectionsPagerAdapter.getPageTitle(i))
 					.setTabListener(this));
 		}
+		
+	}
+	
+	public static Fragment switchTabs(int tabIndex)
+	{
+		actionBar.setSelectedNavigationItem(tabIndex-1);
+		
+		return (Fragment) mSectionsPagerAdapter.instantiateItem(mViewPager, tabIndex-1);		
 	}
 
 	@Override
@@ -101,7 +111,7 @@ public class MainActivity extends FragmentActivity implements
 		return true;
 	}
 	
-    @Override
+    @Override		
     public boolean onOptionsItemSelected(final MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_settings:
@@ -171,7 +181,6 @@ public class MainActivity extends FragmentActivity implements
 			Fragment fragment = new DummySectionFragment();
 			Bundle args = new Bundle();
 			args.putInt(DummySectionFragment.ARG_SECTION_NUMBER, position + 1);
-			fragment.setArguments(args);
 			
 			if(position == 0)
 			{
@@ -185,6 +194,8 @@ public class MainActivity extends FragmentActivity implements
 			{
 				fragment = new RoomsBooked();
 			}
+			
+			fragment.setArguments(args);
 			
 			return fragment;
 		}

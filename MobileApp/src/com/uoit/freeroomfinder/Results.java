@@ -6,7 +6,6 @@ import java.util.Date;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -45,9 +44,9 @@ public class Results extends Fragment {
 	//This is actually going to be the array that is received from the other activity
 	private static ArrayList<Rooms> results = new ArrayList<Rooms>();
 	static{
-		results.add(new Rooms("UA1030", timeNow, timeNow + 10000));
-		results.add(new Rooms("UA1020", timeNow, timeNow + 10000));
-		results.add(new Rooms("UA1010", timeNow, timeNow + 10000));
+		results.add(new Rooms("UA1030", timeNow, timeNow + 10000, timeNow));
+		results.add(new Rooms("UA1020", timeNow, timeNow + 10000, timeNow));
+		results.add(new Rooms("UA1010", timeNow, timeNow + 10000, timeNow));
 	}
 
 	public Results() {}
@@ -63,8 +62,6 @@ public class Results extends Fragment {
 		
 		this.inflater = inflater;
 		this.container = container;
-		
-		//TODO start the loading stuff in
 		
 		tl = (TableLayout)rootView.findViewById(R.id.TableLayout1);
 		
@@ -83,6 +80,11 @@ public class Results extends Fragment {
 					//Add to db
 					DatabaseInterface dbi = new DatabaseInterface(Results.this.getActivity().getBaseContext());
 					dbi.insertBooking(results.get(indexOfChecked));
+
+					
+					QueryTask task = new QueryTask();
+					task.setOnFinshedTaskListener((RoomsBooked)MainActivity.switchTabs(3));
+					task.execute(Results.this.getActivity().getBaseContext());
 					
 					//TODO Tell server that, if you want
 				}
@@ -91,15 +93,14 @@ public class Results extends Fragment {
 		});
 		header = (TableRow)tl.findViewById(R.id.table_header);
 		
-        loadTask = new LoadTask();
-        loadTask.execute((Void) null);
+		
 			
 		return rootView;
 	}
 	
 	public void onResume()
 	{
-
+		refreshList();
 		super.onResume();
 	}
 	
@@ -200,7 +201,7 @@ public class Results extends Fragment {
 	public class LoadTask extends AsyncTask<Void, Void, Boolean> {
 		@Override
 		protected Boolean doInBackground(Void... params) {
-			refreshList();
+			
 			return true;
 		}
 

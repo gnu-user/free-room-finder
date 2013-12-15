@@ -68,6 +68,11 @@ public class DatabaseInterface {
 				null);
 	}
 	
+	public void deleteAllBooking() {
+		context.getContentResolver().delete(DatabaseProvider
+				.BOOKING_CONTENT_URI, null, null);
+	}
+	
 	public void deleteBookings() {
 	
 		int maxValue = Integer.valueOf(PreferenceManager
@@ -143,5 +148,10 @@ public class DatabaseInterface {
 		}
 		cur.close();
 		return booking;
+	}
+	
+	public void deleteAll() {
+		deleteAllBooking();
+		deleteUser();
 	}
 }
