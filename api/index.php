@@ -171,9 +171,9 @@ function getAvailableRooms($time, $date, $campus, $duration = 1)
 	/* Get the available rooms */ 
 	$available = get_room_open(	$mysqli_conn, $time, $end_time, 
 								$day_of_week, $semester, $campus);
-    echo '{"availableRooms": ';
+
     echo json_encode($available);
-    echo '}}';
+    echo '}';
 }
 
 ?>
