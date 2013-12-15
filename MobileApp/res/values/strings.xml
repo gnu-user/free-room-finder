@@ -103,10 +103,10 @@
 	
 		<!-- Search -->
 	<string name="army_clock_title">Clock Settings</string>
-	<string name="army_clock_summary_on">Use 12 hour clock</string>
-	<string name="army_clock_summary_off">Use 24 hour clock</string>
+	<string name="army_clock_summary_on">Using 24 hour clock</string>
+	<string name="army_clock_summary_off">Using 12 hour clock</string>
 	<string name="default_campus_title">Default Campus</string>
-	<string name="default_campus_summary">Select the default campus to search for</string>
+	<string name="default_campus_summary">Select the default campus to search in</string>
 	<string name="default_duration_title">Default Duration</string>
 	<string name="default_duration_summary">Select the default booking duration</string>
 	
