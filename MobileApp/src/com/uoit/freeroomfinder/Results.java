@@ -3,11 +3,10 @@ package com.uoit.freeroomfinder;
 import java.util.ArrayList;
 import java.util.Date;
 
-import com.uoit.freeroomfinder.FreeRoom.SearchTask;
-
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -30,6 +29,7 @@ import android.widget.TextView;
 public class Results extends Fragment {
 	
 	private static RadioButton checked = null;
+	private static int indexOfChecked = 0;
 	private static boolean isNotChecked = true;
 	private static long timeNow = (new Date()).getTime();
 	
@@ -42,7 +42,8 @@ public class Results extends Fragment {
 	
 	private TableRow header;
 	
-	private static final ArrayList<Rooms> results = new ArrayList<Rooms>();
+	//This is actually going to be the array that is received from the other activity
+	private static ArrayList<Rooms> results = new ArrayList<Rooms>();
 	static{
 		results.add(new Rooms("UA1030", timeNow, timeNow + 10000));
 		results.add(new Rooms("UA1020", timeNow, timeNow + 10000));
@@ -70,15 +71,35 @@ public class Results extends Fragment {
 		book = (Button)rootView.findViewById(R.id.book);
 		
 		book.setEnabled(false);
-		header = (TableRow)tl.findViewById(R.id.table_header);
+		
+		book.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				
+				//Redundancy check
+				if(indexOfChecked >= 0)
+				{
+					//Add to db
+					DatabaseInterface dbi = new DatabaseInterface(Results.this.getActivity().getBaseContext());
+					dbi.insertBooking(results.get(indexOfChecked));
+					
+					//TODO Tell server that, if you want
+				}
+			}
 			
-		// Inflate the layrootViewout for this fragment
+		});
+		header = (TableRow)tl.findViewById(R.id.table_header);
+		
+        loadTask = new LoadTask();
+        loadTask.execute((Void) null);
+			
 		return rootView;
 	}
 	
 	public void onResume()
 	{
-		refreshList();
+
 		super.onResume();
 	}
 	
@@ -100,7 +121,7 @@ public class Results extends Fragment {
 
 	}
 
-	public TableRow SetupUpTableView(LayoutInflater inflater, ViewGroup container, int index)
+	public TableRow SetupUpTableView(LayoutInflater inflater, ViewGroup container, final int index)
 	{
 		View newView = inflater.inflate(R.layout.room_item,
 				container, false);
@@ -116,8 +137,10 @@ public class Results extends Fragment {
 			public void onClick(View v) {
 				RadioButton rb = (RadioButton)v;
 
+				// A different row has been selected
 				if(checked != rb)
 				{
+					//First time
 					if(checked != null)
 					{
 						checked.setChecked(false);
@@ -126,6 +149,7 @@ public class Results extends Fragment {
 					rb.setChecked(true);
 					isNotChecked = false;
 				}
+				//The same row has been selected
 				else if(checked == rb)
 				{
 					rb.setChecked(isNotChecked);
@@ -134,12 +158,15 @@ public class Results extends Fragment {
 					isNotChecked = !isNotChecked;
 				}
 				
+				//Prepare the button if a row is select otherwise disable it
 				if(isNotChecked)
 				{
 					book.setEnabled(false);
+					indexOfChecked = -1;
 				}
 				else
 				{
+					indexOfChecked = index;
 					book.setEnabled(true);
 				}
 				
@@ -160,8 +187,6 @@ public class Results extends Fragment {
 			@Override
 			public void onClick(View v) {
 				TableRow d= (TableRow) v;
-				//TODO set index as the identifier for the row that is clicked.
-				
 				// Note the location of the relative layout is hard coded here as the last element in the table row
 				// Also, the radio button is hard coded here as the first (and only) element in the relative layout
 				((RelativeLayout) d.getChildAt(d.getChildCount()-1)).getChildAt(0).performClick();
@@ -172,31 +197,24 @@ public class Results extends Fragment {
 		return tr;
 	}
 	
-	public class LoadTask extends AsyncTask<Request, Void, Boolean> {
+	public class LoadTask extends AsyncTask<Void, Void, Boolean> {
 		@Override
-		protected Boolean doInBackground(Request... params) {
-			
+		protected Boolean doInBackground(Void... params) {
+			refreshList();
 			return true;
 		}
 
 		@Override
 		protected void onPostExecute(final Boolean success) {
 			loadTask = null;
-			((MainActivity) Results.this.getActivity()).showProgress(false);
+			//((MainActivity) Results.this.getActivity()).showProgress(false);
 
-			if (success) {
-				//FreeRoom.this.getActivity().setResult(FreeRoom.LOGIN_SUCCESSFUL);
-				//MainActivity.loggedIn = true;
-			} else {
-				//TODO show error
-				
-			}
 		}
 
 		@Override
 		protected void onCancelled() {
 			loadTask = null;
-			((MainActivity) Results.this.getActivity()).showProgress(false);
+			//((MainActivity) Results.this.getActivity()).showProgress(false);
 		}
 	}
 }

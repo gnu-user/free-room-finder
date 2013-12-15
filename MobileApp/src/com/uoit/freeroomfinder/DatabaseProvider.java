@@ -25,7 +25,9 @@ public class DatabaseProvider extends ContentProvider {
 	HashSet<String> validUserRows = new HashSet<String>(Arrays.asList(new String[] {
 			SQLiteHelper.KEY_ID, SQLiteHelper.KEY_USERNAME, SQLiteHelper.KEY_PASSWORD }));
 	HashSet<String> validBookingRows = new HashSet<String>(Arrays.asList(new String[] {
-			SQLiteHelper.KEY_ID, SQLiteHelper.KEY_USERNAME, SQLiteHelper.KEY_PASSWORD }));
+			SQLiteHelper.KEY_ID, "COUNT("+SQLiteHelper.KEY_ID+")", 
+			SQLiteHelper.KEY_ROOM_NAME, SQLiteHelper.KEY_START_TIME,
+			SQLiteHelper.KEY_END_TIME, SQLiteHelper.KEY_BOOK_DATE}));
 	
 
 	public static final String CONTENT_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE
@@ -180,7 +182,7 @@ public class DatabaseProvider extends ContentProvider {
 							"Unknown columns in projection");
 				}
 			}
-			else if(table.equals(SQLiteHelper.USER_TABLE_NAME))
+			else if(table.equals(SQLiteHelper.BOOKING_TABLE_NAME))
 			{
 				if (!validBookingRows.containsAll(requestedColumns)) {
 					throw new IllegalArgumentException(
