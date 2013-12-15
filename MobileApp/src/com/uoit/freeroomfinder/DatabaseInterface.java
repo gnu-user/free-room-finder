@@ -12,11 +12,19 @@ public class DatabaseInterface {
 	private Context context;
 
 	
-	//TODO document class
+	/**
+	 * Default constructor
+	 * @param context The context the db is in.
+	 */
 	public DatabaseInterface(Context context) {
 		this.context = context;
 	}
 
+	/**
+	 * Insert the user's credentials into the database. Calling this
+	 * will delete any other user in the database first.
+	 * @param user The user The user's credentials
+	 */
 	public void insertUser(User user) {
 
 		deleteUser();
@@ -28,12 +36,18 @@ public class DatabaseInterface {
 		context.getContentResolver().insert(DatabaseProvider.USER_CONTENT_URI, cv);
 	}
 
+	/**
+	 * Delete all the User rows
+	 */
 	public void deleteUser() {
-		// Delete all rows
-		context.getContentResolver().delete(DatabaseProvider.USER_CONTENT_URI, null, 
-				null);
+		context.getContentResolver().delete(DatabaseProvider.USER_CONTENT_URI,
+				null, null);
 	}
 
+	/**
+	 * Get the user from the database
+	 * @return The current user's credentials
+	 */
 	public User getUser() {
 		Cursor cur = context.getContentResolver().query(DatabaseProvider.USER_CONTENT_URI, 
 				new String[] { SQLiteHelper.KEY_USERNAME,
@@ -50,6 +64,10 @@ public class DatabaseInterface {
 		return user;
 	}
 	
+	/**
+	 * Insert the room booking into the database.
+	 * @param room The room booking.
+	 */
 	public void insertBooking(Rooms room) {
 
 		deleteBookings();
@@ -63,18 +81,28 @@ public class DatabaseInterface {
 		context.getContentResolver().insert(DatabaseProvider.BOOKING_CONTENT_URI, cv);
 	}
 
-	
+	/**
+	 * Delete a room booking.
+	 * @param id The id of the room booking to delete.
+	 */
 	public void deleteBooking(long id) {
 		context.getContentResolver().delete(DatabaseProvider
 				.BOOKING_CONTENT_URI, SQLiteHelper.KEY_ID + " = " + id, 
 				null);
 	}
 	
+	/**
+	 * Clear all of the room bookings
+	 */
 	public void deleteAllBooking() {
 		context.getContentResolver().delete(DatabaseProvider
 				.BOOKING_CONTENT_URI, null, null);
 	}
 	
+	/**
+	 * Maintain the limited set of room bookings. This is done by
+	 * deleting enough of the older room bookings to match the maximum number of room bookings.
+	 */
 	public void deleteBookings() {
 	
 		int maxValue = Integer.valueOf(PreferenceManager
@@ -87,13 +115,17 @@ public class DatabaseInterface {
 					+ SQLiteHelper.BOOKING_TABLE_NAME + " ORDER BY " + SQLiteHelper.KEY_BOOK_DATE
 					+ " DESC LIMIT " + difference + ")";
 			
-			//Start the deleting!!!!
+			// Start the deleting
 			// Delete the oldest bookings until there are less then the maximum preference
 			context.getContentResolver().delete(DatabaseProvider
 					.BOOKING_CONTENT_URI, innerQuery, null);
 		}
 	}
 	
+	/**
+	 * Get the current number of bookings.
+	 * @return The current number of bookings stored in the database.
+	 */
 	private int getBookedRowCount()	{
 		
 		Cursor cur = context.getContentResolver().query(DatabaseProvider.BOOKING_CONTENT_URI, 
@@ -110,7 +142,11 @@ public class DatabaseInterface {
 		return value;
 	}
 
-	
+	/**
+	 * Get a specific room booking.
+	 * @param id The id of the booking to retrieve
+	 * @return The Room booking.
+	 */
 	public Rooms getBooking(long id) {
 		Cursor cur = context.getContentResolver().query(DatabaseProvider.BOOKING_CONTENT_URI, 
 				new String[] { SQLiteHelper.KEY_ROOM_NAME, SQLiteHelper.KEY_START_TIME,
@@ -130,6 +166,10 @@ public class DatabaseInterface {
 		return booking;
 	}
 	
+	/**
+	 * Get all the of room bookings
+	 * @return The list of room bookings
+	 */
 	public ArrayList<Rooms> getBooking() {
 		Cursor cur = context.getContentResolver().query(DatabaseProvider.BOOKING_CONTENT_URI, 
 				new String[] { SQLiteHelper.KEY_ROOM_NAME, SQLiteHelper.KEY_START_TIME,
@@ -152,6 +192,9 @@ public class DatabaseInterface {
 		return booking;
 	}
 	
+	/**
+	 * Delete all the data in the database.
+	 */
 	public void deleteAll() {
 		deleteAllBooking();
 		deleteUser();
