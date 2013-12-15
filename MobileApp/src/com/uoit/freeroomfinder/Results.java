@@ -3,6 +3,9 @@ package com.uoit.freeroomfinder;
 import java.util.ArrayList;
 import java.util.Date;
 
+import com.uoit.freeroomfinder.FreeRoom.SearchTask;
+
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -35,7 +38,7 @@ public class Results extends Fragment {
 	private LayoutInflater inflater;
 	private ViewGroup container;
 	private TableLayout tl;
-	private View rootView;
+	private LoadTask loadTask = null;
 	
 	private TableRow header;
 	
@@ -54,17 +57,13 @@ public class Results extends Fragment {
 		
 		super.onCreateView(inflater, container, savedInstanceState);
 		
-		rootView = inflater.inflate(R.layout.fragment_results,
+		View rootView = inflater.inflate(R.layout.fragment_results,
 				container, false);
 		
 		this.inflater = inflater;
 		this.container = container;
 		
-		//TODO handle an empty results query
-		//TODO set up the request thread to be read for implementation.
-		//TODO set up the bookings page and the settings page	
-		
-		//FrameLayout fl = (FrameLayout)rootView.findViewById(R.id.result_layout);
+		//TODO set up the request thread to be read db for implementation.	
 		
 		tl = (TableLayout)rootView.findViewById(R.id.TableLayout1);
 		
@@ -72,14 +71,7 @@ public class Results extends Fragment {
 		
 		book.setEnabled(false);
 		header = (TableRow)tl.findViewById(R.id.table_header);
-		
-		//View v = fl.getChildAt(0);
-		//TODO change to loop
-		/*tl.addView(SetupUpTableView(inflater, container, 0));
-		tl.addView(SetupUpTableView(inflater, container, 1));
-		tl.addView(SetupUpTableView(inflater, container, 2));*/
-		
-		
+			
 		// Inflate the layrootViewout for this fragment
 		return rootView;
 	}
@@ -155,16 +147,13 @@ public class Results extends Fragment {
 			}			
 		});
 		
-		//ch.setChecked(false);
-
-		
 		Rooms first = results.get(index);
 		
 		room.setText(first.getRoom());
 		start.setText(MainActivity.datetimeFormater.formatTime(new Date(first.getStartTime())));
 		end.setText(MainActivity.datetimeFormater.formatTime(new Date(first.getEndTime())));
 
-		TableRow tr = (TableRow)newView.findViewById(R.id.tableRow2);
+		TableRow tr = (TableRow)newView.findViewById(R.id.room_row);
 		
 		tr.setOnClickListener(new OnClickListener(){
 
@@ -181,5 +170,33 @@ public class Results extends Fragment {
 		});
 		
 		return tr;
+	}
+	
+	public class LoadTask extends AsyncTask<Request, Void, Boolean> {
+		@Override
+		protected Boolean doInBackground(Request... params) {
+			
+			return true;
+		}
+
+		@Override
+		protected void onPostExecute(final Boolean success) {
+			loadTask = null;
+			((MainActivity) Results.this.getActivity()).showProgress(false);
+
+			if (success) {
+				//FreeRoom.this.getActivity().setResult(FreeRoom.LOGIN_SUCCESSFUL);
+				//MainActivity.loggedIn = true;
+			} else {
+				//TODO show error
+				
+			}
+		}
+
+		@Override
+		protected void onCancelled() {
+			loadTask = null;
+			((MainActivity) Results.this.getActivity()).showProgress(false);
+		}
 	}
 }

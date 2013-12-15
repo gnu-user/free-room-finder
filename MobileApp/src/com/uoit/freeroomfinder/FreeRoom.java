@@ -8,9 +8,6 @@ import java.util.Date;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
-import android.app.ProgressDialog;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -38,7 +35,7 @@ public class FreeRoom extends Fragment {
 	public static final int LOGIN_SUCCESSFUL = 100;
 	
 	private SearchTask searchTask = null;
-	private ProgressDialog dialog;
+
 	
 	private SharedPreferences sharedPrefs;
 	private Date curDate;
@@ -133,7 +130,7 @@ public class FreeRoom extends Fragment {
 						, datepicked, campusSpinner.getSelectedItemPosition());
 				
 				//TODO Launch query with dialog and on result go to the results tab activity.
-				showProgress(true);
+				((MainActivity) FreeRoom.this.getActivity()).showProgress(true);
                 searchTask = new SearchTask();
                 searchTask.execute(req);
 			}
@@ -202,40 +199,19 @@ public class FreeRoom extends Fragment {
 			}
 		}
 	}
-	
-	private void showProgress(boolean show) {
 		
-		if(show)
-		{
-			dialog = ProgressDialog.show(this.getActivity(),
-					getString(R.string.login_heading),
-					getString(R.string.login_progress_signing_in), true, true,
-					new OnCancelListener() {
-	
-						public void onCancel(DialogInterface dialog) {
-							FreeRoom.this.getActivity().finish();
-						}
-					});
-		}
-		else
-		{
-			dialog.dismiss();
-		}
-
-	}
-	
 	public class SearchTask extends AsyncTask<Request, Void, Boolean> {
 		@Override
 		protected Boolean doInBackground(Request... params) {
 		    // Get the busiest prof (1)
-			params[0].getBusyProfs(1);	
+			//params[0].getBusyProfs(1);	
 			return true;
 		}
 
 		@Override
 		protected void onPostExecute(final Boolean success) {
 			searchTask = null;
-			showProgress(false);
+			((MainActivity) FreeRoom.this.getActivity()).showProgress(false);
 
 			if (success) {
 				//FreeRoom.this.getActivity().setResult(FreeRoom.LOGIN_SUCCESSFUL);
@@ -249,7 +225,7 @@ public class FreeRoom extends Fragment {
 		@Override
 		protected void onCancelled() {
 			searchTask = null;
-			showProgress(false);
+			((MainActivity) FreeRoom.this.getActivity()).showProgress(false);
 		}
 	}
 

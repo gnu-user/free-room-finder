@@ -4,8 +4,11 @@ import java.util.Locale;
 
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.DialogInterface.OnCancelListener;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -26,6 +29,7 @@ public class MainActivity extends FragmentActivity implements
 	//public static boolean loggedIn = false;
 	public static DateTimeUtility datetimeFormater;
 	public static SharedPreferences sharedPrefs;
+	private ProgressDialog dialog;
 
 	/**
 	 * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -126,6 +130,27 @@ public class MainActivity extends FragmentActivity implements
 	@Override
 	public void onTabReselected(ActionBar.Tab tab,
 			FragmentTransaction fragmentTransaction) {
+	}
+	
+	public void showProgress(boolean show) {
+		
+		if(show)
+		{
+			dialog = ProgressDialog.show(this,
+					getString(R.string.login_heading),
+					getString(R.string.login_progress_signing_in), true, true,
+					new OnCancelListener() {
+	
+						public void onCancel(DialogInterface dialog) {
+							
+						}
+					});
+		}
+		else
+		{
+			dialog.dismiss();
+		}
+
 	}
 
 	/**
