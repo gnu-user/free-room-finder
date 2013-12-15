@@ -9,25 +9,26 @@ public class QueryTask extends AsyncTask<Context, Void, Boolean> {
 	
 	@Override
 	protected Boolean doInBackground(Context... params) {
+		//TODO see if this can fail and catch errors
 		DatabaseInterface dbi = new DatabaseInterface(params[0]);
 		RoomsBooked.results = dbi.getBooking();
-		//publishProgress((Void) null);
 		return true;
 		
 	}
 	
-	/*@Override
-	protected void onProgressUpdate(Void... values)
-	{
-		refreshList();
-	}*/
-
 	@Override
 	protected void onPostExecute(final Boolean success) {
 		
-		if(listener != null)
+		if(success)
 		{
-			listener.onFinishedTaskListener();
+			if(listener != null)
+			{
+				listener.onFinishedTaskListener();
+			}
+		}
+		else
+		{
+			//TODO show error
 		}
 	}
 
