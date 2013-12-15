@@ -43,6 +43,9 @@ $app->get('/totalregistered', 'getTotalRegistered');
 /* Gets the total number of registered students per faculty per semester per year */
 $app->get('/totalregisteredfaculty', 'getTotalRegisteredFaculty');
 
+/* Get the login credentials */
+$app->get('/login/:username/:password', 'getLoginCredentials');
+
 /* Search for available rooms */
 $app->get('/availablerooms/:time/:date/:campus(/:duration)', 'getAvailableRooms');
 
@@ -139,6 +142,40 @@ function getTotalRegisteredFaculty()
 	echo '{"totalRegisteredFaculty": ';
 	echo json_encode($total_reg_fac);
 	echo '}}';
+}
+
+
+/**
+ * Get the login credentials of the user, required if attempting to login
+ * remotely using the REST API, such as from a mobile application.
+ * 
+ * @param $username The user's username
+ * @param $password The user's password
+ *
+ * @return TRUE if the user's credentials are valid, FALSE otherwise.
+ */
+getLoginCredentials($username, $password)
+{
+	global $db_user, $db_pass, $db_name, $AES_KEY;
+	$credentials = array("credentials" => false);
+
+	/* Connect to the database */
+	$mysqli_conn = new mysqli("localhost", $db_user, $db_pass, $db_name);
+
+	/* check connection */
+	if (mysqli_connect_errno()) {
+		printf("Connect failed: %s\n", mysqli_connect_error());
+		exit();
+	}
+
+	/* Validate and verify the login credentials */
+	if (validate_username($username) && validate_password($password)
+		&& verify_login($mysqli_conn, $username, $password, $AES_KEY))
+	{
+		$credentials["credentials"] = true;
+	}
+
+	echo json_encode($credentials);
 }
 
 /**
