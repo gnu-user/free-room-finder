@@ -3,6 +3,7 @@ package com.uoit.freeroomfinder;
 import java.util.ArrayList;
 import java.util.Date;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -21,6 +22,11 @@ public class RoomsBooked extends Fragment {
 	
 	private static long timeNow = (new Date()).getTime();
 	
+	private LoadTask loadTask = null;
+	private TableLayout tl;
+	private TableRow header;
+	private LayoutInflater inflater;
+	private ViewGroup container;
 	
 	private static final ArrayList<Rooms> results = new ArrayList<Rooms>();
 	static{
@@ -40,15 +46,14 @@ public class RoomsBooked extends Fragment {
 		
 		View rootView = inflater.inflate(R.layout.rooms_booked, container, false);
 		
-		TableLayout tl = (TableLayout)rootView.findViewById(R.id.TableLayout1);
+		this.inflater = inflater;
+		this.container = container;
+		
+		tl = (TableLayout)rootView.findViewById(R.id.TableLayout1);
+		header = (TableRow)rootView.findViewById(R.id.header_header);
 		
 		//TODO create menu option for share
 		//TODO implement long click for each row (to mark for share or delete)
-		
-		//TODO set up to make use of the query to populate the rows
-		tl.addView(SetupUpTableView(inflater, container, 0));
-		tl.addView(SetupUpTableView(inflater, container, 1));
-		tl.addView(SetupUpTableView(inflater, container, 2));
 		
 		return rootView;
 	}
@@ -61,8 +66,20 @@ public class RoomsBooked extends Fragment {
 	
 	public void refreshList()
 	{
-		//TODO clear table
-		//TODO add rows back to table
+		// Delete all children for the table
+		tl = (TableLayout)this.getView().findViewById(R.id.TableLayout1);
+		tl.removeAllViews();
+
+		
+		// Add the table header back 
+		tl.addView(header);
+		
+		// Populate the table
+		for(int i = 0; i < results.size(); i++)
+		{
+			tl.addView(SetupUpTableView(inflater, container, i));
+		}
+
 	}
 	
 	
@@ -103,6 +120,34 @@ public class RoomsBooked extends Fragment {
 		});
 		
 		return tr;
+	}
+	
+	public class LoadTask extends AsyncTask<Request, Void, Boolean> {
+		@Override
+		protected Boolean doInBackground(Request... params) {
+			
+			return true;
+		}
+
+		@Override
+		protected void onPostExecute(final Boolean success) {
+			loadTask = null;
+			((MainActivity) RoomsBooked.this.getActivity()).showProgress(false);
+
+			if (success) {
+				//FreeRoom.this.getActivity().setResult(FreeRoom.LOGIN_SUCCESSFUL);
+				//MainActivity.loggedIn = true;
+			} else {
+				//TODO show error
+				
+			}
+		}
+
+		@Override
+		protected void onCancelled() {
+			loadTask = null;
+			((MainActivity) RoomsBooked.this.getActivity()).showProgress(false);
+		}
 	}
 
 }

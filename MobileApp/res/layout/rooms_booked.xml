@@ -22,7 +22,7 @@
             android:showDividers="middle|beginning" >
 
             <TableRow
-                android:id="@+id/tableRow1"
+                android:id="@+id/header_header"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" >
 

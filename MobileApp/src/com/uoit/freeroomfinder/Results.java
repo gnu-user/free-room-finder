@@ -63,7 +63,7 @@ public class Results extends Fragment {
 		this.inflater = inflater;
 		this.container = container;
 		
-		//TODO set up the request thread to be read db for implementation.	
+		//TODO start the loading stuff in
 		
 		tl = (TableLayout)rootView.findViewById(R.id.TableLayout1);
 		
