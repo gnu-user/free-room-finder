@@ -295,8 +295,6 @@ function get_room_open($mysqli_conn, $start_time, $end_time, $day, $term, $campu
 
     $free = TRUE;
     $prev_room = $rooms[0]["room"];
-    $prev_starttime = $rooms[0]["starttime"];
-    $prev_endtime = $rooms[0]["endtime"];
     $possible_rooms = array( array("room" => "", "starttime" => "", "endtime" => ""));
     $index = 0;
 
@@ -308,14 +306,12 @@ function get_room_open($mysqli_conn, $start_time, $end_time, $day, $term, $campu
         	if($free)
         	{
         		$possible_rooms[$index]["room"] = $prev_room;
-            $possible_rooms[$index]["starttime"] = $prev_starttime;
-            $possible_rooms[$index]["endtime"] = $prev_endtime;
+            $possible_rooms[$index]["starttime"] = $start_time;
+            $possible_rooms[$index]["endtime"] = $end_time;
         		$index++;
         	}
         	$free = TRUE;
         	$prev_room = $room["room"];
-          $prev_starttime = $room["starttime"];
-          $prev_endtime = $room["endtime"];
         }
         
         if(((($start_time >= $room["starttime"] && $start_time < $room["endtime"])
@@ -360,7 +356,8 @@ function get_rooms_taken($mysqli_conn, $day, $term, $campus)
 
 
     /* Get the rooms that are taken from the database */
-    if ($stmt = $mysqli_conn->prepare("SELECT r.name,
+    if ($stmt = $mysqli_conn->prepare("SELECT DISTINCT
+                                                r.name,
                                                 st.time AS start_time,
                                                 et.time AS end_time,
                                                 sd.date AS start_date,
