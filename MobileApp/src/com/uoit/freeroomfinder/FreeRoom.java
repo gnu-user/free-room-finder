@@ -71,7 +71,6 @@ public class FreeRoom extends Fragment {
 		
 		timeSpinner = (Spinner)rootView.findViewById(R.id.time);
 		
-		//TODO change to "now"
 		TextView date = (TextView)rootView.findViewById(R.id.date);
 		date.setText(MainActivity.datetimeFormater.formatDate(curDate) + " (Today)");
 		
