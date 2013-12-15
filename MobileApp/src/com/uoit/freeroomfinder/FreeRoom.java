@@ -207,7 +207,7 @@ public class FreeRoom extends Fragment {
 		
 		if(show)
 		{
-			dialog = ProgressDialog.show(rootView.getContext(),
+			dialog = ProgressDialog.show(this.getActivity(),
 					getString(R.string.login_heading),
 					getString(R.string.login_progress_signing_in), true, true,
 					new OnCancelListener() {

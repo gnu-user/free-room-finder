@@ -35,7 +35,9 @@ public class Results extends Fragment {
 	private LayoutInflater inflater;
 	private ViewGroup container;
 	private TableLayout tl;
+	private View rootView;
 	
+	private TableRow header;
 	
 	private static final ArrayList<Rooms> results = new ArrayList<Rooms>();
 	static{
@@ -52,7 +54,7 @@ public class Results extends Fragment {
 		
 		super.onCreateView(inflater, container, savedInstanceState);
 		
-		View rootView = inflater.inflate(R.layout.fragment_results,
+		rootView = inflater.inflate(R.layout.fragment_results,
 				container, false);
 		
 		this.inflater = inflater;
@@ -69,15 +71,16 @@ public class Results extends Fragment {
 		book = (Button)rootView.findViewById(R.id.book);
 		
 		book.setEnabled(false);
+		header = (TableRow)tl.findViewById(R.id.table_header);
 		
 		//View v = fl.getChildAt(0);
 		//TODO change to loop
-		tl.addView(SetupUpTableView(inflater, container, 0));
+		/*tl.addView(SetupUpTableView(inflater, container, 0));
 		tl.addView(SetupUpTableView(inflater, container, 1));
-		tl.addView(SetupUpTableView(inflater, container, 2));
+		tl.addView(SetupUpTableView(inflater, container, 2));*/
 		
-			
-		// Inflate the layout for this fragment
+		
+		// Inflate the layrootViewout for this fragment
 		return rootView;
 	}
 	
@@ -89,8 +92,20 @@ public class Results extends Fragment {
 	
 	public void refreshList()
 	{
-		//TODO clear table
-		//TODO add rows back to table
+		// Delete all children for the table
+		tl = (TableLayout)this.getView().findViewById(R.id.TableLayout1);
+		tl.removeAllViews();
+
+		
+		// Add the table header back 
+		tl.addView(header);
+		
+		// Populate the table
+		for(int i = 0; i < results.size(); i++)
+		{
+			tl.addView(SetupUpTableView(inflater, container, i));
+		}
+
 	}
 
 	public TableRow SetupUpTableView(LayoutInflater inflater, ViewGroup container, int index)
@@ -167,6 +182,4 @@ public class Results extends Fragment {
 		
 		return tr;
 	}
-	
-	
 }
