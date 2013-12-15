@@ -10,7 +10,6 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Resources.NotFoundException;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -153,14 +152,10 @@ public class FreeRoom extends Fragment {
 					}
                     
                     
-                    //TODO Launch query with dialog and on result go to the results tab activity.
                     ((MainActivity) FreeRoom.this.getActivity()).showProgress(true);
                     searchTask = new SearchTask();
+                    searchTask.setOnFinshedTaskListener((Results)MainActivity.switchTabs(2));
                     searchTask.execute(req);
-                    
-                    QueryTask task = new QueryTask();
-                    task.setOnFinshedTaskListener((Results)MainActivity.switchTabs(2));
-                    task.execute(FreeRoom.this.getActivity().getBaseContext());
                 }
                 catch (Exception e)
                 {
@@ -234,6 +229,9 @@ public class FreeRoom extends Fragment {
 	}
 		
 	public class SearchTask extends AsyncTask<Request, Void, Boolean> {
+		
+		private OnFinshedTaskListener listener;
+		
 		@Override
 		protected Boolean doInBackground(Request... params) {		    
 		    /* Get the list of available rooms and display the results */
@@ -253,8 +251,10 @@ public class FreeRoom extends Fragment {
 			((MainActivity) FreeRoom.this.getActivity()).showProgress(false);
 
 			if (success) {
-				//FreeRoom.this.getActivity().setResult(FreeRoom.LOGIN_SUCCESSFUL);
-				//MainActivity.loggedIn = true;
+				if(listener != null)
+				{
+					listener.onFinishedTaskListener();
+				}
 			} else {
 				//TODO show error
 				
@@ -266,6 +266,10 @@ public class FreeRoom extends Fragment {
 			searchTask = null;
 			((MainActivity) FreeRoom.this.getActivity()).showProgress(false);
 		}
+		
+		public void setOnFinshedTaskListener(OnFinshedTaskListener listener){
+			this.listener = listener;
+		}		
 	}
 
 }

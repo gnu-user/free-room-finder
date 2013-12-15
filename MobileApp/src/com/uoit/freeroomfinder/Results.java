@@ -1,9 +1,7 @@
 package com.uoit.freeroomfinder;
 
-import java.util.ArrayList;
 import java.util.Date;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -49,6 +47,7 @@ public class Results extends Fragment implements OnFinshedTaskListener {
 		
 		super.onCreateView(inflater, container, savedInstanceState);
 		
+		//TODO ensure login is checked
 		View rootView = inflater.inflate(R.layout.fragment_results,
 				container, false);
 		
