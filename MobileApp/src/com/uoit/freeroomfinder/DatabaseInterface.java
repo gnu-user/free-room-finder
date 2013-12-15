@@ -11,6 +11,8 @@ public class DatabaseInterface {
 
 	private Context context;
 
+	
+	//TODO document class
 	public DatabaseInterface(Context context) {
 		this.context = context;
 	}

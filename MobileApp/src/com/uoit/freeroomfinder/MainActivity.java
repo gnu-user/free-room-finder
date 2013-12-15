@@ -7,9 +7,9 @@ import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.DialogInterface.OnCancelListener;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -17,17 +17,16 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
 public class MainActivity extends FragmentActivity implements
 		ActionBar.TabListener {
+
+	public static final int FREE_ROOM_TAB = 0;
+	public static final int RESULTS_TAB = 1;
+	public static final int ROOMS_BOOKED_TAB = 2;
 	
-	//public static boolean loggedIn = false;
 	public static DateTimeUtility datetimeFormater;
 	public static SharedPreferences sharedPrefs;
 	private ProgressDialog dialog;
@@ -98,11 +97,23 @@ public class MainActivity extends FragmentActivity implements
 		
 	}
 	
+	/**
+	 * Switches the current to the specified tab. Also, it creates a
+	 * new instantiation of the tab to reload ui elements. This is a
+	 * bit of a hack since the layout is suppose to load the two
+	 * neighbours when loading itself. However if a tab wants to
+	 * switch to another to show results this breaks down. So
+	 * creating a new instance of the tab and using it will
+	 * facilitate this.
+	 * @param tabIndex The tab index
+	 * @return The new instance of the Fragment at the specified
+	 * index.
+	 */
 	public static Fragment switchTabs(int tabIndex)
 	{
-		actionBar.setSelectedNavigationItem(tabIndex-1);
+		actionBar.setSelectedNavigationItem(tabIndex);
 		
-		return (Fragment) mSectionsPagerAdapter.instantiateItem(mViewPager, tabIndex-1);		
+		return (Fragment) mSectionsPagerAdapter.instantiateItem(mViewPager, tabIndex);		
 	}
 
 	@Override
@@ -125,6 +136,7 @@ public class MainActivity extends FragmentActivity implements
         }
     }
     
+    //TODO document
     public void ensureLogin()
     {
 		//This should allow for a more robust login check
@@ -137,28 +149,17 @@ public class MainActivity extends FragmentActivity implements
 		}
     }
     
+    //TODO document
     public void onLogin(int requestCode, int resultCode)
     {
 		if(requestCode == LoginActivity.LOGIN_SUCCESSFUL)
 		{
-			if(resultCode != Activity.RESULT_CANCELED)
-			{
-				DatabaseInterface dbi = new DatabaseInterface(this.getBaseContext());
-				User user = dbi.getUser();
-				
-				if(user == null)
-				{
-					// Unsuccessful login
-					//TODO finish activity
-				}
-			}
-			else
+			if(resultCode == Activity.RESULT_CANCELED)
 			{
 				this.finish();
 			}
 		}
     }
-    
 
 	@Override
 	public void onTabSelected(ActionBar.Tab tab,
@@ -214,19 +215,19 @@ public class MainActivity extends FragmentActivity implements
 			// getItem is called to instantiate the fragment for the given page.
 			// Return a DummySectionFragment (defined as a static inner class
 			// below) with the page number as its lone argument.
-			Fragment fragment = new DummySectionFragment();
+			Fragment fragment = null;
 			Bundle args = new Bundle();
-			args.putInt(DummySectionFragment.ARG_SECTION_NUMBER, position + 1);
+			args.putInt(FreeRoomFragment.ARG_SECTION_NUMBER, position + 1);
 			
-			if(position == 0)
+			if(position == MainActivity.FREE_ROOM_TAB)
 			{
 				fragment = new FreeRoom();
 			}
-			else if(position == 1)
+			else if(position == MainActivity.RESULTS_TAB)
 			{
 				fragment = new Results();
 			}
-			else if(position == 2)
+			else if(position == MainActivity.ROOMS_BOOKED_TAB)
 			{
 				fragment = new RoomsBooked();
 			}
@@ -256,36 +257,4 @@ public class MainActivity extends FragmentActivity implements
 			return null;
 		}
 	}
-
-	/**
-	 * A dummy fragment representing a section of the app, but that simply
-	 * displays dummy text.
-	 */
-	public static class DummySectionFragment extends Fragment {
-		/**
-		 * The fragment argument representing the section number for this
-		 * fragment.
-		 */
-		public static final String ARG_SECTION_NUMBER = "section_number";
-
-		public DummySectionFragment() {
-		}
-
-		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-				Bundle savedInstanceState) {
-			
-			
-			View rootView = inflater.inflate(R.layout.fragment_main_dummy,
-					container, false);
-			TextView dummyTextView = (TextView) rootView
-					.findViewById(R.id.section_label);
-			dummyTextView.setText(Integer.toString(getArguments().getInt(
-					ARG_SECTION_NUMBER)));
-			
-			
-			return null;
-		}
-	}
-
 }

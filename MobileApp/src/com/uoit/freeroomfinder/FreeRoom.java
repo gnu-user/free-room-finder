@@ -41,7 +41,9 @@ public class FreeRoom extends FreeRoomFragment {
 	
 	public static ArrayList<Rooms> availableRooms;
 	
-	public FreeRoom() {}
+	public FreeRoom() {
+		// Required empty public constructor
+	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -148,7 +150,8 @@ public class FreeRoom extends FreeRoomFragment {
                     
                     ((MainActivity) FreeRoom.this.getActivity()).showProgress(true);
                     searchTask = new SearchTask();
-                    searchTask.setOnFinshedTaskListener((Results)MainActivity.switchTabs(2));
+                    searchTask.setOnFinshedTaskListener((Results)MainActivity
+                    		.switchTabs(MainActivity.RESULTS_TAB));
                     searchTask.execute(req);
                 }
                 catch (Exception e)
@@ -175,6 +178,7 @@ public class FreeRoom extends FreeRoomFragment {
 			timeValues = R.array.army_time_values;
 		}
 		
+		//TODO remove following todo
 		//TODO change string defined time stamps to use only hh:mm
 		ArrayList<String> spinnerArray = new ArrayList<String>(Arrays.asList(this.getResources().getStringArray(timeValues)));
 		spinnerArray.add(0, "Now");
@@ -214,7 +218,7 @@ public class FreeRoom extends FreeRoomFragment {
 					listener.onFinishedTaskListener();
 				}
 			} else {
-				//TODO show error
+				//TODO show error if possible otherwise just remove todo
 				
 			}
 		}

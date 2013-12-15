@@ -3,7 +3,6 @@ package com.uoit.freeroomfinder;
 import java.util.ArrayList;
 import java.util.Date;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,8 +18,6 @@ import android.widget.TextView;
  */
 public class RoomsBooked extends FreeRoomFragment implements OnFinshedTaskListener{
 	
-	//private static long timeNow = (new Date()).getTime();
-	
 	public static QueryTask loadTask = null;
 	private TableLayout tl;
 	private TableRow header;
@@ -29,11 +26,6 @@ public class RoomsBooked extends FreeRoomFragment implements OnFinshedTaskListen
 
 	
 	public static ArrayList<Rooms> results = new ArrayList<Rooms>();
-	/*static{
-		results.add(new Rooms("UA1030", timeNow, timeNow + 10000, timeNow));
-		results.add(new Rooms("UA1020", timeNow, timeNow + 10000, timeNow));
-		results.add(new Rooms("UA1010", timeNow, timeNow + 10000, timeNow));
-	}*/
 
 	public RoomsBooked() {
 		// Required empty public constructor	

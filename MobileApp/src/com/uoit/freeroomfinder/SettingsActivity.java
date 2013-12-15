@@ -90,6 +90,9 @@ public class SettingsActivity extends PreferenceActivity {
 		if (!isSimplePreferences(this)) {
 			return;
 		}
+		
+		//TODO Refactor the preference names to match with the actual design
+		//TODO clean up this class.
 
 		// In the simplified UI, fragments are not used at all and we instead
 		// use the older PreferenceActivity APIs.

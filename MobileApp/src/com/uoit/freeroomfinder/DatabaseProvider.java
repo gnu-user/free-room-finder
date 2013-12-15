@@ -12,6 +12,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 
+//TODO document class
 public class DatabaseProvider extends ContentProvider {
 	public static final String AUTHORITY = "com.uoit.freeroomfinder.provider";
 	public static final String BASE_PATH_USER = "user";

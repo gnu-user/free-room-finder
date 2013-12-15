@@ -71,7 +71,8 @@ public class Results extends FreeRoomFragment implements OnFinshedTaskListener {
 
 					
 					QueryTask task = new QueryTask();
-					task.setOnFinshedTaskListener((RoomsBooked)MainActivity.switchTabs(3));
+					task.setOnFinshedTaskListener((RoomsBooked)MainActivity
+							.switchTabs(MainActivity.ROOMS_BOOKED_TAB));
 					task.execute(Results.this.getActivity().getBaseContext());
 					
 					//TODO Tell server that, if you want

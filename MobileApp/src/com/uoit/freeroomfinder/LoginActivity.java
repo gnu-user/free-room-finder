@@ -43,8 +43,6 @@ public class LoginActivity extends Activity {
 			
 			open = true;
 		}
-		//TODO remove
-		//Toast.makeText(this, DateTimeUtility.sdf.format(new Date()), Toast.LENGTH_LONG).show();
 	}
 	
 	@Override
@@ -108,8 +106,7 @@ public class LoginActivity extends Activity {
 	
 	public void reset(View v)
 	{
-		//TODO open up the submit url
-		//reset_site
+		//Go to password reset site
 		Intent i = new Intent(Intent.ACTION_VIEW);
 		i.setData(Uri.parse(this.getString(R.string.reset_site)));
 		this.startActivity(i);
@@ -139,8 +136,7 @@ public class LoginActivity extends Activity {
 	public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 		@Override
 		protected Boolean doInBackground(Void... params) {
-			// TODO: attempt authentication against a network service.
-			// TODO: login via restful call
+
 			try {
 				// Simulate network access.
 				Thread.sleep(2000);
@@ -172,8 +168,7 @@ public class LoginActivity extends Activity {
 				LoginActivity.this.setResult(LoginActivity.LOGIN_SUCCESSFUL);
 				LoginActivity.this.finish();
 			} else {
-				//TODO show error
-				Toast.makeText(LoginActivity.this, "Invalid Account", Toast.LENGTH_LONG).show();
+				Toast.makeText(LoginActivity.this, R.string.error_invalid_account, Toast.LENGTH_LONG).show();
 			}
 		}
 

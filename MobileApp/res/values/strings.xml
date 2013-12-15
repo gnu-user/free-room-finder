@@ -9,6 +9,7 @@
     <string name="password_hint">Password</string>
     <string name="title_activity_login">Sign in</string>
     <string name="login_heading">Sign in</string>
+    <string name="error_invalid_account">Invalid Account</string>
     <string name="action_forgot_password">Recover lost password</string>
     <string name="login_progress_signing_in">Signing in&#8230;</string>
     <string name="error_invalid_password">Specified password is too short</string>

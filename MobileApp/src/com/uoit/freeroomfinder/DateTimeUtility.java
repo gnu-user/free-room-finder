@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+//TODO document class
 public class DateTimeUtility
 {
     private static final String ARMY_TIME = "kk:mm";
