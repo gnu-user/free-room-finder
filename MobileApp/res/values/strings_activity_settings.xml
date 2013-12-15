@@ -9,8 +9,8 @@
     <string name="pref_header_general">General</string> 
 
     <!-- Example settings for Data & Sync -->
-    <string name="pref_header_data_sync">Feedback</string>
+    <string name="pref_header_feedback">Feedback</string>
     
-    <string name="pref_header_notifications">Search</string>
+    <string name="pref_header_search">Search</string>
 
 </resources>

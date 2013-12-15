@@ -6,10 +6,10 @@
         android:fragment="com.uoit.freeroomfinder.SettingsActivity$GeneralPreferenceFragment"
         android:title="@string/pref_header_general" />
     <header
-        android:fragment="com.uoit.freeroomfinder.SettingsActivity$NotificationPreferenceFragment"
-        android:title="@string/pref_header_notifications" />
+        android:fragment="com.uoit.freeroomfinder.SettingsActivity$SearchPreferenceFragment"
+        android:title="@string/pref_header_search" />
     <header
-        android:fragment="com.uoit.freeroomfinder.SettingsActivity$DataSyncPreferenceFragment"
-        android:title="@string/pref_header_data_sync" />
+        android:fragment="com.uoit.freeroomfinder.SettingsActivity$FeedbackPreferenceFragment"
+        android:title="@string/pref_header_feedback" />
 
 </preference-headers>
