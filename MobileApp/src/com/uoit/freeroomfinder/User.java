@@ -2,7 +2,6 @@ package com.uoit.freeroomfinder;
 
 import java.util.regex.Pattern;
 
-//TODO document
 public class User {
 
 	private String username;
@@ -88,6 +87,11 @@ public class User {
 		return false;
 	}
 
+	/**
+	 * Check if the given User equals the user.
+	 * @param otherUser Another user
+	 * @return Whether the two users are equal.
+	 */
 	public boolean equals(User otherUser) {
 
 		if (this.password.equals(otherUser.password)

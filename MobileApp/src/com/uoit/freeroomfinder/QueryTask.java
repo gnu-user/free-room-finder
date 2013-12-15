@@ -3,7 +3,6 @@ package com.uoit.freeroomfinder;
 import android.content.Context;
 import android.os.AsyncTask;
 
-//TODO document
 public class QueryTask extends AsyncTask<Context, Void, Boolean> {
 	
 	private OnFinshedTaskListener listener;
@@ -22,6 +21,7 @@ public class QueryTask extends AsyncTask<Context, Void, Boolean> {
 		
 		if(success)
 		{
+			// Call the listener
 			if(listener != null)
 			{
 				listener.onFinishedTaskListener();

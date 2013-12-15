@@ -1,7 +1,9 @@
 package com.uoit.freeroomfinder;
 
-//TODO document
 public interface OnFinshedTaskListener {
 
+	/**
+	 * Called when the task finishes loading
+	 */
 	public void onFinishedTaskListener();
 }

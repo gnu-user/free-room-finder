@@ -53,6 +53,7 @@ public class Request {
 	}
 
 	/**
+	 * Get the time
 	 * @return the time
 	 */
 	public String getTime() {
@@ -60,6 +61,7 @@ public class Request {
 	}
 
 	/**
+	 * Set the time
 	 * @param time the time to set
 	 */
 	public void setTime(String time) {
@@ -67,6 +69,7 @@ public class Request {
 	}
 
 	/**
+	 * Get the duration
 	 * @return the duration
 	 */
 	public int getDuration() {
@@ -74,6 +77,7 @@ public class Request {
 	}
 
 	/**
+	 * Set the duration
 	 * @param duration the duration to set
 	 */
 	public void setDuration(int duration) {
@@ -81,6 +85,7 @@ public class Request {
 	}
 
 	/**
+	 * Get the date
 	 * @return the date
 	 */
 	public String getDate() {
@@ -88,6 +93,7 @@ public class Request {
 	}
 
 	/**
+	 * Set the date
 	 * @param date the date to set
 	 */
 	public void setDate(String date) {
@@ -95,6 +101,7 @@ public class Request {
 	}
 
 	/**
+	 * Get the campus
 	 * @return the campus
 	 */
 	public String getCampus() {
@@ -102,6 +109,7 @@ public class Request {
 	}
 
 	/**
+	 * Set the campus
 	 * @param campus the campus to set
 	 */
 	public void setCampus(String campus) {
@@ -109,6 +117,10 @@ public class Request {
 	}
 
 	
+	/**
+	 * Search for the rooms using the api
+	 * @return The list of rooms.
+	 */
 	public ArrayList<Rooms> searchRooms()
 	{	    
 	    ArrayList<Rooms> results = new ArrayList<Rooms>();
