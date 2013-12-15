@@ -65,6 +65,11 @@ public class DateTimeUtility {
 		return sdf.parse(date);
 	}
 	
+	public Date parseTime(String time) throws ParseException
+	{
+	    return stf.parse(time);
+	}
+	
 	public String formatTime(Date date)
 	{
 		return stf.format(date);

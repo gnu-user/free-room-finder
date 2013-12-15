@@ -1,44 +1,55 @@
 package com.uoit.freeroomfinder;
 
+import android.annotation.SuppressLint;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit.RestAdapter;
 import retrofit.http.GET;
 import retrofit.http.Path;
-import android.util.Log;
 
 
 public class Request {
 	
 	private String time;
-	private int duration;
 	private String date;
-	private int campus;
-	
+	private String campus;
+	private int duration;
+
+    /* Formatter for the time from the REST api */
+    @SuppressLint("SimpleDateFormat")
+    private static SimpleDateFormat tf = new SimpleDateFormat("hh:mm:ss");
+    
 	private static final String API_URL = "http://cs-club.ca/free-room-website/api";
-	
-	static class Profs
+
+	/* Static class representing the JSON encoded rooms */
+	static class Room
 	{
-	    String professor;
-	    String studentNum;
+	    String room;
+	    String starttime;
+	    String endtime;
 	}
 	
-	
-	interface BusyProfs
+	/* Rest API interface, used for making the GET requests */
+	interface AvailableRooms
 	{
-	    @GET("/busyprofs/{count}")
-	    List<Profs> profStudents(
-	        @Path("count") int count
+	    @GET("/availablerooms/{time}/{date}/{campus}/{duration}")
+	    List<Room> availableRooms(
+	        @Path("time") String time,
+	        @Path("date") String date,
+	        @Path("campus") String campus,
+	        @Path("duration") int duration
 	    );
 	}
 	
-	//Pass the date and time as formated strings
-	public Request(String time, int duration, String date, int campus)
+	/* Pass the date and time as formated strings */
+	public Request(String time, String date, String campus, int duration)
 	{
 		this.time = time;
-		this.duration = duration;
 		this.date = date;
 		this.campus = campus;
+        this.duration = duration;
 	}
 
 	/**
@@ -86,33 +97,48 @@ public class Request {
 	/**
 	 * @return the campus
 	 */
-	public int getCampus() {
+	public String getCampus() {
 		return campus;
 	}
 
 	/**
 	 * @param campus the campus to set
 	 */
-	public void setCampus(int campus) {
+	public void setCampus(String campus) {
 		this.campus = campus;
 	}
 
 	
-	public void getBusyProfs(int count)
+	public ArrayList<Rooms> searchRooms()
 	{	    
-	    // Create a very simple REST adapter which points the GitHub API endpoint.
+	    ArrayList<Rooms> results = new ArrayList<Rooms>();
+	    
+	    /* Create a REST adapter which points the Free Room finder API */
 	    RestAdapter restAdapter = new RestAdapter.Builder()
 	        .setServer(API_URL)
 	        .build();
-	    
-	    // Create an instance of our GitHub API interface.
-	    BusyProfs busyProfs = restAdapter.create(BusyProfs.class);
-
-	    // Fetch and print a list of the contributors to this library.
-	    List<Profs> profs = busyProfs.profStudents(count);
-	    for (Profs prof : profs)
+	    	    
+	    try
 	    {
-	        Log.v("REST", prof.professor + " (" + prof.studentNum + ")");
+	        /* Create an instance of the REST API interface */
+	        AvailableRooms availableRooms = restAdapter.create(AvailableRooms.class);
+	        
+	        /* Search for available rooms */
+	        List<Room> rooms = availableRooms.availableRooms(time, date, campus, duration);
+	        for (Room room : rooms)
+	        {
+	            results.add(new Rooms(
+	                    room.room, 
+	                    tf.parse(room.starttime).getTime(), 
+	                    tf.parse(room.endtime).getTime()
+                ));
+	        }
 	    }
+	    catch (Exception e)
+	    {
+	        e.printStackTrace();
+	    }   
+   
+	    return results;
 	}
 }
