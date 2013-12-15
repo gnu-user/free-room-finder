@@ -45,6 +45,8 @@ public class FreeRoom extends Fragment {
 	
 	private static View rootView;
 	
+	public static ArrayList<Rooms> availableRooms;
+	
 	public FreeRoom() {}
 
 	@Override
@@ -74,6 +76,8 @@ public class FreeRoom extends Fragment {
 		
 		datepicked = MainActivity.datetimeFormater.formatDate(curDate);
 
+		availableRooms = new ArrayList<Rooms>();
+		
 		date.setOnClickListener(new OnClickListener(){
 
 			@Override
@@ -125,9 +129,11 @@ public class FreeRoom extends Fragment {
 				Spinner durationSpinner = (Spinner)rootView.findViewById(R.id.duration);
 				Spinner campusSpinner = (Spinner)rootView.findViewById(R.id.campus);
 				
-				Request req = new Request(timeSpinner.getSelectedItem().toString(),
-						Integer.valueOf(durationSpinner.getSelectedItem().toString())
-						, datepicked, campusSpinner.getSelectedItemPosition());
+				Request req = new Request(
+				        timeSpinner.getSelectedItem().toString(), 
+				        datepicked, 
+				        rootView.getResources().getStringArray(R.array.campus_names)[campusSpinner.getSelectedItemPosition()],
+				        Integer.valueOf(durationSpinner.getSelectedItem().toString()));
 				
 				//TODO Launch query with dialog and on result go to the results tab activity.
 				((MainActivity) FreeRoom.this.getActivity()).showProgress(true);
@@ -202,9 +208,14 @@ public class FreeRoom extends Fragment {
 		
 	public class SearchTask extends AsyncTask<Request, Void, Boolean> {
 		@Override
-		protected Boolean doInBackground(Request... params) {
-		    // Get the busiest prof (1)
-			//params[0].getBusyProfs(1);	
+		protected Boolean doInBackground(Request... params) {		    
+		    /* Get the list of available rooms and display the results */
+		    availableRooms = params[0].searchRooms();
+		    
+		    for (Rooms room : availableRooms)
+		    {
+		        System.out.println(room.getRoom() + ", " + room.getStartTime() + ", " + room.getEndTime());
+		    }
 			return true;
 		}
 
