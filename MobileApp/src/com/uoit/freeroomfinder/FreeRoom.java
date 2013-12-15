@@ -10,6 +10,7 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources.NotFoundException;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -129,16 +130,28 @@ public class FreeRoom extends Fragment {
 				Spinner durationSpinner = (Spinner)rootView.findViewById(R.id.duration);
 				Spinner campusSpinner = (Spinner)rootView.findViewById(R.id.campus);
 				
-				Request req = new Request(
-				        timeSpinner.getSelectedItem().toString(), 
-				        datepicked, 
-				        rootView.getResources().getStringArray(R.array.campus_names)[campusSpinner.getSelectedItemPosition()],
-				        Integer.valueOf(durationSpinner.getSelectedItem().toString()));
-				
-				//TODO Launch query with dialog and on result go to the results tab activity.
-				((MainActivity) FreeRoom.this.getActivity()).showProgress(true);
-                searchTask = new SearchTask();
-                searchTask.execute(req);
+                try
+                {
+                    Request req = new Request(
+                            MainActivity.datetimeFormater.formatFullTime(timeSpinner.getSelectedItem().toString()), 
+                            datepicked, 
+                            rootView.getResources().getStringArray(R.array.campus_names)[campusSpinner.getSelectedItemPosition()],
+                            Integer.valueOf(durationSpinner.getSelectedItem().toString()));
+                    
+                    
+                    //TODO Launch query with dialog and on result go to the results tab activity.
+                    ((MainActivity) FreeRoom.this.getActivity()).showProgress(true);
+                    searchTask = new SearchTask();
+                    searchTask.execute(req);
+                    
+                    QueryTask task = new QueryTask();
+                    task.setOnFinshedTaskListener((Results)MainActivity.switchTabs(2));
+                    task.execute(FreeRoom.this.getActivity().getBaseContext());
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
 			}
 		});
 		
@@ -210,6 +223,7 @@ public class FreeRoom extends Fragment {
 		@Override
 		protected Boolean doInBackground(Request... params) {		    
 		    /* Get the list of available rooms and display the results */
+		    availableRooms.clear();
 		    availableRooms = params[0].searchRooms();
 		    
 		    for (Rooms room : availableRooms)

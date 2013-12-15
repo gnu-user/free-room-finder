@@ -25,8 +25,9 @@ import android.widget.TextView;
  * instance of this fragment.
  * 
  */
-public class Results extends Fragment {
+public class Results extends Fragment implements OnFinshedTaskListener {
 	
+    public static QueryTask loadTask = null;
 	private static RadioButton checked = null;
 	private static int indexOfChecked = 0;
 	private static boolean isNotChecked = true;
@@ -37,18 +38,9 @@ public class Results extends Fragment {
 	private LayoutInflater inflater;
 	private ViewGroup container;
 	private TableLayout tl;
-	private LoadTask loadTask = null;
 	
 	private TableRow header;
 	
-	//This is actually going to be the array that is received from the other activity
-	private static ArrayList<Rooms> results = new ArrayList<Rooms>();
-	static{
-		results.add(new Rooms("UA1030", timeNow, timeNow + 10000, timeNow));
-		results.add(new Rooms("UA1020", timeNow, timeNow + 10000, timeNow));
-		results.add(new Rooms("UA1010", timeNow, timeNow + 10000, timeNow));
-	}
-
 	public Results() {}
 
 	@Override
@@ -79,7 +71,7 @@ public class Results extends Fragment {
 				{
 					//Add to db
 					DatabaseInterface dbi = new DatabaseInterface(Results.this.getActivity().getBaseContext());
-					dbi.insertBooking(results.get(indexOfChecked));
+					dbi.insertBooking(FreeRoom.availableRooms.get(indexOfChecked));
 
 					
 					QueryTask task = new QueryTask();
@@ -98,9 +90,19 @@ public class Results extends Fragment {
 		return rootView;
 	}
 	
+	public void onFinishedTaskListener()
+    {
+        if(this.getView() != null)
+        {
+            refreshList();
+        }
+    }
+	
 	public void onResume()
 	{
-		refreshList();
+	    loadTask = new QueryTask();
+	    loadTask.setOnFinshedTaskListener(this);
+	    loadTask.execute(this.getActivity().getBaseContext());
 		super.onResume();
 	}
 	
@@ -115,7 +117,7 @@ public class Results extends Fragment {
 		tl.addView(header);
 		
 		// Populate the table
-		for(int i = 0; i < results.size(); i++)
+		for(int i = 0; i < FreeRoom.availableRooms.size(); i++)
 		{
 			tl.addView(SetupUpTableView(inflater, container, i));
 		}
@@ -175,7 +177,7 @@ public class Results extends Fragment {
 			}			
 		});
 		
-		Rooms first = results.get(index);
+		Rooms first = FreeRoom.availableRooms.get(index);
 		
 		room.setText(first.getRoom());
 		start.setText(MainActivity.datetimeFormater.formatTime(new Date(first.getStartTime())));
@@ -196,26 +198,5 @@ public class Results extends Fragment {
 		});
 		
 		return tr;
-	}
-	
-	public class LoadTask extends AsyncTask<Void, Void, Boolean> {
-		@Override
-		protected Boolean doInBackground(Void... params) {
-			
-			return true;
-		}
-
-		@Override
-		protected void onPostExecute(final Boolean success) {
-			loadTask = null;
-			//((MainActivity) Results.this.getActivity()).showProgress(false);
-
-		}
-
-		@Override
-		protected void onCancelled() {
-			loadTask = null;
-			//((MainActivity) Results.this.getActivity()).showProgress(false);
-		}
 	}
 }
