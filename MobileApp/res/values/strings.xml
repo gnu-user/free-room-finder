@@ -45,39 +45,35 @@
     <string name="time_prompt">Start Time</string>
 
     <string-array name="army_time_values">
-        <item>08:00:00</item>
-        <item>09:00:00</item>
-        <item>10:00:00</item>
-        <item>11:00:00</item>
-        <item>12:00:00</item>
-        <item>13:00:00</item>
-        <item>14:00:00</item>
-        <item>15:00:00</item>
-        <item>16:00:00</item>
-        <item>17:00:00</item>
-        <item>18:00:00</item>
-        <item>19:00:00</item>
-        <item>20:00:00</item>
-        <item>21:00:00</item>
-        <item>22:00:00</item>
+        <item>08:00</item>
+        <item>09:00</item>
+        <item>10:00</item>
+        <item>11:00</item>
+        <item>12:00</item>
+        <item>13:00</item>
+        <item>14:00</item>
+        <item>15:00</item>
+        <item>16:00</item>
+        <item>17:00</item>
+        <item>18:00</item>
+        <item>19:00</item>
+        <item>20:00</item>
     </string-array>
     
     <string-array name="time_values">
-        <item>08:00:00 AM</item>
-        <item>09:00:00 AM</item>
-        <item>10:00:00 AM</item>
-        <item>11:00:00 AM</item>
-        <item>12:00:00 AM</item>
-        <item>1:00:00 PM</item>
-        <item>2:00:00 PM</item>
-        <item>3:00:00 PM</item>
-        <item>4:00:00 PM</item>
-        <item>5:00:00 PM</item>
-        <item>6:00:00 PM</item>
-        <item>7:00:00 PM</item>
-        <item>8:00:00 PM</item>
-        <item>9:00:00 PM</item>
-        <item>10:00:00 PM</item>
+        <item>8:00 AM</item>
+        <item>9:00 AM</item>
+        <item>10:00 AM</item>
+        <item>11:00 AM</item>
+        <item>12:00 PM</item>
+        <item>1:00 PM</item>
+        <item>2:00 PM</item>
+        <item>3:00 PM</item>
+        <item>4:00 PM</item>
+        <item>5:00 PM</item>
+        <item>6:00 PM</item>
+        <item>7:00 PM</item>
+        <item>8:00 PM</item>
     </string-array>
 
     <string name="search_button">Search</string>

@@ -8,8 +8,8 @@ import java.util.Locale;
 public class DateTimeUtility
 {
     private static final String ARMY_TIME = "kk:mm";
-    private static final String NORMAL_TIME = "hh:mm aa";
-    private static final String FULL_TIME = "hh:mm:ss";
+    private static final String NORMAL_TIME = "h:mm aa";
+    private static final String FULL_TIME = "kk:mm:ss";
     private static final String DATE = "yyyy-MM-dd";
 
     private SimpleDateFormat stf;
