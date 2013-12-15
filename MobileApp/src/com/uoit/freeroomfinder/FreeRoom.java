@@ -73,7 +73,7 @@ public class FreeRoom extends Fragment {
 		
 		//TODO change to "now"
 		TextView date = (TextView)rootView.findViewById(R.id.date);
-		date.setText(MainActivity.datetimeFormater.formatDate(curDate));
+		date.setText(MainActivity.datetimeFormater.formatDate(curDate) + " (Today)");
 		
 		datepicked = MainActivity.datetimeFormater.formatDate(curDate);
 
@@ -112,7 +112,11 @@ public class FreeRoom extends Fragment {
 
 						datepicked = year + "-" + (monthOfYear+1) + "-" + dayOfMonth;
 						TextView date = (TextView)rootView.findViewById(R.id.date);
+						
 						date.setText(datepicked);
+						if (datepicked.contains(MainActivity.datetimeFormater.formatDate(curDate))){
+							date.setText(datepicked + " (Today)");
+						}
 					}
 				}, yy, mm, dd);
 					 
