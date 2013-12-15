@@ -56,7 +56,11 @@ public class FreeRoom extends FreeRoomFragment {
 	private Date curDate;
 	private Spinner timeSpinner;
 	
-	public static String datepicked = "";
+	/* Room search parameters */
+	private static String timePicked = "";
+	private static String datePicked = "";
+	private static String campusPicked = "";
+	private static int durationPicked = 0;
 	
 	private static View rootView;
 	
@@ -90,7 +94,7 @@ public class FreeRoom extends FreeRoomFragment {
 		TextView date = (TextView)rootView.findViewById(R.id.date);
 		date.setText(MainActivity.datetimeFormater.formatDate(curDate) + " (Today)");
 		
-		datepicked = MainActivity.datetimeFormater.formatDate(curDate);
+		datePicked = MainActivity.datetimeFormater.formatDate(curDate);
 
 		availableRooms = new ArrayList<Rooms>();
 		
@@ -101,7 +105,7 @@ public class FreeRoom extends FreeRoomFragment {
 				
 				Date d = null;
 				try {
-					d = MainActivity.datetimeFormater.parseDate(datepicked);
+					d = MainActivity.datetimeFormater.parseDate(datePicked);
 					
 				} catch (ParseException e) {
 				    
@@ -125,12 +129,12 @@ public class FreeRoom extends FreeRoomFragment {
 					public void onDateSet(DatePicker view, int year, int monthOfYear,
 							int dayOfMonth) {
 
-						datepicked = year + "-" + (monthOfYear+1) + "-" + dayOfMonth;
+						datePicked = year + "-" + (monthOfYear+1) + "-" + dayOfMonth;
 						TextView date = (TextView)rootView.findViewById(R.id.date);
 						
-						date.setText(datepicked);
-						if (datepicked.contains(MainActivity.datetimeFormater.formatDate(curDate))){
-							date.setText(datepicked + " (Today)");
+						date.setText(datePicked);
+						if (datePicked.contains(MainActivity.datetimeFormater.formatDate(curDate))){
+							date.setText(datePicked + " (Today)");
 						}
 					}
 				}, yy, mm, dd);
@@ -153,27 +157,23 @@ public class FreeRoom extends FreeRoomFragment {
 				
                 try
                 {
-                	Request req;
-                	if (timeSpinner.getSelectedItem().toString().compareTo("Now") == 0){
-                		req = new Request(
-                                MainActivity.datetimeFormater.formatFullTime(MainActivity.datetimeFormater.formatTime(curDate)), 
-                                datepicked, 
-                                rootView.getResources().getStringArray(R.array.campus_names)[campusSpinner.getSelectedItemPosition()],
-                                Integer.valueOf(durationSpinner.getSelectedItem().toString()));
-					}else{
-						req = new Request(
-	                            MainActivity.datetimeFormater.formatFullTime(timeSpinner.getSelectedItem().toString()), 
-	                            datepicked, 
-	                            rootView.getResources().getStringArray(R.array.campus_names)[campusSpinner.getSelectedItemPosition()],
-	                            Integer.valueOf(durationSpinner.getSelectedItem().toString())); 
+                	if (timeSpinner.getSelectedItem().toString().compareTo("Now") == 0)
+                	{
+                        timePicked = MainActivity.datetimeFormater.formatFullTime(MainActivity.datetimeFormater.formatTime(curDate));
+					}
+                	else
+                	{
+                        timePicked = MainActivity.datetimeFormater.formatFullTime(timeSpinner.getSelectedItem().toString());
 					}
                     
+                    campusPicked = rootView.getResources().getStringArray(R.array.campus_names)[campusSpinner.getSelectedItemPosition()];
+                    durationPicked = Integer.valueOf(durationSpinner.getSelectedItem().toString()); 
                     
                     ((MainActivity) FreeRoom.this.getActivity()).showProgress(true);
                     searchTask = new SearchTask();
                     searchTask.setOnFinshedTaskListener((Results)MainActivity
                     		.switchTabs(MainActivity.RESULTS_TAB));
-                    searchTask.execute(req);
+                    searchTask.execute();
                 }
                 catch (Exception e)
                 {
@@ -211,15 +211,15 @@ public class FreeRoom extends FreeRoomFragment {
 		
 	}
 		
-	public class SearchTask extends AsyncTask<Request, Void, Boolean> {
+	public class SearchTask extends AsyncTask<Void, Void, Boolean> {
 		
 		private OnFinshedTaskListener listener;
 		
 		@Override
-		protected Boolean doInBackground(Request... params) {		    
+		protected Boolean doInBackground(Void... params) {		    
 		    /* Get the list of available rooms and display the results */
 		    availableRooms.clear();
-		    availableRooms = params[0].searchRooms();
+		    availableRooms = Request.searchRooms(timePicked, datePicked, campusPicked, durationPicked);
 		    
 		    for (Rooms room : availableRooms)
 		    {
