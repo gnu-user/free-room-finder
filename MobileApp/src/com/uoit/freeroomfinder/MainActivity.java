@@ -3,6 +3,7 @@ package com.uoit.freeroomfinder;
 import java.util.Locale;
 
 import android.app.ActionBar;
+import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -123,6 +124,41 @@ public class MainActivity extends FragmentActivity implements
                 return super.onOptionsItemSelected(item);
         }
     }
+    
+    public void ensureLogin()
+    {
+		//This should allow for a more robust login check
+		DatabaseInterface dbi = new DatabaseInterface(this.getBaseContext());
+		
+		if(dbi.getUser() == null)
+		{
+			Intent loginActivity = new Intent(this.getBaseContext(), LoginActivity.class);
+			this.startActivityForResult(loginActivity, LoginActivity.LOGIN_SUCCESSFUL);
+		}
+    }
+    
+    public void onLogin(int requestCode, int resultCode)
+    {
+		if(requestCode == LoginActivity.LOGIN_SUCCESSFUL)
+		{
+			if(resultCode != Activity.RESULT_CANCELED)
+			{
+				DatabaseInterface dbi = new DatabaseInterface(this.getBaseContext());
+				User user = dbi.getUser();
+				
+				if(user == null)
+				{
+					// Unsuccessful login
+					//TODO finish activity
+				}
+			}
+			else
+			{
+				this.finish();
+			}
+		}
+    }
+    
 
 	@Override
 	public void onTabSelected(ActionBar.Tab tab,

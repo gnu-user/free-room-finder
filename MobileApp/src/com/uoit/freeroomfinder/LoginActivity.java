@@ -16,8 +16,11 @@ import android.widget.Toast;
 
 public class LoginActivity extends Activity {
 
+	private static boolean open = false;
 	private UserLoginTask authTask = null;
 	private ProgressDialog dialog;
+	
+	public static final int LOGIN_SUCCESSFUL = 100;
 	
 	private static final User test = new User("database", "test123");
 	
@@ -29,8 +32,26 @@ public class LoginActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login_screen);
 
+		DatabaseInterface dbi = new DatabaseInterface(this.getBaseContext());
+		
+		if(open || dbi.getUser() != null)
+		{
+			this.finish();
+		}
+		else
+		{
+			
+			open = true;
+		}
 		//TODO remove
 		//Toast.makeText(this, DateTimeUtility.sdf.format(new Date()), Toast.LENGTH_LONG).show();
+	}
+	
+	@Override
+	protected void onPause()
+	{
+		super.onPause();
+		open = false;
 	}
 
 	@Override
@@ -148,7 +169,7 @@ public class LoginActivity extends Activity {
 			showProgress(false);
 
 			if (success) {
-				LoginActivity.this.setResult(FreeRoom.LOGIN_SUCCESSFUL);
+				LoginActivity.this.setResult(LoginActivity.LOGIN_SUCCESSFUL);
 				LoginActivity.this.finish();
 			} else {
 				//TODO show error

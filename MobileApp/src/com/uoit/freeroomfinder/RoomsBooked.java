@@ -3,8 +3,8 @@ package com.uoit.freeroomfinder;
 import java.util.ArrayList;
 import java.util.Date;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -17,7 +17,7 @@ import android.widget.TextView;
  * A simple {@link android.support.v4.app.Fragment} subclass.
  * 
  */
-public class RoomsBooked extends Fragment implements OnFinshedTaskListener{
+public class RoomsBooked extends FreeRoomFragment implements OnFinshedTaskListener{
 	
 	//private static long timeNow = (new Date()).getTime();
 	
@@ -50,7 +50,7 @@ public class RoomsBooked extends Fragment implements OnFinshedTaskListener{
 		// Inflate the layout for this fragment
 		
 		View rootView = inflater.inflate(R.layout.rooms_booked, container, false);
-		
+				
 		this.inflater = inflater;
 		this.container = container;
 		
@@ -73,21 +73,11 @@ public class RoomsBooked extends Fragment implements OnFinshedTaskListener{
 	
 	public void onResume()
 	{
+		super.onResume();
+		
 		loadTask = new QueryTask();
 		loadTask.setOnFinshedTaskListener(this);
         loadTask.execute(this.getActivity().getBaseContext());
-		super.onResume();
-		
-	}
-	
-	public void OnPause()
-	{
-		super.onPause();
-	}
-	
-	public void onDestroy()
-	{
-		super.onDestroy();
 	}
 	
 	public void refreshList()

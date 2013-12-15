@@ -6,14 +6,11 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
-import android.app.Activity;
 import android.app.DatePickerDialog;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -24,7 +21,7 @@ import android.widget.DatePicker;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-public class FreeRoom extends Fragment {
+public class FreeRoom extends FreeRoomFragment {
 	
 	/**
 	 * The fragment argument representing the section number for this
@@ -32,10 +29,7 @@ public class FreeRoom extends Fragment {
 	 */
 	public static final String ARG_SECTION_NUMBER = "section_number";
 	
-	public static final int LOGIN_SUCCESSFUL = 100;
-	
 	private SearchTask searchTask = null;
-
 	
 	private SharedPreferences sharedPrefs;
 	private Date curDate;
@@ -171,14 +165,7 @@ public class FreeRoom extends Fragment {
 	@Override
 	public void onResume()
 	{
-		//This should allow for a more robust login check
-		DatabaseInterface dbi = new DatabaseInterface(this.getActivity().getBaseContext());
-		
-		if(dbi.getUser() == null)
-		{
-			Intent loginActivity = new Intent(this.getActivity().getBaseContext(), LoginActivity.class);
-			this.startActivityForResult(loginActivity, LOGIN_SUCCESSFUL);
-		}
+		super.onResume();
 		
 		//Set up the time spinner to include the current time
 		int timeValues = R.array.time_values;
@@ -196,36 +183,7 @@ public class FreeRoom extends Fragment {
 		sa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		timeSpinner.setAdapter(sa);		
 		
-		super.onResume();
-	}
-
-	/*@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.free_room, menu);
-		return true;
-	}*/
-	
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data)
-	{
-		if(requestCode == LOGIN_SUCCESSFUL)
-		{
-			if(resultCode != Activity.RESULT_CANCELED)
-			{
-				DatabaseInterface dbi = new DatabaseInterface(this.getActivity().getBaseContext());
-				User user = dbi.getUser();
-				
-				if(user != null)
-				{
-					// Successful login
-				}
-			}
-			else
-			{
-				this.getActivity().finish();
-			}
-		}
+		
 	}
 		
 	public class SearchTask extends AsyncTask<Request, Void, Boolean> {

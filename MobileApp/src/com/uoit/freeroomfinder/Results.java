@@ -3,7 +3,6 @@ package com.uoit.freeroomfinder;
 import java.util.Date;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -23,13 +22,12 @@ import android.widget.TextView;
  * instance of this fragment.
  * 
  */
-public class Results extends Fragment implements OnFinshedTaskListener {
+public class Results extends FreeRoomFragment implements OnFinshedTaskListener {
 	
     public static QueryTask loadTask = null;
 	private static RadioButton checked = null;
 	private static int indexOfChecked = 0;
 	private static boolean isNotChecked = true;
-	private static long timeNow = (new Date()).getTime();
 	
 	private static Button book;
 	
@@ -47,7 +45,6 @@ public class Results extends Fragment implements OnFinshedTaskListener {
 		
 		super.onCreateView(inflater, container, savedInstanceState);
 		
-		//TODO ensure login is checked
 		View rootView = inflater.inflate(R.layout.fragment_results,
 				container, false);
 		
@@ -99,10 +96,12 @@ public class Results extends Fragment implements OnFinshedTaskListener {
 	
 	public void onResume()
 	{
+		super.onResume();
+		
 	    loadTask = new QueryTask();
 	    loadTask.setOnFinshedTaskListener(this);
 	    loadTask.execute(this.getActivity().getBaseContext());
-		super.onResume();
+		
 	}
 	
 	public void refreshList()
