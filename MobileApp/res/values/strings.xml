@@ -5,6 +5,7 @@
     <string name="action_settings">Settings</string>
     <string name="submit_button">Submit</string>
     <string name="password_reset">Reset</string>
+    <string name="register_account">Register</string>
     <string name="username_hint">Username</string>
     <string name="password_hint">Password</string>
     <string name="title_activity_login">Sign in</string>
@@ -24,7 +25,8 @@
     <string name="campus_heading">Campus</string>
     
     <string name="reset_site">https://www.cs-club.ca/reset/</string>
-
+    <string name="register_site">https://www.cs-club.ca/register/</string>
+    
     <string-array name="campus_names">
         <item>North Oshawa Campus</item>
         <item>Downtown Oshawa Campus</item>

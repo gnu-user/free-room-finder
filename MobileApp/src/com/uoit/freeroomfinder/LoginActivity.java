@@ -133,6 +133,14 @@ public class LoginActivity extends Activity {
 		this.startActivity(i);
 	}
 
+	public void register(View v)
+    {
+        //Go to registration site
+	    Intent i = new Intent(Intent.ACTION_VIEW);
+	    i.setData(Uri.parse(this.getString(R.string.register_site)));
+	    this.startActivity(i);
+    }
+	
 	private void showProgress(boolean show) {
 		
 		if(show)
