@@ -154,7 +154,7 @@ function getTotalRegisteredFaculty()
  *
  * @return TRUE if the user's credentials are valid, FALSE otherwise.
  */
-getLoginCredentials($username, $password)
+function getLoginCredentials($username, $password)
 {
 	global $db_user, $db_pass, $db_name, $AES_KEY;
 	$credentials = array("credentials" => false);
