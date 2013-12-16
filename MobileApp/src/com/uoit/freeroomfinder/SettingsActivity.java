@@ -51,9 +51,9 @@ import com.uoit.freeroomfinder.preferences.PreferenceDialog;
  * href="http://developer.android.com/guide/topics/ui/settings.html">Settings API Guide</a> for more
  * information on developing a Settings UI.
  * 
- * @author Daniel Smullen
- * @author Jonathan Gilett
  * @author Joseph Heron
+ * @author Jonathan Gilett
+ * @author Daniel Smullen
  */
 public class SettingsActivity extends PreferenceActivity
 {
@@ -123,7 +123,6 @@ public class SettingsActivity extends PreferenceActivity
     {
         // Default implementation. Incorporates the SimplePreferencesScreen we provide.
         super.onPostCreate(savedInstanceState);
-
         setupSimplePreferencesScreen();
     }
 
@@ -138,14 +137,14 @@ public class SettingsActivity extends PreferenceActivity
         {
             return;
         }
+        
         // In the simplified UI, fragments are not used at all and we instead
         // use the older PreferenceActivity APIs.
-
         // Add 'general' preferences.
         addPreferencesFromResource(R.xml.pref_general);
 
         PreferenceDialog deleteAccount = (PreferenceDialog) this.findPreference("delete_account");
-
+        
         DatabaseInterface dbi = new DatabaseInterface(getBaseContext());
 
         // Disable delete account if user does not have an account
@@ -163,7 +162,6 @@ public class SettingsActivity extends PreferenceActivity
         // Contains the logic for when the preferences dialog is closed.
         deleteAccount.setOnPreferenceDialogClosedListener(new OnPreferenceDialogClosedListener()
         {
-
             /*
              * (non-Javadoc)
              * 
@@ -173,14 +171,12 @@ public class SettingsActivity extends PreferenceActivity
             @Override
             public void onPreferenceDialogClosed(boolean positiveResult)
             {
-
                 if (positiveResult)
                 {
                     DatabaseInterface dbi = new DatabaseInterface(getBaseContext());
                     dbi.deleteAll();
                 }
             }
-
         });
 
         // Add 'search' preferences, and a corresponding header.
@@ -202,9 +198,7 @@ public class SettingsActivity extends PreferenceActivity
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue)
             {
-
                 DateTimeUtility.setArmyClock(Boolean.valueOf(newValue.toString()));
-
                 return true;
             }
 
@@ -218,7 +212,6 @@ public class SettingsActivity extends PreferenceActivity
 
         findPreference("source_code").setOnPreferenceClickListener(new OnPreferenceClickListener()
         {
-
             /*
              * (non-Javadoc)
              * 
@@ -229,13 +222,11 @@ public class SettingsActivity extends PreferenceActivity
             @Override
             public boolean onPreferenceClick(Preference preference)
             {
-
                 Intent i = new Intent(Intent.ACTION_VIEW);
                 i.setData(Uri.parse(SettingsActivity.this.getString(R.string.source_code_site)));
                 SettingsActivity.this.startActivity(i);
                 return true;
             }
-
         });
 
         /* Set an onclick listener for contact developers */
@@ -259,12 +250,12 @@ public class SettingsActivity extends PreferenceActivity
                 /**
                  * Fill it with Data
                  */
-
                 emailIntent.setType("plain/text");
                 emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, SettingsActivity.this
                         .getResources().getStringArray(R.array.dev_emails));
                 emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Free Room Finder");
                 emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "");
+                
                 /**
                  * Send it off to the Activity-Chooser
                  */
@@ -298,7 +289,8 @@ public class SettingsActivity extends PreferenceActivity
      */
     private static boolean isXLargeTablet(Context context)
     {
-        return (context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_XLARGE;
+        return (context.getResources().getConfiguration().screenLayout 
+                & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_XLARGE;
     }
 
     /**

@@ -26,14 +26,12 @@ import java.util.regex.Pattern;
 /**
  * User Stores attributes and provides methods for users.
  * 
- * @author Daniel Smullen
  * @author Joseph Heron
  * @author Jonathan Gillett
- * 
+ * @author Daniel Smullen
  */
 public class User
 {
-
     /**
      * Class attributes for storing the user's user name and password.
      */
@@ -52,10 +50,8 @@ public class User
     /**
      * Override constructor. Create a new user with the supplied parameters.
      * 
-     * @param username
-     *            The user name for the new user.
-     * @param password
-     *            The password for the new user.
+     * @param username The user name for the new user.
+     * @param password The password for the new user.
      */
     public User(String username, String password)
     {
@@ -76,8 +72,7 @@ public class User
     /**
      * setUsername Mutator method for the user's user name.
      * 
-     * @param username
-     *            The user name to set.
+     * @param username The user name to set.
      */
     public void setUsername(String username)
     {
@@ -97,8 +92,7 @@ public class User
     /**
      * setPassword Mutator method for the user's password.
      * 
-     * @param password
-     *            The password to set the user's password to.
+     * @param password The password to set the user's password to.
      */
     public void setPassword(String password)
     {
@@ -144,8 +138,7 @@ public class User
      * equals Check if the given user is the same as another user by comparing their names and
      * passwords.
      * 
-     * @param otherUser
-     *            The user to check against.
+     * @param otherUser The user to check against.
      * 
      * @return Returns true if the two users are the same.
      */
@@ -158,5 +151,4 @@ public class User
 
         return false;
     }
-
 }
