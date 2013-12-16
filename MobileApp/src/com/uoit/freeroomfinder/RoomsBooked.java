@@ -24,6 +24,7 @@ package com.uoit.freeroomfinder;
 import java.util.ArrayList;
 import java.util.Date;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.ActionMode;
@@ -36,7 +37,6 @@ import android.view.ViewGroup;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 /**
  * A simple {@link android.support.v4.app.Fragment} subclass.
@@ -193,15 +193,30 @@ public class RoomsBooked extends FreeRoomFragment implements OnFinshedTaskListen
 	    	selectedRow = null;
 	        switch (item.getItemId()) {
 	            case R.id.share:
-	                //shareCurrentItem();
-	            	Toast.makeText(RoomsBooked.this.getActivity(), "SHARING IS CARING!", Toast.LENGTH_LONG).show();
+	            	Intent sendIntent = new Intent();
+	            	sendIntent.setAction(Intent.ACTION_SEND);
+	            	
+	            	//TODO do make englishes
+	            	String message = getString(R.string.send_booking_room) + " " 
+	            			+ results.get(rowIndex).getRoom() + " "
+	            			+ getString(R.string.send_booking_start) + " "
+	            			+ DateTimeUtility.formatTime(new Date(results.get(rowIndex).getStartTime())) + " "
+	            			+ getString(R.string.send_booking_end) + " "
+	            			+ DateTimeUtility.formatTime(new Date(results.get(rowIndex).getEndTime())) + " "
+	            			+ getString(R.string.send_booking_date) + " "
+	            			+ DateTimeUtility.formatDate(results.get(rowIndex).getDate());
+	            	sendIntent.putExtra(Intent.EXTRA_TEXT, message);
+	            	sendIntent.setType("text/plain");
+	            	startActivity(sendIntent);
+	            	rowIndex = -1;
+	            	
 	                mode.finish(); // Action picked, so close the CAB
 	                return true;
 	            case R.id.delete:
-	                DatabaseInterface dbi = new DatabaseInterface(RoomsBooked.this.getActivity().getBaseContext());
+	                DatabaseInterface dbi = new DatabaseInterface(getActivity().getBaseContext());
 	                dbi.deleteBooking(results.get(rowIndex).getId());
 	                results.remove(rowIndex);
-	                rowIndex = 0;
+	                rowIndex = -1;
 	                refreshList();
 	                
 	                mode.finish(); // Action picked, so close the CAB

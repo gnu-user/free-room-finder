@@ -129,4 +129,9 @@
 	<string name="share_title">Share</string>
 	<string name="delete_title">Delete</string>
 	
+	<string name="send_booking_room">Room:</string>
+	<string name="send_booking_start">Start Time:</string>
+	<string name="send_booking_end">End Time:</string>
+	<string name="send_booking_date">Date:</string>
+	
 </resources>
