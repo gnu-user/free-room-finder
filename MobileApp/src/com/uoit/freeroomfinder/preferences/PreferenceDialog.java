@@ -26,17 +26,16 @@ import android.preference.DialogPreference;
 import android.util.AttributeSet;
 
 /**
- * PreferenceDialog A class used to provide methods for the preferences dialogs in the user
- * interface.
+ * PreferenceDialog A class used to provide methods for the preferences dialogs 
+ * in the user interface.
  * 
  * @author Joseph Heron
- * @author Daniel Smullen
  * @author Jonathan Gillett
+ * @author Daniel Smullen
  * 
  */
 public class PreferenceDialog extends DialogPreference
 {
-
     /**
      * Used to determine the listener and whether a listener is bound.
      */
@@ -46,11 +45,8 @@ public class PreferenceDialog extends DialogPreference
     /**
      * Default constructor.
      * 
-     * @param context
-     *            The context for the activity.
-     * 
-     * @param attrs
-     *            The attribute set for the preference dialog.
+     * @param context The context for the activity.
+     * @param attrs The attribute set for the preference dialog.
      */
     public PreferenceDialog(Context context, AttributeSet attrs)
     {
@@ -80,8 +76,7 @@ public class PreferenceDialog extends DialogPreference
     /**
      * setOnPreferenceDialogClosedListener Binds the class to a listener.
      * 
-     * @param listener
-     *            The listener to bind to.
+     * @param listener The listener to bind to.
      */
     public void setOnPreferenceDialogClosedListener(OnPreferenceDialogClosedListener listener)
     {
