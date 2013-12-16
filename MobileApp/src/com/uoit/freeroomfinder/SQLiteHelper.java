@@ -28,14 +28,13 @@ import android.database.sqlite.SQLiteOpenHelper;
 /**
  * SQLiteHelper A helper class for interacting with the internal SQLite database.
  * 
+ * @author Joseph Heron
  * @author Jonathan Gillett
  * @author Daniel Smullen
- * @author Joseph Heron
  * 
  */
 public class SQLiteHelper extends SQLiteOpenHelper
 {
-
     /**
      * Stores the database name for the app.
      */
@@ -51,7 +50,6 @@ public class SQLiteHelper extends SQLiteOpenHelper
      */
     public static final String USER_TABLE_NAME = "user";
     public static final String BOOKING_TABLE_NAME = "bookings";
-
     private static final String EXISTS_CLAUSE = "IF NOT EXISTS";
 
     /**
@@ -106,7 +104,6 @@ public class SQLiteHelper extends SQLiteOpenHelper
         //Execute the creation statements for the tables.
         db.execSQL(USER_TABLE_CREATE);
         db.execSQL(BOOKING_TABLE_CREATE);
-
     }
 
     /* (non-Javadoc)

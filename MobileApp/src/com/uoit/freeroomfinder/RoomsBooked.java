@@ -40,9 +40,9 @@ import android.widget.TextView;
 /**
  * RoomsBooked A simple {@link android.support.v4.app.Fragment} subclass.
  * 
- * @author Daniel Smullen
  * @author Joseph Heron
  * @author Jonathan Gillett
+ * @author Daniel Smullen
  * 
  */
 public class RoomsBooked extends FreeRoomFragment implements OnFinshedTaskListener
@@ -52,6 +52,7 @@ public class RoomsBooked extends FreeRoomFragment implements OnFinshedTaskListen
      * The query task for loading the booked rooms.
      */
     public static QueryTask loadTask = null;
+    
     /**
      * Handles to the UI elements in the fragment.
      */
@@ -98,7 +99,6 @@ public class RoomsBooked extends FreeRoomFragment implements OnFinshedTaskListen
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-
         // Inflate the layout for this fragment.
         View rootView = inflater.inflate(R.layout.rooms_booked, container, false);
 
@@ -163,14 +163,9 @@ public class RoomsBooked extends FreeRoomFragment implements OnFinshedTaskListen
      * SetupUpTableView Sets up the logic for handling what happens inside the table of booking
      * entries.
      * 
-     * @param inflater
-     *            The specified inflater for the view.
-     * 
-     * @param container
-     *            The ViewGroup container for the view.
-     * 
-     * @param index
-     *            The index of the selected row.
+     * @param inflater The specified inflater for the view.
+     * @param container The ViewGroup container for the view.
+     * @param index The index of the selected row.
      * 
      * @return Returns the corresponding table row that was selected.
      */
@@ -197,7 +192,6 @@ public class RoomsBooked extends FreeRoomFragment implements OnFinshedTaskListen
 
         tr.setOnLongClickListener(new View.OnLongClickListener()
         {
-
             /*
              * (non-Javadoc)
              * 
@@ -224,8 +218,8 @@ public class RoomsBooked extends FreeRoomFragment implements OnFinshedTaskListen
                 return true;
             }
         });
+        
         this.registerForContextMenu(tr);
-
         return tr;
     }
 
@@ -234,7 +228,6 @@ public class RoomsBooked extends FreeRoomFragment implements OnFinshedTaskListen
      */
     private ActionMode.Callback mActionModeCallback = new ActionMode.Callback()
     {
-
         // Called when the action mode is created; startActionMode() was called.
         @Override
         public boolean onCreateActionMode(ActionMode mode, Menu menu)
@@ -272,6 +265,7 @@ public class RoomsBooked extends FreeRoomFragment implements OnFinshedTaskListen
             // Called when the user selects a contextual menu item.
             selectedRow.setBackground(background);
             selectedRow = null;
+            
             switch (item.getItemId())
             {
             case R.id.share:
@@ -296,9 +290,10 @@ public class RoomsBooked extends FreeRoomFragment implements OnFinshedTaskListen
                 startActivity(sendIntent);
                 rowIndex = -1;
 
-                mode.finish();
                 // Action picked, so close the CAB.
+                mode.finish();
                 return true;
+                
             case R.id.delete:
                 DatabaseInterface dbi = new DatabaseInterface(getActivity().getBaseContext());
                 dbi.deleteBooking(results.get(rowIndex).getId());
@@ -306,9 +301,10 @@ public class RoomsBooked extends FreeRoomFragment implements OnFinshedTaskListen
                 rowIndex = -1;
                 refreshList();
 
-                mode.finish();
                 // Action picked, so close the CAB.
+                mode.finish();
                 return true;
+                
             default:
                 return false;
             }
