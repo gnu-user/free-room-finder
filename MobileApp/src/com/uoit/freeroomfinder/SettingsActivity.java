@@ -199,9 +199,9 @@ public class SettingsActivity extends PreferenceActivity {
                 /* Fill it with Data */
                 
                 emailIntent.setType("plain/text");
-                emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, SettingsActivity.this.getResources().getStringArray(R.array.campus_names));
+                emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, SettingsActivity.this.getResources().getStringArray(R.array.dev_emails));
                 emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Free Room Finder");
-                emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "...");
+                emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "");
 
                 /* Send it off to the Activity-Chooser */
                 SettingsActivity.this.startActivity(Intent.createChooser(emailIntent, "Email the developers..."));
