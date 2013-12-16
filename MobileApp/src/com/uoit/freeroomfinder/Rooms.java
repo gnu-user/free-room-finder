@@ -34,38 +34,26 @@ public class Rooms
     /**
      * Store the parameters for a room's availability.
      */
+    private long id;
     private String room;
     private long startTime;
     private long endTime;
     private long date;
 
     /**
-     * Default Constructor. Create a new room booking.
-     * 
-     * @param room
-     *            The room's name.
-     * 
-     * @param startTime
-     *            The start time for the booking.
-     * 
-     * @param endTime
-     *            The end time for the booking.
-     * 
-     * @param date
-     *            The date of the booking.
+     * Create a new room booking
+     * @param room The room's name
+     * @param startTime The start time for the booking
+     * @param endTime The end time for the booking
+     * @param date The date of the booking
      */
     public Rooms(String room, long startTime, long endTime, long date)
     {
-        this.room = room;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.date = date;
+            this.room = room;
+            this.startTime = startTime;
+            this.endTime = endTime;
+            this.date = date;
     }
-	private long id;
-	private String room;
-	private long startTime;
-	private long endTime;
-	private long date;
 	
 	/**
 	 * Create a new room booking
@@ -97,8 +85,7 @@ public class Rooms
     /**
      * Mutator method for the room.
      * 
-     * @param room
-     *            The name of the room to set.
+     * @param room The name of the room to set.
      */
     public void setRoom(String room)
     {
@@ -118,8 +105,7 @@ public class Rooms
     /**
      * Mutator method for the availability's start time.
      * 
-     * @param startTime
-     *            The start time for the availability to set.
+     * @param startTime The start time for the availability to set.
      */
     public void setStartTime(long startTime)
     {
@@ -139,9 +125,7 @@ public class Rooms
     /**
      * Mutator method for the end time of the availability.
      * 
-     * @param endTime
-     *            The end time of the availability to set.
-     * 
+     * @param endTime The end time of the availability to set.
      */
     public void setEndTime(long endTime)
     {
@@ -161,20 +145,12 @@ public class Rooms
     /**
      * Mutator method for the date of the availability.
      * 
-     * @param date
-     *            The date to set, in long form.
+     * @param date The date to set, in long form.
      */
     public void setDate(long date)
     {
         this.date = date;
     }
-	/**
-	 * Set the date
-	 * @param date the date to set
-	 */
-	public void setDate(long date) {
-		this.date = date;
-	}
 
 	/**
 	 * Get the id
