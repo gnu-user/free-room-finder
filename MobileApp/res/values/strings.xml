@@ -93,14 +93,14 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     
     <!-- Settings -->
-    	<!-- General -->
+   	<!-- General -->
     <string name="are_you_sure">Are you sure you want to delete your account?</string>
     <string name="delete_account_title">Delete Account</string>
 	<string name="delete_account_summary">Delete your FRF account</string>
 	<string name="maximum_rooms_title">Bookings List</string>
 	<string name="maximum_rooms_summary">Select number of bookings to keep saved</string>
 	
-		<!-- Search -->
+	<!-- Search -->
 	<string name="army_clock_title">Clock Settings</string>
 	<string name="army_clock_summary_on">Use 12 hour clock (using 12 hour clock)</string>
 	<string name="army_clock_summary_off">Use 12 hour clock (using 24 hour clock)</string>
@@ -109,16 +109,21 @@
 	<string name="default_duration_title">Default Duration</string>
 	<string name="default_duration_summary">Select the default booking duration</string>
 	
-		<!-- Feedback -->
+	<!-- Feedback -->
 	<string name="bugsense_title">BugSense</string>
 	<string name="busense_summary_on">Bug Reporting is enabled</string>
 	<string name="busense_summary_off">Bug Reporting is disabled</string>
 	<string name="get_source_title">Get Source Code</string>
 	<string name="get_source_summary">Contribute to Free Room Finder</string>
-	<string name="donate_title">Donate</string>
-	<string name="donate_summary">Support the Developers</string>
+	<string name="contact_title">Contact</string>
+	<string name="contact_summary">Contact the Developers</string>
 	
 	<string name="source_code_site">https://github.com/gnu-user/free-room-website</string>
 
+    <string-array name="dev_emails">
+       <item>joseph.heron@uoit.net</item>
+       <item>jonathan.gillett@uoit.net</item>
+       <item>daniel.smullen@uoit.net</item>
+    </string-array>
 	
 </resources>
