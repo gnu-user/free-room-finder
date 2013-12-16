@@ -45,8 +45,7 @@ public class DatabaseInterface
     /**
      * Default constructor
      * 
-     * @param context
-     *            The context the db is in.
+     * @param context The context the db is in.
      */
     public DatabaseInterface(Context context)
     {
@@ -57,8 +56,7 @@ public class DatabaseInterface
      * insertUser Inserts the specified user's credentials into the database. Calling this will
      * delete any other user in the database first.
      * 
-     * @param user
-     *            The user's credentials to add.
+     * @param user The user's credentials to add.
      */
     public void insertUser(User user)
     {
@@ -87,8 +85,7 @@ public class DatabaseInterface
     public User getUser()
     {
         Cursor cur = context.getContentResolver().query(DatabaseProvider.USER_CONTENT_URI,
-                new String[] { SQLiteHelper.KEY_USERNAME, SQLiteHelper.KEY_PASSWORD }, null, null,
-                null);
+                new String[] { SQLiteHelper.KEY_USERNAME, SQLiteHelper.KEY_PASSWORD }, null, null, null);
 
         User user = null;
 
@@ -105,8 +102,7 @@ public class DatabaseInterface
      * insertBooking Inserts a room booking into the local database. Trims the existing bookings
      * first.
      * 
-     * @param room
-     *            The room booking to book.
+     * @param room The room booking to book.
      */
     public void insertBooking(Rooms room)
     {
@@ -147,7 +143,6 @@ public class DatabaseInterface
      */
     public void deleteBookings()
     {
-
         int maxValue = Integer.valueOf(PreferenceManager.getDefaultSharedPreferences(context)
                 .getString("max_rooms", "50"));
         int difference = getBookedRowCount() - maxValue;
@@ -160,8 +155,7 @@ public class DatabaseInterface
 
             // Start the deleting
             // Delete the oldest bookings until there are less then the maximum preference
-            context.getContentResolver().delete(DatabaseProvider.BOOKING_CONTENT_URI, innerQuery,
-                    null);
+            context.getContentResolver().delete(DatabaseProvider.BOOKING_CONTENT_URI, innerQuery, null);
         }
     }
 
@@ -172,7 +166,6 @@ public class DatabaseInterface
      */
     private int getBookedRowCount()
     {
-
         Cursor cur = context.getContentResolver().query(DatabaseProvider.BOOKING_CONTENT_URI,
                 new String[] { "COUNT(" + SQLiteHelper.KEY_ID + ")" }, null, null, null);
 
@@ -190,8 +183,7 @@ public class DatabaseInterface
     /**
      * getBooking Get a specific room booking from the local database.
      * 
-     * @param id
-     *            The id of the booking to retrieve from the local database.
+     * @param id The id of the booking to retrieve from the local database.
      * 
      * @return booking The room booking. Returns null if the booking does not exist.
      */
@@ -233,7 +225,6 @@ public class DatabaseInterface
 
         if (cur.moveToFirst())
         {
-
             do
             {
                 booking.add(new Rooms(
@@ -242,7 +233,8 @@ public class DatabaseInterface
 					cur.getLong(cur.getColumnIndex(SQLiteHelper.KEY_START_TIME)),
 					cur.getLong(cur.getColumnIndex(SQLiteHelper.KEY_END_TIME)),
 					cur.getLong(cur.getColumnIndex(SQLiteHelper.KEY_BOOK_DATE))));
-            } while (cur.moveToNext());
+            }
+            while (cur.moveToNext());
         }
         cur.close();
         return booking;
