@@ -27,14 +27,13 @@ import android.os.AsyncTask;
 /**
  * QueryTask Used to create an asynchronous database query task.
  * 
- * @author Jonathan Gillett
  * @author Joseph Heron
+ * @author Jonathan Gillett
  * @author Daniel Smullen
  * 
  */
 public class QueryTask extends AsyncTask<Context, Void, Boolean>
 {
-
     /**
      * The task listener interface to use.
      */
@@ -62,7 +61,6 @@ public class QueryTask extends AsyncTask<Context, Void, Boolean>
     @Override
     protected void onPostExecute(final Boolean success)
     {
-
         if (success)
         {
             // Call the listener if this is successful.

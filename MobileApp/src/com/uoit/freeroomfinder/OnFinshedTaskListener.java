@@ -31,7 +31,6 @@ package com.uoit.freeroomfinder;
  */
 public interface OnFinshedTaskListener
 {
-
     /**
      * onFinishedTaskListener Called when the task finishes loading.
      */
