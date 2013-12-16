@@ -25,31 +25,67 @@ import android.content.Context;
 import android.preference.DialogPreference;
 import android.util.AttributeSet;
 
-public class PreferenceDialog extends DialogPreference{
-	
-	private boolean isSomeoneListening; 
-	private OnPreferenceDialogClosedListener dialogClosedListener;
+/**
+ * PreferenceDialog A class used to provide methods for the preferences dialogs in the user
+ * interface.
+ * 
+ * @author Joseph Heron
+ * @author Daniel Smullen
+ * @author Jonathan Gillett
+ * 
+ */
+public class PreferenceDialog extends DialogPreference
+{
 
-	public PreferenceDialog(Context context, AttributeSet attrs) {
-		super(context, attrs);
-		isSomeoneListening = false;
-	}
+    /**
+     * Used to determine the listener and whether a listener is bound.
+     */
+    private boolean isSomeoneListening;
+    private OnPreferenceDialogClosedListener dialogClosedListener;
 
-	@Override
-    protected void onDialogClosed(boolean positiveResult) {
+    /**
+     * Default constructor.
+     * 
+     * @param context
+     *            The context for the activity.
+     * 
+     * @param attrs
+     *            The attribute set for the preference dialog.
+     */
+    public PreferenceDialog(Context context, AttributeSet attrs)
+    {
+        // Unbinds from a listener. Calls the superclass.
+        super(context, attrs);
+        isSomeoneListening = false;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see android.preference.DialogPreference#onDialogClosed(boolean)
+     */
+    @Override
+    protected void onDialogClosed(boolean positiveResult)
+    {
+        // Default implementation. If bound to a listener, invokes the handler.
         super.onDialogClosed(positiveResult);
         persistString(String.valueOf(positiveResult));
-        
-        if(isSomeoneListening)
+
+        if (isSomeoneListening)
         {
-        	dialogClosedListener.onPreferenceDialogClosed(positiveResult); 
+            dialogClosedListener.onPreferenceDialogClosed(positiveResult);
         }
     }
-	
-	public void setOnPreferenceDialogClosedListener(OnPreferenceDialogClosedListener listener)
-	{
-		dialogClosedListener = listener;
-		isSomeoneListening = true;
-	}
-	
+
+    /**
+     * setOnPreferenceDialogClosedListener Binds the class to a listener.
+     * 
+     * @param listener
+     *            The listener to bind to.
+     */
+    public void setOnPreferenceDialogClosedListener(OnPreferenceDialogClosedListener listener)
+    {
+        dialogClosedListener = listener;
+        isSomeoneListening = true;
+    }
 }
