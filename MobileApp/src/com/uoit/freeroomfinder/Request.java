@@ -32,11 +32,7 @@ import retrofit.http.Path;
 
 
 public abstract class Request
-{
-    /* Formatter for the time from the REST api */
-    @SuppressLint("SimpleDateFormat")
-    private static final SimpleDateFormat tf = new SimpleDateFormat("hh:mm:ss");
-    
+{    
 	private static final String API_URL = "http://cs-club.ca/free-room-website/api";
 
 	
@@ -140,8 +136,9 @@ public abstract class Request
 	        {
 	            results.add(new Rooms(
 	                    room.room, 
-	                    tf.parse(room.starttime).getTime(), 
-	                    tf.parse(room.endtime).getTime()
+	                    DateTimeUtility.parseFullTime(room.starttime).getTime(), 
+	                    DateTimeUtility.parseFullTime(room.endtime).getTime(),
+	                    DateTimeUtility.parseDate(date).getTime()
                 ));
 	        }
 	    }

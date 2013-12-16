@@ -33,19 +33,6 @@ public class Rooms {
 	 * @param room The room's name
 	 * @param startTime The start time for the booking
 	 * @param endTime The end time for the booking
-	 */
-	public Rooms(String room, long startTime, long endTime)
-	{
-		this.room = room;
-		this.startTime = startTime;
-		this.endTime = endTime;
-	}
-	
-	/**
-	 * Create a new room booking
-	 * @param room The room's name
-	 * @param startTime The start time for the booking
-	 * @param endTime The end time for the booking
 	 * @param date The date of the booking
 	 */
 	public Rooms(String room, long startTime, long endTime, long date)
