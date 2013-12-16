@@ -92,9 +92,9 @@ public class FreeRoom extends FreeRoomFragment {
 		timeSpinner = (Spinner)rootView.findViewById(R.id.time);
 		
 		TextView date = (TextView)rootView.findViewById(R.id.date);
-		date.setText(MainActivity.datetimeFormater.formatDate(curDate) + " (Today)");
+		date.setText(DateTimeUtility.formatDate(curDate) + " (Today)");
 		
-		datePicked = MainActivity.datetimeFormater.formatDate(curDate);
+		datePicked = DateTimeUtility.formatDate(curDate);
 
 		availableRooms = new ArrayList<Rooms>();
 		
@@ -105,7 +105,7 @@ public class FreeRoom extends FreeRoomFragment {
 				
 				Date d = null;
 				try {
-					d = MainActivity.datetimeFormater.parseDate(datePicked);
+					d = DateTimeUtility.parseDate(datePicked);
 					
 				} catch (ParseException e) {
 				    
@@ -133,7 +133,7 @@ public class FreeRoom extends FreeRoomFragment {
 						TextView date = (TextView)rootView.findViewById(R.id.date);
 						
 						date.setText(datePicked);
-						if (datePicked.contains(MainActivity.datetimeFormater.formatDate(curDate))){
+						if (datePicked.contains(DateTimeUtility.formatDate(curDate))){
 							date.setText(datePicked + " (Today)");
 						}
 					}
@@ -159,11 +159,11 @@ public class FreeRoom extends FreeRoomFragment {
                 {
                 	if (timeSpinner.getSelectedItem().toString().compareTo("Now") == 0)
                 	{
-                        timePicked = MainActivity.datetimeFormater.formatFullTime(MainActivity.datetimeFormater.formatTime(curDate));
+                        timePicked = DateTimeUtility.formatFullTime(DateTimeUtility.formatTime(curDate));
 					}
                 	else
                 	{
-                        timePicked = MainActivity.datetimeFormater.formatFullTime(timeSpinner.getSelectedItem().toString());
+                        timePicked = DateTimeUtility.formatFullTime(timeSpinner.getSelectedItem().toString());
 					}
                     
                     campusPicked = rootView.getResources().getStringArray(R.array.campus_names)[campusSpinner.getSelectedItemPosition()];

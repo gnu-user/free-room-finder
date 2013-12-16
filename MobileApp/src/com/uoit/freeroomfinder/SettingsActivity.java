@@ -161,7 +161,7 @@ public class SettingsActivity extends PreferenceActivity {
 			public boolean onPreferenceChange(Preference preference,
 					Object newValue) {
 				
-				MainActivity.datetimeFormater.setArmyClock(Boolean.valueOf(newValue.toString()));
+				DateTimeUtility.setArmyClock(Boolean.valueOf(newValue.toString()));
 				
 				return true;
 			}

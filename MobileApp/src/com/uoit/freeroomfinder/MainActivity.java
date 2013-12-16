@@ -48,7 +48,6 @@ public class MainActivity extends FragmentActivity implements
 	public static final int RESULTS_TAB = 1;
 	public static final int ROOMS_BOOKED_TAB = 2;
 	
-	public static DateTimeUtility datetimeFormater;
 	public static SharedPreferences sharedPrefs;
 	private ProgressDialog dialog;
 
@@ -77,7 +76,7 @@ public class MainActivity extends FragmentActivity implements
 		sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 		
 		//Set up the date time formatter
-		datetimeFormater = new DateTimeUtility(sharedPrefs.getBoolean("army_clock", true),
+		DateTimeUtility.setFormatLocale(sharedPrefs.getBoolean("army_clock", true),
 				this.getResources().getConfiguration().locale);
 		
 		

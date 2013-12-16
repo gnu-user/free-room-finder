@@ -200,8 +200,8 @@ public class Results extends FreeRoomFragment implements OnFinshedTaskListener {
 		Rooms first = FreeRoom.availableRooms.get(index);
 		
 		room.setText(first.getRoom());
-		start.setText(MainActivity.datetimeFormater.formatTime(new Date(first.getStartTime())));
-		end.setText(MainActivity.datetimeFormater.formatTime(new Date(first.getEndTime())));
+		start.setText(DateTimeUtility.formatTime(new Date(first.getStartTime())));
+		end.setText(DateTimeUtility.formatTime(new Date(first.getEndTime())));
 
 		TableRow tr = (TableRow)newView.findViewById(R.id.room_row);
 		

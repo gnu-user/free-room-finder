@@ -126,9 +126,9 @@ public class RoomsBooked extends FreeRoomFragment implements OnFinshedTaskListen
 		Rooms first = results.get(index);
 		
 		room.setText(first.getRoom());
-		start.setText(MainActivity.datetimeFormater.formatTime(new Date(first.getStartTime())));
-		end.setText(MainActivity.datetimeFormater.formatTime(new Date(first.getEndTime())));
-		date.setText(MainActivity.datetimeFormater.formatDate(first.getDate()));
+		start.setText(DateTimeUtility.formatTime(new Date(first.getStartTime())));
+		end.setText(DateTimeUtility.formatTime(new Date(first.getEndTime())));
+		date.setText(DateTimeUtility.formatDate(first.getDate()));
 
 		TableRow tr = (TableRow)newView.findViewById(R.id.tableRow2);
 		
