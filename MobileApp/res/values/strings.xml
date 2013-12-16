@@ -129,11 +129,11 @@
 	<string name="share_title">Share</string>
 	<string name="delete_title">Delete</string>
 	
-	<string name="send_booking_starting">Hey, I booked a room for us! Check it out,</string>
-	<string name="send_booking_room">Meet me in this room:</string>
-	<string name="send_booking_start">At this time:</string>
-	<string name="send_booking_end">We will go home at:</string>
-	<string name="send_booking_date">On: </string>
-	<string name="send_booking_ending">See you there!</string>
+	<string name="send_booking_starting">Hey, </string>
+	<string name="send_booking_room">wanna study in</string>
+	<string name="send_booking_start">It's free from </string>
+	<string name="send_booking_end">until</string>
+	<string name="send_booking_date">on </string>
+	<string name="send_booking_ending">?</string>
 	
 </resources>
