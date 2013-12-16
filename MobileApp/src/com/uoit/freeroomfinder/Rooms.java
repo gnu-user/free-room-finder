@@ -42,6 +42,7 @@ public class Rooms
 
     /**
      * Create a new room booking
+     * 
      * @param room The room's name
      * @param startTime The start time for the booking
      * @param endTime The end time for the booking
@@ -49,28 +50,29 @@ public class Rooms
      */
     public Rooms(String room, long startTime, long endTime, long date)
     {
-            this.room = room;
-            this.startTime = startTime;
-            this.endTime = endTime;
-            this.date = date;
+        this.room = room;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.date = date;
     }
-	
-	/**
-	 * Create a new room booking
-	 * @param id The room id
-	 * @param room The room's name
-	 * @param startTime The start time for the booking
-	 * @param endTime The end time for the booking
-	 * @param date The date of the booking
-	 */
-	public Rooms(long id, String room, long startTime, long endTime, long date)
-	{
-		this.id = id;
-		this.room = room;
-		this.startTime = startTime;
-		this.endTime = endTime;
-		this.date = date;
-	}
+
+    /**
+     * Create a new room booking
+     * 
+     * @param id The room id
+     * @param room The room's name
+     * @param startTime The start time for the booking
+     * @param endTime The end time for the booking
+     * @param date The date of the booking
+     */
+    public Rooms(long id, String room, long startTime, long endTime, long date)
+    {
+        this.id = id;
+        this.room = room;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.date = date;
+    }
 
     /**
      * getRoom Accessor method for the room.
@@ -152,19 +154,23 @@ public class Rooms
         this.date = date;
     }
 
-	/**
-	 * Get the id
-	 * @return the id
-	 */
-	public long getId() {
-		return id;
-	}
+    /**
+     * Get the id
+     * 
+     * @return the id
+     */
+    public long getId()
+    {
+        return id;
+    }
 
-	/**
-	 * Set the id
-	 * @param id the id to set
-	 */
-	public void setId(long id) {
-		this.id = id;
-	}	
+    /**
+     * Set the id
+     * 
+     * @param id the id to set
+     */
+    public void setId(long id)
+    {
+        this.id = id;
+    }
 }
