@@ -131,7 +131,7 @@
 	
 	<string name="send_booking_starting">Hey, </string>
 	<string name="send_booking_room">wanna study in</string>
-	<string name="send_booking_start">It's free from </string>
+	<string name="send_booking_start">It is free from </string>
 	<string name="send_booking_end">until</string>
 	<string name="send_booking_date">on </string>
 	<string name="send_booking_ending">?</string>
