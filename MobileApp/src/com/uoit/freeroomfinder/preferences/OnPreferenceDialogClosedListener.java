@@ -21,7 +21,20 @@
  */
 package com.uoit.freeroomfinder.preferences;
 
+/**
+ * OnPreferenceDialogClosedListener An interface used to provide logic for handling when the preferences dialog is closed.
+ * 
+ * @author Daniel Smullen
+ * @author Joseph Heron
+ * @author Jonathan Gillett
+ *
+ */
 public interface OnPreferenceDialogClosedListener {
 	
+	/**
+	 * onPreferenceDialogClosed Called when the preferences dialog is closed.
+	 * 
+	 * @param positiveResult Determines whether the result was positive or not.
+	 */
 	public void onPreferenceDialogClosed(boolean positiveResult);
 }
