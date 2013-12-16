@@ -21,10 +21,19 @@
  */
 package com.uoit.freeroomfinder;
 
-public interface OnFinshedTaskListener {
+/**
+ * OnFinishedTaskListener An interface to be used when a task finishes loading.
+ * 
+ * @author Joseph Heron
+ * @author Jonathan Gillett
+ * @author Daniel Smullen
+ * 
+ */
+public interface OnFinshedTaskListener
+{
 
-	/**
-	 * Called when the task finishes loading
-	 */
-	public void onFinishedTaskListener();
+    /**
+     * onFinishedTaskListener Called when the task finishes loading.
+     */
+    public void onFinishedTaskListener();
 }
