@@ -36,9 +36,9 @@ import android.net.Uri;
  * DatabaseProvider A ContentProvider child class which provides a content provider to facilitate
  * access to the internal database.
  * 
- * @author Daniel Smullen
- * @author Jonathan Gillett
  * @author Joseph Heron
+ * @author Jonathan Gillett
+ * @author Daniel Smullen
  * 
  */
 public class DatabaseProvider extends ContentProvider
@@ -83,6 +83,7 @@ public class DatabaseProvider extends ContentProvider
      * The content type identifier for user related data.
      */
     public static final String CONTENT_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE + "/users";
+    
     /**
      * The content type identifier for a single user.
      */
@@ -92,6 +93,7 @@ public class DatabaseProvider extends ContentProvider
      * A helper object for accessing the SQLite database.
      */
     private SQLiteHelper db;
+    
     /**
      * A helper object for storing the SQLite database instance.
      */
@@ -101,6 +103,7 @@ public class DatabaseProvider extends ContentProvider
      * A constant used to match user-related database entries.
      */
     public static final int USER_MATCH = 1;
+    
     /**
      * A constant used to match booking-related database entries.
      */
@@ -127,6 +130,7 @@ public class DatabaseProvider extends ContentProvider
     {
 
         int choose = sURIMatcher.match(uri);
+        
         // Delete either user data, or booking data.
         switch (choose)
         {
@@ -169,6 +173,7 @@ public class DatabaseProvider extends ContentProvider
     {
         int choose = sURIMatcher.match(uri);
         long id = -1;
+        
         // Insert either booking data, or user data.
         switch (choose)
         {
@@ -214,7 +219,6 @@ public class DatabaseProvider extends ContentProvider
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs,
             String sortOrder)
     {
-
         // Create proper SQL syntax for our database.
         SQLiteQueryBuilder qBuilder = new SQLiteQueryBuilder();
 
@@ -224,6 +228,7 @@ public class DatabaseProvider extends ContentProvider
         Cursor c = null;
 
         int choose = sURIMatcher.match(uri);
+        
         // Query for either user data or booking data.
         switch (choose)
         {
@@ -267,8 +272,9 @@ public class DatabaseProvider extends ContentProvider
     {
         int choose = sURIMatcher.match(uri);
         int count = -1;
-        switch (choose)
+        
         // Update either user data or booking data.
+        switch (choose)        
         {
         case USER_MATCH:
             // Update user data rows.
@@ -276,6 +282,7 @@ public class DatabaseProvider extends ContentProvider
             count = dba.update(SQLiteHelper.USER_TABLE_NAME, values, selection, selectionArgs);
             getContext().getContentResolver().notifyChange(uri, null);
             return count;
+            
         case BOOKING_MATCH:
             // Update booking data rows.
             dba = db.getWritableDatabase();
@@ -292,8 +299,7 @@ public class DatabaseProvider extends ContentProvider
      * checkColumns Ensure that the columns given are valid columns in the database. Otherwise throw
      * an error.
      * 
-     * @param columns
-     *            The columns given as the projection.
+     * @param columns The columns given as the projection.
      */
     public void checkColumns(String[] columns, String table)
     {
@@ -318,7 +324,6 @@ public class DatabaseProvider extends ContentProvider
             {
                 throw new IllegalArgumentException("Unknown table");
             }
-
         }
     }
 }

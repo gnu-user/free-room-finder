@@ -31,8 +31,9 @@ import java.util.Locale;
  * conversions.
  * 
  * @author Joseph Heron
- * @author Daniel Smullen
  * @author Jonathan Gillett
+ * @author Daniel Smullen
+ * 
  */
 public abstract class DateTimeUtility
 {
@@ -72,10 +73,8 @@ public abstract class DateTimeUtility
     /**
      * setFormatLocale Set the preferred time format and the current locale
      * 
-     * @param notArmyClock
-     *            Determines whether to use 12 hour or 24 hour format.
-     * @param curLocale
-     *            The current locale for the time.
+     * @param notArmyClock Determines whether to use 12 hour or 24 hour format.
+     * @param curLocale The current locale for the time.
      */
     public static void setFormatLocale(boolean notArmyClock, Locale curLocale)
     {
@@ -97,8 +96,7 @@ public abstract class DateTimeUtility
     /**
      * setArmyClock Change the time format to 24 hour.
      * 
-     * @param notArmyClock
-     *            Whether to use 12 hour clock or not.
+     * @param notArmyClock Whether to use 12 hour clock or not.
      */
     public static void setArmyClock(boolean notArmyClock)
     {
@@ -120,8 +118,7 @@ public abstract class DateTimeUtility
     /**
      * formatDate Format the date to the correct format. Accepts Date objects.
      * 
-     * @param date
-     *            The date, in Date type.
+     * @param date The date, in Date type.
      * 
      * @return The formatted date.
      */
@@ -133,8 +130,7 @@ public abstract class DateTimeUtility
     /**
      * formatDate Format the date to the correct format. Accepts long format.
      * 
-     * @param date
-     *            The date, in long type.
+     * @param date The date, in long type.
      * 
      * @return The formatted date.
      */
@@ -144,11 +140,10 @@ public abstract class DateTimeUtility
     }
 
     /**
-     * formatTime Format the time to the correct format. Uses time values extracted from Date
-     * objects.
+     * formatTime Format the time to the correct format. Uses time values extracted 
+     * from Date objects.
      * 
-     * @param date
-     *            The time, in Date type.
+     * @param date The time, in Date type.
      * 
      * @return The formatted time.
      */
@@ -160,8 +155,7 @@ public abstract class DateTimeUtility
     /**
      * formatFullTime Format the time, based on a string representation.
      * 
-     * @param time
-     *            The time to format, as a string.
+     * @param time The time to format, as a string.
      * 
      * @return The formatted time.
      */
@@ -173,14 +167,12 @@ public abstract class DateTimeUtility
     /**
      * parseDate Parse the date, based on a string representation.
      * 
-     * @param date
-     *            Accepts a formatted string representing a date.
+     * @param date Accepts a formatted string representing a date.
      * 
      * @return The date, as a Date object.
      * 
-     * @throws ParseException
-     *             Parsing exception from the given string. If the string does not conform to the
-     *             correct format, this will be thrown.
+     * @throws ParseException Parsing exception from the given string. If the 
+     * string does not conform to the correct format, this will be thrown.
      */
     public static Date parseDate(String date) throws ParseException
     {
@@ -190,14 +182,12 @@ public abstract class DateTimeUtility
     /**
      * parseTime Parse the time, based on a string representation.
      * 
-     * @param time
-     *            Accepts a formatted string representing a time.
+     * @param time Accepts a formatted string representing a time.
      * 
      * @return The time, as an encoded Date object.
      * 
-     * @throws ParseException
-     *             Parsing exception from the given string. If the string does not conform to the
-     *             correct format, this will be thrown.
+     * @throws ParseException Parsing exception from the given string. If the 
+     * string does not conform to the correct format, this will be thrown.
      */
     public static Date parseTime(String time) throws ParseException
     {
@@ -207,14 +197,12 @@ public abstract class DateTimeUtility
     /**
      * parseFullTime Parse the time for the FULL_TIME format.
      * 
-     * @param time
-     *            Accepts a formatted string representing the full time, down to the second.
+     * @param time Accepts a formatted string representing the full time, down to the second.
      * 
      * @return The time, as an encoded Date object.
      * 
-     * @throws ParseException
-     *             Parsing exception from the given string. If the string does not conform to the
-     *             correct format, this will be thrown.
+     * @throws ParseException Parsing exception from the given string. If the 
+     * string does not conform to the correct format, this will be thrown.
      */
     public static Date parseFullTime(String time) throws ParseException
     {
