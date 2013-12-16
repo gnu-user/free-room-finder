@@ -92,51 +92,49 @@ public class Results extends FreeRoomFragment implements OnFinshedTaskListener
      * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
      * android.view.ViewGroup, android.os.Bundle)
      */
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		
-		super.onCreateView(inflater, container, savedInstanceState);
-		
-	    results = FreeRoom.availableRooms;
-		
-		View rootView = inflater.inflate(R.layout.fragment_results,
-				container, false);
-		
-		this.inflater = inflater;
-		this.container = container;
-		
-		tl = (TableLayout)rootView.findViewById(R.id.TableLayout1);
-		
-		book = (Button)rootView.findViewById(R.id.book);
-		
-		book.setEnabled(false);
-		
-		book.setOnClickListener(new OnClickListener(){
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    {
+        super.onCreateView(inflater, container, savedInstanceState);
 
-			@Override
-			public void onClick(View v) {
-				
-				//Redundancy check
-				if(indexOfChecked >= 0 && results.size() > 0)
-				{
-					//Add to db
-					DatabaseInterface dbi = new DatabaseInterface(Results.this.getActivity().getBaseContext());
-					dbi.insertBooking(results.get(indexOfChecked));
+        results = FreeRoom.availableRooms;
 
-					
-					QueryTask task = new QueryTask();
-					task.setOnFinshedTaskListener((RoomsBooked)MainActivity
-							.switchTabs(MainActivity.ROOMS_BOOKED_TAB));
-					task.execute(Results.this.getActivity().getBaseContext());
-				}
-			}
-		});
-		header = (TableRow)tl.findViewById(R.id.table_header);
-		
-		return rootView;
-	}
-	
+        View rootView = inflater.inflate(R.layout.fragment_results, container, false);
+
+        this.inflater = inflater;
+        this.container = container;
+
+        tl = (TableLayout) rootView.findViewById(R.id.TableLayout1);
+
+        book = (Button) rootView.findViewById(R.id.book);
+
+        book.setEnabled(false);
+
+        book.setOnClickListener(new OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                // Redundancy check
+                if (indexOfChecked >= 0 && results.size() > 0)
+                {
+                    // Add booking to database
+                    DatabaseInterface dbi = new DatabaseInterface(Results.this.getActivity()
+                            .getBaseContext());
+                    dbi.insertBooking(results.get(indexOfChecked));
+
+                    QueryTask task = new QueryTask();
+                    task.setOnFinshedTaskListener((RoomsBooked) MainActivity
+                            .switchTabs(MainActivity.ROOMS_BOOKED_TAB));
+                    task.execute(Results.this.getActivity().getBaseContext());
+                }
+            }
+        });
+        header = (TableRow) tl.findViewById(R.id.table_header);
+
+        return rootView;
+    }
+
     /*
      * (non-Javadoc)
      * 
@@ -190,14 +188,9 @@ public class Results extends FreeRoomFragment implements OnFinshedTaskListener
      * SetupUpTableView Set all the default values for the table view and instantiate handles to the
      * interface elements.
      * 
-     * @param inflater
-     *            The inflater for the layout.
-     * 
-     * @param container
-     *            The ViewGroup container for the view.
-     * 
-     * @param index
-     *            The index for the table view.
+     * @param inflater The inflater for the layout.
+     * @param container The ViewGroup container for the view.
+     * @param index The index for the table view.
      * 
      * @return Returns a handle to the first table row.
      */
@@ -213,7 +206,6 @@ public class Results extends FreeRoomFragment implements OnFinshedTaskListener
         // Provides the logic for the selectable table rows.
         ch.setOnClickListener(new OnClickListener()
         {
-
             /*
              * (non-Javadoc)
              * 
@@ -273,7 +265,6 @@ public class Results extends FreeRoomFragment implements OnFinshedTaskListener
         // Provide the logic for selecting a table row.
         tr.setOnClickListener(new OnClickListener()
         {
-
             /*
              * (non-Javadoc)
              * 
@@ -283,11 +274,9 @@ public class Results extends FreeRoomFragment implements OnFinshedTaskListener
             public void onClick(View v)
             {
                 TableRow d = (TableRow) v;
-                // Note the location of the relative layout is hard coded here as the last element
-                // in the table row.
-
-                // Also, the radio button is hard coded here as the first (and only) element in the
-                // relative layout.
+                
+                // Note the location of the relative layout is hard coded here as the last element in the table row.
+                // Also, the radio button is hard coded here as the first (and only) element in the  relative layout.
                 ((RelativeLayout) d.getChildAt(d.getChildCount() - 1)).getChildAt(0).performClick();
             }
 
