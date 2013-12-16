@@ -45,8 +45,8 @@ import android.view.MenuItem;
  * MainActivity The main activity for the application. Shows the main user interface.
  * 
  * @author Joseph Heron
- * @author Daniel Smullen
  * @author Jonathan Gillett
+ * @author Daniel Smullen
  * 
  */
 public class MainActivity extends FragmentActivity implements ActionBar.TabListener
@@ -56,10 +56,12 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
      * The identifier for the Free Rooms tab.
      */
     public static final int FREE_ROOM_TAB = 0;
+    
     /**
      * The identifier for the Results tab.
      */
     public static final int RESULTS_TAB = 1;
+    
     /**
      * The identifier for the Bookings tab.
      */
@@ -69,6 +71,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
      * Used to store the shared preferences for all areas of the app.
      */
     public static SharedPreferences sharedPrefs;
+    
     /**
      * Used to instantiate the progres dialog for various things.
      */
@@ -102,6 +105,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        
         // Grab the shared preferences.
         sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 
@@ -161,15 +165,13 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
      * show results this breaks down. Creating a new instance of the tab and using it will
      * facilitate this.
      * 
-     * @param tabIndex
-     *            The tab index for the selected tab.
+     * @param tabIndex The tab index for the selected tab.
      * 
      * @return The new instance of the Fragment at the specified index.
      */
     public static Fragment switchTabs(int tabIndex)
     {
         actionBar.setSelectedNavigationItem(tabIndex);
-
         return (Fragment) mSectionsPagerAdapter.instantiateItem(mViewPager, tabIndex);
     }
 
@@ -225,11 +227,8 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     /**
      * onLogin The method for handling a login completion.
      * 
-     * @param requestCode
-     *            The expected return code for the request.
-     * 
-     * @param resultCode
-     *            The result code of the activity.
+     * @param requestCode The expected return code for the request.
+     * @param resultCode The result code of the activity.
      */
     public void onLogin(int requestCode, int resultCode)
     {
@@ -283,8 +282,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     /**
      * showProgress Displays the progress dialog.
      * 
-     * @param show
-     *            Shows the progress dialog if true. If false, don't show it.
+     * @param show Shows the progress dialog if true. If false, don't show it.
      */
     public void showProgress(boolean show)
     {
@@ -294,7 +292,6 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                     getString(R.string.login_progress_signing_in), true, true,
                     new OnCancelListener()
                     {
-
                         public void onCancel(DialogInterface dialog)
                         {
 
@@ -319,7 +316,6 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
      */
     public class SectionsPagerAdapter extends FragmentPagerAdapter
     {
-
         /**
          * Default constructor. Runs the superclass constructor.
          * 
@@ -360,7 +356,6 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
             }
 
             fragment.setArguments(args);
-
             return fragment;
         }
 
@@ -385,6 +380,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         public CharSequence getPageTitle(int position)
         {
             Locale l = Locale.getDefault();
+            
             switch (position)
             {
             case 0:
@@ -394,6 +390,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
             case 2:
                 return getString(R.string.title_section3).toUpperCase(l);
             }
+            
             return null;
         }
     }

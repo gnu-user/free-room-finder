@@ -49,10 +49,12 @@ public class LoginActivity extends Activity
      * Determines whether the login fields are open.
      */
     private static boolean open = false;
+    
     /**
      * Provides the task for the user's login process.
      */
     private UserLoginTask authTask = null;
+    
     /**
      * Stores the dialog for the sign in.
      */
@@ -139,10 +141,9 @@ public class LoginActivity extends Activity
     }
 
     /**
-     * submit Submits the user name and password field contents to sign in with.
+     * Submits the user name and password field contents to sign in with.
      * 
-     * @param v
-     *            Requires a handle to a view which initiates the method.
+     * @param v Requires a handle to a view which initiates the method.
      */
     public void submit(View v)
     {
@@ -154,6 +155,7 @@ public class LoginActivity extends Activity
         if (username.getText() != null && password.getText() != null)
         {
             user = new User(username.getText().toString(), password.getText().toString());
+            
             // Validate the user name and password.
             if (user.validUsername() && user.validPassword())
             {
@@ -176,8 +178,7 @@ public class LoginActivity extends Activity
                 }
                 else
                 {
-                    Toast.makeText(this, R.string.username_password_error, Toast.LENGTH_LONG)
-                            .show();
+                    Toast.makeText(this, R.string.username_password_error, Toast.LENGTH_LONG).show();
                 }
                 user = null;
             }
@@ -187,8 +188,7 @@ public class LoginActivity extends Activity
     /**
      * reset Opens the password reset web site.
      * 
-     * @param v
-     *            Requires a handle to the view which initiates the method.
+     * @param v Requires a handle to the view which initiates the method.
      */
     public void reset(View v)
     {
@@ -201,8 +201,7 @@ public class LoginActivity extends Activity
     /**
      * register Opens the registration web site.
      * 
-     * @param v
-     *            Requires a handle to the view which initiates the method.
+     * @param v Requires a handle to the view which initiates the method.
      */
     public void register(View v)
     {
@@ -215,8 +214,7 @@ public class LoginActivity extends Activity
     /**
      * showProgress Show or hide the progress dialog.
      * 
-     * @param show
-     *            Show the dialog if true. Otherwise, don't show it.
+     * @param show Show the dialog if true. Otherwise, don't show it.
      */
     private void showProgress(boolean show)
     {
@@ -241,11 +239,6 @@ public class LoginActivity extends Activity
     /**
      * UserLoginTask An asynchronous task for connecting and validating the user login credentials
      * with the external database server.
-     * 
-     * @author Daniel Smullen
-     * @author Jonathan Gillett
-     * @author Joseph Heron
-     * 
      */
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean>
     {
@@ -267,8 +260,7 @@ public class LoginActivity extends Activity
                     /**
                      * Add the user into the internal database if the validation is successful.
                      */
-                    DatabaseInterface dbi = new DatabaseInterface(
-                            LoginActivity.this.getBaseContext());
+                    DatabaseInterface dbi = new DatabaseInterface(LoginActivity.this.getBaseContext());
                     dbi.insertUser(user);
 
                     return true;
@@ -296,7 +288,7 @@ public class LoginActivity extends Activity
             }
             else
             {
-                Toast.makeText(LoginActivity.this, R.string.error_invalid_account,
+                Toast.makeText(LoginActivity.this, R.string.error_invalid_account, 
                         Toast.LENGTH_LONG).show();
             }
         }
