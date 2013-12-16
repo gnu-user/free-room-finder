@@ -225,8 +225,9 @@ public class DatabaseInterface
     {
         Cursor cur = context.getContentResolver().query(
                 DatabaseProvider.BOOKING_CONTENT_URI,
-                new String[] { SQLiteHelper.KEY_ROOM_NAME, SQLiteHelper.KEY_START_TIME,
-                        SQLiteHelper.KEY_END_TIME, SQLiteHelper.KEY_BOOK_DATE }, null, null, null);
+                new String[] { SQLiteHelper.KEY_ID, SQLiteHelper.KEY_ROOM_NAME, 
+        		SQLiteHelper.KEY_START_TIME, SQLiteHelper.KEY_END_TIME,
+        		SQLiteHelper.KEY_BOOK_DATE }, null, null, null);
 
         ArrayList<Rooms> booking = new ArrayList<Rooms>();
 
@@ -236,10 +237,11 @@ public class DatabaseInterface
             do
             {
                 booking.add(new Rooms(
-                        cur.getString(cur.getColumnIndex(SQLiteHelper.KEY_ROOM_NAME)), cur
-                                .getLong(cur.getColumnIndex(SQLiteHelper.KEY_START_TIME)), cur
-                                .getLong(cur.getColumnIndex(SQLiteHelper.KEY_END_TIME)), cur
-                                .getLong(cur.getColumnIndex(SQLiteHelper.KEY_BOOK_DATE))));
+					cur.getLong(cur.getColumnIndex(SQLiteHelper.KEY_ID)),
+					cur.getString(cur.getColumnIndex(SQLiteHelper.KEY_ROOM_NAME)),
+					cur.getLong(cur.getColumnIndex(SQLiteHelper.KEY_START_TIME)),
+					cur.getLong(cur.getColumnIndex(SQLiteHelper.KEY_END_TIME)),
+					cur.getLong(cur.getColumnIndex(SQLiteHelper.KEY_BOOK_DATE))));
             } while (cur.moveToNext());
         }
         cur.close();

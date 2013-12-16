@@ -53,6 +53,7 @@ public class RoomsBooked extends FreeRoomFragment implements OnFinshedTaskListen
 	
 	private TableRow selectedRow = null;
 	private Drawable background = null;
+	private int rowIndex = 0;
 
 	
 	public static ArrayList<Rooms> results = new ArrayList<Rooms>();
@@ -120,7 +121,7 @@ public class RoomsBooked extends FreeRoomFragment implements OnFinshedTaskListen
 		}
 	}
 	
-	public TableRow SetupUpTableView(LayoutInflater inflater, ViewGroup container, int index)
+	public TableRow SetupUpTableView(LayoutInflater inflater, ViewGroup container, final int index)
 	{
 		View newView = inflater.inflate(R.layout.room_book_item,
 				container, false);
@@ -153,6 +154,7 @@ public class RoomsBooked extends FreeRoomFragment implements OnFinshedTaskListen
 		        background = selectedRow.getBackground();
 		        selectedRow.setBackgroundColor(RoomsBooked.this.getResources()
 		        		.getColor(android.R.color.holo_blue_light));
+		        rowIndex = index;
 		        
 		        // Start the CAB using the ActionMode.Callback defined above
 		        mActionMode = getActivity().startActionMode(mActionModeCallback);
@@ -196,7 +198,12 @@ public class RoomsBooked extends FreeRoomFragment implements OnFinshedTaskListen
 	                mode.finish(); // Action picked, so close the CAB
 	                return true;
 	            case R.id.delete:
-	                //shareCurrentItem();
+	                DatabaseInterface dbi = new DatabaseInterface(RoomsBooked.this.getActivity().getBaseContext());
+	                dbi.deleteBooking(results.get(rowIndex).getId());
+	                results.remove(rowIndex);
+	                rowIndex = 0;
+	                refreshList();
+	                
 	                mode.finish(); // Action picked, so close the CAB
 	                return true;
 	            default:
