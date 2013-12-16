@@ -1,7 +1,6 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <!-- SECTION Feedback -->
-    <!-- TODO Enable Bugsense -->   
+    <!-- SECTION Feedback --> 
     <CheckBoxPreference
         android:key="enable_bugsense"
         android:title="@string/bugsense_title"
@@ -9,7 +8,6 @@
         android:summaryOff="@string/busense_summary_off"
         android:defaultValue="true"/>
     
-    <!-- TODO Get source code -->
     <Preference
         android:title="@string/get_source_title"
         android:summary="@string/get_source_summary"
@@ -18,9 +16,9 @@
     
 	<!-- TODO Donate -->
     <Preference
-		android:title="@string/donate_title"
-        android:summary="@string/donate_summary"
-        android:key="donate">
+		android:title="@string/contact_title"
+        android:summary="@string/contact_summary"
+        android:key="contact">
     </Preference>
     
 

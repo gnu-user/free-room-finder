@@ -115,10 +115,16 @@
 	<string name="busense_summary_off">Bug Reporting is disabled</string>
 	<string name="get_source_title">Get Source Code</string>
 	<string name="get_source_summary">Contribute to Free Room Finder</string>
-	<string name="donate_title">Donate</string>
-	<string name="donate_summary">Support the Developers</string>
+	<string name="contact_title">Contact</string>
+	<string name="contact_summary">Contact the Developers</string>
 	
 	<string name="source_code_site">https://github.com/gnu-user/free-room-website</string>
+
+    <string-array name="dev_emails">
+       <item>joseph.heron@uoit.net</item>
+       <item>jonathan.gillett@uoit.net</item>
+       <item>daniel.smullen@uoit.net</item>
+    </string-array>
 
 	<string name="share_title">Share</string>
 	<string name="delete_title">Delete</string>

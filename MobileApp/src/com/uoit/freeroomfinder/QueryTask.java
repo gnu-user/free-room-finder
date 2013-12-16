@@ -24,41 +24,74 @@ package com.uoit.freeroomfinder;
 import android.content.Context;
 import android.os.AsyncTask;
 
-public class QueryTask extends AsyncTask<Context, Void, Boolean> {
-	
-	private OnFinshedTaskListener listener;
-	
-	@Override
-	protected Boolean doInBackground(Context... params) {
-		//TODO see if this can fail and catch errors
-		DatabaseInterface dbi = new DatabaseInterface(params[0]);
-		RoomsBooked.results = dbi.getBooking();
-		return true;
-		
-	}
-	
-	@Override
-	protected void onPostExecute(final Boolean success) {
-		
-		if(success)
-		{
-			// Call the listener
-			if(listener != null)
-			{
-				listener.onFinishedTaskListener();
-			}
-		}
-		else
-		{
-			//TODO show error
-		}
-	}
+/**
+ * QueryTask Used to create an asynchronous database query task.
+ * 
+ * @author Jonathan Gillett
+ * @author Joseph Heron
+ * @author Daniel Smullen
+ * 
+ */
+public class QueryTask extends AsyncTask<Context, Void, Boolean>
+{
 
-	@Override
-	protected void onCancelled() {
-	}
-	
-	public void setOnFinshedTaskListener(OnFinshedTaskListener listener){
-		this.listener = listener;
-	}
+    /**
+     * The task listener interface to use.
+     */
+    private OnFinshedTaskListener listener;
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see android.os.AsyncTask#doInBackground(Params[])
+     */
+    @Override
+    protected Boolean doInBackground(Context... params)
+    {
+        // Perform a database query in the background.
+        DatabaseInterface dbi = new DatabaseInterface(params[0]);
+        RoomsBooked.results = dbi.getBooking();
+        return true;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
+     */
+    @Override
+    protected void onPostExecute(final Boolean success)
+    {
+
+        if (success)
+        {
+            // Call the listener if this is successful.
+            if (listener != null)
+            {
+                listener.onFinishedTaskListener();
+            }
+        }
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see android.os.AsyncTask#onCancelled()
+     */
+    @Override
+    protected void onCancelled()
+    {
+        // Not implemented. Provided to satisfy interface.
+    }
+
+    /**
+     * setOnFinishedTaskListener Used to set the task listener.
+     * 
+     * @param listener
+     *            The listener to set to.
+     */
+    public void setOnFinshedTaskListener(OnFinshedTaskListener listener)
+    {
+        this.listener = listener;
+    }
 }
