@@ -279,7 +279,6 @@ public class Results extends FreeRoomFragment implements OnFinshedTaskListener
                 // Also, the radio button is hard coded here as the first (and only) element in the  relative layout.
                 ((RelativeLayout) d.getChildAt(d.getChildCount() - 1)).getChildAt(0).performClick();
             }
-
         });
 
         return tr;
