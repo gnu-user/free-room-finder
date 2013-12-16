@@ -130,10 +130,10 @@
 	<string name="delete_title">Delete</string>
 	
 	<string name="send_booking_starting">Hey, </string>
-	<string name="send_booking_room">want to study in</string>
-	<string name="send_booking_start">It is free from</string>
+	<string name="send_booking_room">there\'s a room free in</string>
+	<string name="send_booking_start">from</string>
 	<string name="send_booking_end">until</string>
 	<string name="send_booking_date">on</string>
-	<string name="send_booking_ending">\?</string>
+	<string name="send_booking_ending">- meet me there?</string>
 	
 </resources>
