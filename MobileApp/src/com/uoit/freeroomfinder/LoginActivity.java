@@ -35,22 +35,51 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+/**
+ * LoginActivity Provides the activity for signing in to the app. Displays a sign-in field.
+ * 
+ * @author Jonathan Gillett
+ * @author Joseph Heron
+ * @author Daniel Smullen
+ * 
+ */
 public class LoginActivity extends Activity
 {
+    /**
+     * Determines whether the login fields are open.
+     */
     private static boolean open = false;
+    /**
+     * Provides the task for the user's login process.
+     */
     private UserLoginTask authTask = null;
+    /**
+     * Stores the dialog for the sign in.
+     */
     private ProgressDialog dialog;
 
+    /**
+     * Success return code for a good login.
+     */
     public static final int LOGIN_SUCCESSFUL = 100;
 
+    /**
+     * The user who is attempting to login.
+     */
     private static User user = null;
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see android.app.Activity#onCreate(android.os.Bundle)
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_screen);
 
+        // Open the database interface to attempt the sign in.
         DatabaseInterface dbi = new DatabaseInterface(this.getBaseContext());
 
         if (open || dbi.getUser() != null)
@@ -63,13 +92,24 @@ public class LoginActivity extends Activity
         }
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see android.app.Activity#onPause()
+     */
     @Override
     protected void onPause()
     {
+        // Default method implementation. Resets the open database connection state.
         super.onPause();
         open = false;
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
@@ -78,9 +118,15 @@ public class LoginActivity extends Activity
         return true;
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see android.app.Activity#onOptionsItemSelected(android.view.MenuItem)
+     */
     @Override
     public boolean onOptionsItemSelected(final MenuItem item)
     {
+        // Default method implementation.
         switch (item.getItemId())
         {
         case R.id.action_settings:
@@ -92,22 +138,34 @@ public class LoginActivity extends Activity
         }
     }
 
+    /**
+     * submit Submits the user name and password field contents to sign in with.
+     * 
+     * @param v
+     *            Requires a handle to a view which initiates the method.
+     */
     public void submit(View v)
     {
+        // Grab the user name and password input fields.
         EditText username = (EditText) findViewById(R.id.username);
         EditText password = (EditText) findViewById(R.id.password);
 
+        // Ensure the fields aren't blank.
         if (username.getText() != null && password.getText() != null)
         {
             user = new User(username.getText().toString(), password.getText().toString());
+            // Validate the user name and password.
             if (user.validUsername() && user.validPassword())
             {
+                // Show the progress alert.
                 showProgress(true);
+                // Do the login.
                 authTask = new UserLoginTask();
                 authTask.execute((Void) null);
             }
             else
             {
+                // Error conditions. Show toasts for each one.
                 if (!user.validUsername() && user.validPassword())
                 {
                     Toast.makeText(this, R.string.username_error, Toast.LENGTH_LONG).show();
@@ -118,29 +176,48 @@ public class LoginActivity extends Activity
                 }
                 else
                 {
-                    Toast.makeText(this, R.string.username_password_error, Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, R.string.username_password_error, Toast.LENGTH_LONG)
+                            .show();
                 }
                 user = null;
             }
         }
     }
 
+    /**
+     * reset Opens the password reset web site.
+     * 
+     * @param v
+     *            Requires a handle to the view which initiates the method.
+     */
     public void reset(View v)
     {
-        // Go to password reset site
+        // Go to password reset site in the browser.
         Intent i = new Intent(Intent.ACTION_VIEW);
         i.setData(Uri.parse(this.getString(R.string.reset_site)));
         this.startActivity(i);
     }
 
+    /**
+     * register Opens the registration web site.
+     * 
+     * @param v
+     *            Requires a handle to the view which initiates the method.
+     */
     public void register(View v)
     {
-        // Go to registration site
+        // Go to registration site in the browser.
         Intent i = new Intent(Intent.ACTION_VIEW);
         i.setData(Uri.parse(this.getString(R.string.register_site)));
         this.startActivity(i);
     }
 
+    /**
+     * showProgress Show or hide the progress dialog.
+     * 
+     * @param show
+     *            Show the dialog if true. Otherwise, don't show it.
+     */
     private void showProgress(boolean show)
     {
         if (show)
@@ -161,18 +238,37 @@ public class LoginActivity extends Activity
         }
     }
 
+    /**
+     * UserLoginTask An asynchronous task for connecting and validating the user login credentials
+     * with the external database server.
+     * 
+     * @author Daniel Smullen
+     * @author Jonathan Gillett
+     * @author Joseph Heron
+     * 
+     */
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean>
     {
+        /*
+         * (non-Javadoc)
+         * 
+         * @see android.os.AsyncTask#doInBackground(Params[])
+         */
         @Override
         protected Boolean doInBackground(Void... params)
         {
             if (user != null)
             {
-                /* Validate the login credentials using REST API request */
+                /**
+                 * Validate the login credentials using REST API request.
+                 */
                 if (Request.validateCredentials(user.getUsername(), user.getPassword()))
                 {
-                    /* Add the user into the database */
-                    DatabaseInterface dbi = new DatabaseInterface(LoginActivity.this.getBaseContext());
+                    /**
+                     * Add the user into the internal database if the validation is successful.
+                     */
+                    DatabaseInterface dbi = new DatabaseInterface(
+                            LoginActivity.this.getBaseContext());
                     dbi.insertUser(user);
 
                     return true;
@@ -181,9 +277,15 @@ public class LoginActivity extends Activity
             return false;
         }
 
+        /*
+         * (non-Javadoc)
+         * 
+         * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
+         */
         @Override
         protected void onPostExecute(final Boolean success)
         {
+            // Shows a toast when the validation is successful. Shows an error message if it wasn't.
             authTask = null;
             showProgress(false);
 
@@ -194,13 +296,20 @@ public class LoginActivity extends Activity
             }
             else
             {
-                Toast.makeText(LoginActivity.this, R.string.error_invalid_account, Toast.LENGTH_LONG).show();
+                Toast.makeText(LoginActivity.this, R.string.error_invalid_account,
+                        Toast.LENGTH_LONG).show();
             }
         }
 
+        /*
+         * (non-Javadoc)
+         * 
+         * @see android.os.AsyncTask#onCancelled()
+         */
         @Override
         protected void onCancelled()
         {
+            // Default method implementation. Stops the progress dialog from showing.
             authTask = null;
             showProgress(false);
         }
