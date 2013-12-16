@@ -21,132 +21,175 @@
  */
 package com.uoit.freeroomfinder;
 
-import android.annotation.SuppressLint;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-
 import retrofit.RestAdapter;
 import retrofit.http.GET;
 import retrofit.http.Path;
 
-
+/**
+ * Request An abstract class for formulating requests to the external web data.
+ * 
+ * @author Daniel Smullen
+ * @author Joseph Heron
+ * @author Jonathan Gillett
+ * 
+ */
 public abstract class Request
-{    
-	private static final String API_URL = "http://cs-club.ca/free-room-website/api";
+{
+    /**
+     * The URL for the back-end API.
+     */
+    private static final String API_URL = "http://cs-club.ca/free-room-website/api";
 
-	
-	/* Static class representing the JSON encoded login credentials */
+    /**
+     * Credentials A static class representing the JSON encoded login credentials.
+     * 
+     * @author Joseph Heron
+     * @author Jonathan Gillett
+     * @author Daniel Smullen
+     * 
+     */
     private static class Credentials
     {
+        /**
+         * Stores whether the credentials are valid or not.
+         */
         boolean credentials = false;
     }
-    	
-	/* Static class representing the JSON encoded rooms */
-	private static class Room
-	{
-	    String room;
-	    String starttime;
-	    String endtime;
-	}
-	
-	/* REST API interface for getting login credentials */
-	private static interface LoginCredentials
-	{
-	    @GET("/login/{username}/{password}")
-	    Credentials loginCredentials(
-	        @Path("username") String username,
-	        @Path("password") String password
-        );
-	}
-	
 
-	/* REST API interface for searching for rooms */
-	private static interface AvailableRooms
-	{
-	    @GET("/availablerooms/{time}/{date}/{campus}/{duration}")
-	    List<Room> availableRooms(
-	        @Path("time") String time,
-	        @Path("date") String date,
-	        @Path("campus") String campus,
-	        @Path("duration") int duration
-	    );
-	}
-	
-	
-	/**
-	 * Validates the login credentials of the user.
-	 * 
-	 * @param username The user's username
-	 * @param password The user's password
-	 * @return TRUE if the credentials are valid, FALSE otherwise
-	 */
-	public static boolean validateCredentials(String username, String password)
-	{
-	    Credentials credentials = new Credentials();
-	    
-	    RestAdapter restAdapter = new RestAdapter.Builder()
-	        .setServer(API_URL)
-	        .build();
-	    
-	    try
-	    {
-	        /* Create an instance of the REST API interface */
-	        LoginCredentials loginCredentials = restAdapter.create(LoginCredentials.class);
-	        
-	        /* Validate the credentials */   
-	        credentials = loginCredentials.loginCredentials(username, password);        
-	    }
-	    catch (Exception e)
-	    {
-	        e.printStackTrace();
-	    }
-	    
-	    return credentials.credentials;
-	}
-	
-	
-	/**
-     * Simplified interface to search for the rooms using the REST API.
+    /**
+     * Room A static class representing the JSON encoded rooms.
      * 
-	 * @param time The time that a room is needed
-	 * @param date The date that a room is needed
-	 * @param campus The campus the room is needed on
-	 * @param duration The length of time the room is needed for
-	 * 
-	 * @return The list of available rooms
-	 */
-	public static ArrayList<Rooms> searchRooms(String time, String date, String campus, int duration)
-	{	    
-	    ArrayList<Rooms> results = new ArrayList<Rooms>();
-	    
-	    /* Create a REST adapter which points the Free Room finder API */
-	    RestAdapter restAdapter = new RestAdapter.Builder()
-	        .setServer(API_URL)
-	        .build();
-	    	    
-	    try
-	    {
-	        /* Create an instance of the REST API interface */
-	        AvailableRooms availableRooms = restAdapter.create(AvailableRooms.class);
-	        
-	        /* Search for available rooms */
-	        List<Room> rooms = availableRooms.availableRooms(time, date, campus, duration);
-	        for (Room room : rooms)
-	        {
-	            results.add(new Rooms(
-	                    room.room, 
-	                    DateTimeUtility.parseFullTime(room.starttime).getTime(), 
-	                    DateTimeUtility.parseFullTime(room.endtime).getTime(),
-	                    DateTimeUtility.parseDate(date).getTime()
-                ));
-	        }
-	    }
-	    catch (Exception e)
-	    {
-	        e.printStackTrace();
-	    }   
-   
-	    return results;
-	}
+     * @author Daniel Smullen
+     * @author Joseph Heron
+     * @author Jonathan Gillett
+     * 
+     */
+    private static class Room
+    {
+        /**
+         * The room name and number.
+         */
+        String room;
+        /**
+         * The availability start time.
+         */
+        String starttime;
+        /**
+         * The availability end time.
+         */
+        String endtime;
+    }
+
+    /**
+     * LoginCredentials A REST API interface for getting login credentials
+     * 
+     * @author Jonathan Gillett
+     * @author Daniel Smullen
+     * @author Joseph Heron
+     * 
+     */
+    private static interface LoginCredentials
+    {
+        // Provide the formatted login credentials query string.
+        @GET("/login/{username}/{password}")
+        Credentials loginCredentials(@Path("username") String username,
+                @Path("password") String password);
+    }
+
+    /**
+     * AvailableRooms A REST API interface for searching for rooms
+     * 
+     * @author Daniel Smullen
+     * @author Jonathan Gillett
+     * @author Joseph Heron
+     * 
+     */
+    private static interface AvailableRooms
+    {
+        // Provide the formatted query string for the available rooms.
+        @GET("/availablerooms/{time}/{date}/{campus}/{duration}")
+        List<Room> availableRooms(@Path("time") String time, @Path("date") String date,
+                @Path("campus") String campus, @Path("duration") int duration);
+    }
+
+    /**
+     * validateCredentials Validates the login credentials of the user.
+     * 
+     * @param username
+     *            The user's user name.
+     * @param password
+     *            The user's password.
+     * @return Returns true if the credentials are valid, false otherwise.
+     */
+    public static boolean validateCredentials(String username, String password)
+    {
+        Credentials credentials = new Credentials();
+
+        RestAdapter restAdapter = new RestAdapter.Builder().setServer(API_URL).build();
+
+        try
+        {
+            /**
+             * Create an instance of the REST API interface
+             */
+            LoginCredentials loginCredentials = restAdapter.create(LoginCredentials.class);
+
+            /**
+             * Validate the credentials
+             */
+            credentials = loginCredentials.loginCredentials(username, password);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        return credentials.credentials;
+    }
+
+    /**
+     * searchRooms A simplified interface to search for the rooms using the REST API.
+     * 
+     * @param time
+     *            The specified time that a room is needed.
+     * 
+     * @param date
+     *            The specified date that a room is needed.
+     * @param campus
+     *            The campus the room is located in.
+     * @param duration
+     *            The length of time the room is needed for.
+     * 
+     * @return Returns the list of available rooms that match the query.
+     */
+    public static ArrayList<Rooms> searchRooms(String time, String date, String campus, int duration)
+    {
+        ArrayList<Rooms> results = new ArrayList<Rooms>();
+
+        /* Create a REST adapter which points the Free Room finder API */
+        RestAdapter restAdapter = new RestAdapter.Builder().setServer(API_URL).build();
+
+        try
+        {
+            /* Create an instance of the REST API interface */
+            AvailableRooms availableRooms = restAdapter.create(AvailableRooms.class);
+
+            /* Search for available rooms */
+            List<Room> rooms = availableRooms.availableRooms(time, date, campus, duration);
+            for (Room room : rooms)
+            {
+                results.add(new Rooms(room.room, DateTimeUtility.parseFullTime(room.starttime)
+                        .getTime(), DateTimeUtility.parseFullTime(room.endtime).getTime(),
+                        DateTimeUtility.parseDate(date).getTime()));
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        return results;
+    }
 }
