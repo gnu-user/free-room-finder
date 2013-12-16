@@ -273,7 +273,9 @@ public class RoomsBooked extends FreeRoomFragment implements OnFinshedTaskListen
                 sendIntent.setAction(Intent.ACTION_SEND);
 
                 // Format this according to the correct output.
-                String message = getString(R.string.send_booking_room)
+                String message = getString(R.string.send_booking_starting)
+                		+ " "
+                		+ getString(R.string.send_booking_room)
                         + " "
                         + results.get(rowIndex).getRoom()
                         + " "
@@ -284,7 +286,9 @@ public class RoomsBooked extends FreeRoomFragment implements OnFinshedTaskListen
                         + getString(R.string.send_booking_end) + " "
                         + DateTimeUtility.formatTime(new Date(results.get(rowIndex).getEndTime()))
                         + " " + getString(R.string.send_booking_date) + " "
-                        + DateTimeUtility.formatDate(results.get(rowIndex).getDate());
+                        + DateTimeUtility.formatDate(results.get(rowIndex).getDate())
+                		+ " "
+                		+ getString(R.string.send_booking_ending);
                 sendIntent.putExtra(Intent.EXTRA_TEXT, message);
                 sendIntent.setType("text/plain");
                 startActivity(sendIntent);
