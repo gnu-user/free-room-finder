@@ -21,6 +21,7 @@
  */
 package com.uoit.freeroomfinder;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import android.os.Bundle;
@@ -58,6 +59,8 @@ public class Results extends FreeRoomFragment implements OnFinshedTaskListener {
 	
 	private TableRow header;
 	
+	public static ArrayList<Rooms> results;
+	
 	public Results() {}
 
 	@Override
@@ -65,6 +68,8 @@ public class Results extends FreeRoomFragment implements OnFinshedTaskListener {
 			Bundle savedInstanceState) {
 		
 		super.onCreateView(inflater, container, savedInstanceState);
+		
+	    results = FreeRoom.availableRooms;
 		
 		View rootView = inflater.inflate(R.layout.fragment_results,
 				container, false);
@@ -88,23 +93,18 @@ public class Results extends FreeRoomFragment implements OnFinshedTaskListener {
 				{
 					//Add to db
 					DatabaseInterface dbi = new DatabaseInterface(Results.this.getActivity().getBaseContext());
-					dbi.insertBooking(FreeRoom.availableRooms.get(indexOfChecked));
+					dbi.insertBooking(results.get(indexOfChecked));
 
 					
 					QueryTask task = new QueryTask();
 					task.setOnFinshedTaskListener((RoomsBooked)MainActivity
 							.switchTabs(MainActivity.ROOMS_BOOKED_TAB));
 					task.execute(Results.this.getActivity().getBaseContext());
-					
-					//TODO Tell server that, if you want
 				}
 			}
-			
 		});
 		header = (TableRow)tl.findViewById(R.id.table_header);
 		
-		
-			
 		return rootView;
 	}
 	
@@ -112,6 +112,7 @@ public class Results extends FreeRoomFragment implements OnFinshedTaskListener {
     {
         if(this.getView() != null)
         {
+            results = FreeRoom.availableRooms;
             refreshList();
         }
     }
@@ -132,22 +133,19 @@ public class Results extends FreeRoomFragment implements OnFinshedTaskListener {
 		tl = (TableLayout)this.getView().findViewById(R.id.TableLayout1);
 		tl.removeAllViews();
 
-		
 		// Add the table header back 
 		tl.addView(header);
 		
 		// Populate the table
-		for(int i = 0; i < FreeRoom.availableRooms.size(); i++)
+		for(int i = 0; i < results.size(); i++)
 		{
 			tl.addView(SetupUpTableView(inflater, container, i));
 		}
-
 	}
 
 	public TableRow SetupUpTableView(LayoutInflater inflater, ViewGroup container, final int index)
 	{
-		View newView = inflater.inflate(R.layout.room_item,
-				container, false);
+		View newView = inflater.inflate(R.layout.room_item, container, false);
 		
 		TextView room = (TextView)newView.findViewById(R.id.room);
 		TextView start = (TextView)newView.findViewById(R.id.stime);
@@ -197,7 +195,7 @@ public class Results extends FreeRoomFragment implements OnFinshedTaskListener {
 			}			
 		});
 		
-		Rooms first = FreeRoom.availableRooms.get(index);
+		Rooms first = results.get(index);
 		
 		room.setText(first.getRoom());
 		start.setText(DateTimeUtility.formatTime(new Date(first.getStartTime())));
