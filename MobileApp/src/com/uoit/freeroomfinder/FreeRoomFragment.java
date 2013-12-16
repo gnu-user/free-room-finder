@@ -25,28 +25,39 @@ import android.content.Intent;
 import android.support.v4.app.Fragment;
 
 /**
- * General fragment class to check if the user has logged in.
- * If not the login activity will be launched for a successful
- * login.
+ * FreeRoomFragment General fragment class to check if the user has logged in. If not, the login
+ * activity will be launched for a successful login.
  */
-public abstract class FreeRoomFragment extends Fragment{
+public abstract class FreeRoomFragment extends Fragment
+{
+    /**
+     * The fragment argument representing the section number for this fragment.
+     */
+    public static final String ARG_SECTION_NUMBER = "section_number";
 
-	/**
-	 * The fragment argument representing the section number for this
-	 * fragment.
-	 */
-	public static final String ARG_SECTION_NUMBER = "section_number";
-	
-	@Override
-	public void onResume()
-	{
-		super.onResume();
-		((MainActivity)this.getActivity()).ensureLogin();
-	}
-	
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data)
-	{
-		((MainActivity)this.getActivity()).onLogin(requestCode, resultCode);
-	}	
+    /*
+     * (non-Javadoc)
+     * 
+     * @see android.support.v4.app.Fragment#onResume()
+     */
+    @Override
+    public void onResume()
+    {
+        // Default method implementation, aside from running the ensureLogin function from the main
+        // activity.
+        super.onResume();
+        ((MainActivity) this.getActivity()).ensureLogin();
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see android.support.v4.app.Fragment#onActivityResult(int, int, android.content.Intent)
+     */
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        // Ensures that the login has occurred.
+        ((MainActivity) this.getActivity()).onLogin(requestCode, resultCode);
+    }
 }
