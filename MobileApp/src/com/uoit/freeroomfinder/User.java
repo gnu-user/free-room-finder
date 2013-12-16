@@ -23,105 +23,140 @@ package com.uoit.freeroomfinder;
 
 import java.util.regex.Pattern;
 
-public class User {
+/**
+ * User Stores attributes and provides methods for users.
+ * 
+ * @author Daniel Smullen
+ * @author Joseph Heron
+ * @author Jonathan Gillett
+ * 
+ */
+public class User
+{
 
-	private String username;
-	private String password;
+    /**
+     * Class attributes for storing the user's user name and password.
+     */
+    private String username;
+    private String password;
 
-	/**
-	 * Create an empty user
-	 */
-	public User() {
-		username = "";
-		password = "";
-	}
+    /**
+     * Default constructor. Create an empty user.
+     */
+    public User()
+    {
+        username = "";
+        password = "";
+    }
 
-	/**
-	 * Create a new user
-	 * @param username the username
-	 * @param password the password
-	 */
-	public User(String username, String password) {
-		this.username = username;
-		this.password = password;
-	}
+    /**
+     * Override constructor. Create a new user with the supplied parameters.
+     * 
+     * @param username
+     *            The user name for the new user.
+     * @param password
+     *            The password for the new user.
+     */
+    public User(String username, String password)
+    {
+        this.username = username;
+        this.password = password;
+    }
 
-	/**
-	 * Get the username
-	 * @return the username
-	 */
-	public String getUsername() {
-		return username;
-	}
+    /**
+     * getUsername Accessor method for the user's user name.
+     * 
+     * @return Returns the user's user name, as a string.
+     */
+    public String getUsername()
+    {
+        return username;
+    }
 
-	/**
-	 * Set the username
-	 * @param username the username to set
-	 */
-	public void setUsername(String username) {
-		this.username = username;
-	}
+    /**
+     * setUsername Mutator method for the user's user name.
+     * 
+     * @param username
+     *            The user name to set.
+     */
+    public void setUsername(String username)
+    {
+        this.username = username;
+    }
 
-	/**
-	 * Get the password
-	 * @return the password
-	 */
-	public String getPassword() {
-		return password;
-	}
+    /**
+     * getPassword Accessor method for the user's password.
+     * 
+     * @return Returns the password for the user, as a plain text string
+     */
+    public String getPassword()
+    {
+        return password;
+    }
 
-	/**
-	 * Set the password
-	 * @param password
-	 *            the password to set
-	 */
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    /**
+     * setPassword Mutator method for the user's password.
+     * 
+     * @param password
+     *            The password to set the user's password to.
+     */
+    public void setPassword(String password)
+    {
+        this.password = password;
+    }
 
-	/**
-	 * Ensure the username is valid
-	 * @return Whether the user name is valid or not.
-	 */
-	public boolean validUsername() {
+    /**
+     * validUsername Ensures the user name is valid.
+     * 
+     * @return Returns true if the user name is valid.
+     */
+    public boolean validUsername()
+    {
+        // Match the user name to a regex to determine if it's valid. Escaped characters are not
+        // allowed.
+        if (username != null && Pattern.matches("^[a-zA-Z][a-zA-Z0-9_]{6,31}$", username))
+        {
+            return true;
+        }
 
-		if (username != null
-				&& Pattern.matches("^[a-zA-Z][a-zA-Z0-9_]{6,31}$", username)) {
-			return true;
-		}
+        return false;
+    }
 
-		return false;
-	}
+    /**
+     * validPassword Ensures the supplied password is valid.
+     * 
+     * @return Returns true if the password is valid.
+     */
+    public boolean validPassword()
+    {
+        // Match the password to a regex to determine if it's valid. Escaped characters are not
+        // allowed.
+        if (password != null
+                && Pattern.matches("^[a-zA-Z0-9\\!\\$\\%\\^\\&\\*\\(\\)\\_\\?]{6,31}$", password))
+        {
+            return true;
+        }
 
-	/**
-	 * Ensure the password is valid
-	 * @return Whether the password is valid or not.
-	 */
-	public boolean validPassword() {
-		if (password != null
-				&& Pattern.matches(
-						"^[a-zA-Z0-9\\!\\$\\%\\^\\&\\*\\(\\)\\_\\?]{6,31}$",
-						password)) {
-			return true;
-		}
+        return false;
+    }
 
-		return false;
-	}
+    /**
+     * equals Check if the given user is the same as another user by comparing their names and
+     * passwords.
+     * 
+     * @param otherUser
+     *            The user to check against.
+     * 
+     * @return Returns true if the two users are the same.
+     */
+    public boolean equals(User otherUser)
+    {
+        if (this.password.equals(otherUser.password) && this.username.equals(otherUser.username))
+        {
+            return true;
+        }
 
-	/**
-	 * Check if the given User equals the user.
-	 * @param otherUser Another user
-	 * @return Whether the two users are equal.
-	 */
-	public boolean equals(User otherUser) {
-
-		if (this.password.equals(otherUser.password)
-				&& this.username.equals(otherUser.username)) {
-			return true;
-		}
-
-		return false;
-
-	}
+        return false;
+    }
 
 }
