@@ -24,14 +24,19 @@ package com.uoit.freeroomfinder;
 import java.util.ArrayList;
 import java.util.Date;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * A simple {@link android.support.v4.app.Fragment} subclass.
@@ -44,6 +49,10 @@ public class RoomsBooked extends FreeRoomFragment implements OnFinshedTaskListen
 	private TableRow header;
 	private LayoutInflater inflater;
 	private ViewGroup container;
+	private ActionMode mActionMode = null;
+	
+	private TableRow selectedRow = null;
+	private Drawable background = null;
 
 	
 	public static ArrayList<Rooms> results = new ArrayList<Rooms>();
@@ -109,9 +118,7 @@ public class RoomsBooked extends FreeRoomFragment implements OnFinshedTaskListen
 		{
 			tl.addView(SetupUpTableView(inflater, container, i));
 		}
-
 	}
-	
 	
 	public TableRow SetupUpTableView(LayoutInflater inflater, ViewGroup container, int index)
 	{
@@ -133,27 +140,76 @@ public class RoomsBooked extends FreeRoomFragment implements OnFinshedTaskListen
 		TableRow tr = (TableRow)newView.findViewById(R.id.tableRow2);
 		
 		//TableLayout tb = new TableLayout(getActivity().getBaseContext());
-		tr.setOnClickListener(new OnClickListener(){
-
-			@Override
-			public void onClick(View v) {
-				
-				//TODO set index as the identifier for the row.
-				
-				//Toast.makeText(RoomsBooked.this.getActivity().getBaseContext(), "HERE", Toast.LENGTH_LONG).show();
-				//TableRow d= (TableRow) v;
-				
-				// Note the location of the relative layout is hard coded here as the last element in the table row
-				// Also, the radio button is hard coded here as the first (and only) element in the relative layout
-				//((RelativeLayout) d.getChildAt(d.getChildCount()-1)).getChildAt(0).performClick();
-			}
-		});
+		tr.setOnLongClickListener(new View.OnLongClickListener() {
+		    // Called when the user long-clicks on someView
+		    public boolean onLongClick(View view) {
+		    	
+		        if (mActionMode != null) {
+		            return false;
+		        }
 		
+		        // Set the row as highlighted.
+		        selectedRow = (TableRow)view;
+		        background = selectedRow.getBackground();
+		        selectedRow.setBackgroundColor(RoomsBooked.this.getResources()
+		        		.getColor(android.R.color.holo_blue_light));
+		        
+		        // Start the CAB using the ActionMode.Callback defined above
+		        mActionMode = getActivity().startActionMode(mActionModeCallback);
+		        view.setSelected(true);
+		        return true;
+		    }
+		});
+		this.registerForContextMenu(tr);
+
 		return tr;
 	}
 	
-    
-	
+	private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
+
+	    // Called when the action mode is created; startActionMode() was called
+	    @Override
+	    public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+	        // Inflate a menu resource providing context menu items
+	        MenuInflater inflater = mode.getMenuInflater();
+	        inflater.inflate(R.menu.context_menu, menu);
+	        return true;
+	    }
+
+	    // Called each time the action mode is shown. Always called after onCreateActionMode, but
+	    // may be called multiple times if the mode is invalidated.
+	    @Override
+	    public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+	        return false; // Return false if nothing is done
+	    }
+
+	    // Called when the user selects a contextual menu item
+	    @Override
+	    public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+	    	
+	    	selectedRow.setBackground(background);
+	    	selectedRow = null;
+	        switch (item.getItemId()) {
+	            case R.id.share:
+	                //shareCurrentItem();
+	            	Toast.makeText(RoomsBooked.this.getActivity(), "SHARING IS CARING!", Toast.LENGTH_LONG).show();
+	                mode.finish(); // Action picked, so close the CAB
+	                return true;
+	            case R.id.delete:
+	                //shareCurrentItem();
+	                mode.finish(); // Action picked, so close the CAB
+	                return true;
+	            default:
+	                return false;
+	        }
+	    }
+
+	    // Called when the user exits the action mode
+	    @Override
+	    public void onDestroyActionMode(ActionMode mode) {
+	        mActionMode = null;
+	    }
+	};
 
 
 }

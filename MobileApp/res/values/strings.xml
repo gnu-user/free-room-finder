@@ -120,5 +120,7 @@
 	
 	<string name="source_code_site">https://github.com/gnu-user/free-room-website</string>
 
+	<string name="share_title">Share</string>
+	<string name="delete_title">Delete</string>
 	
 </resources>

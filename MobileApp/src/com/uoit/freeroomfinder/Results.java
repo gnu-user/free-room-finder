@@ -84,7 +84,7 @@ public class Results extends FreeRoomFragment implements OnFinshedTaskListener {
 			public void onClick(View v) {
 				
 				//Redundancy check
-				if(indexOfChecked >= 0)
+				if(indexOfChecked >= 0 && FreeRoom.availableRooms.size() > 0)
 				{
 					//Add to db
 					DatabaseInterface dbi = new DatabaseInterface(Results.this.getActivity().getBaseContext());
