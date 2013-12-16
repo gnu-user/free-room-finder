@@ -21,89 +21,129 @@
  */
 package com.uoit.freeroomfinder;
 
-public class Rooms {
+/**
+ * Rooms Stores an encoded group of available room bookings.
+ * 
+ * @author Daniel Smullen
+ * @author Joseph Heron
+ * @author Jonathan Gillett
+ * 
+ */
+public class Rooms
+{
+    /**
+     * Store the parameters for a room's availability.
+     */
+    private String room;
+    private long startTime;
+    private long endTime;
+    private long date;
 
-	private String room;
-	private long startTime;
-	private long endTime;
-	private long date;
-	
-	/**
-	 * Create a new room booking
-	 * @param room The room's name
-	 * @param startTime The start time for the booking
-	 * @param endTime The end time for the booking
-	 * @param date The date of the booking
-	 */
-	public Rooms(String room, long startTime, long endTime, long date)
-	{
-		this.room = room;
-		this.startTime = startTime;
-		this.endTime = endTime;
-		this.date = date;
-	}
+    /**
+     * Default Constructor. Create a new room booking.
+     * 
+     * @param room
+     *            The room's name.
+     * 
+     * @param startTime
+     *            The start time for the booking.
+     * 
+     * @param endTime
+     *            The end time for the booking.
+     * 
+     * @param date
+     *            The date of the booking.
+     */
+    public Rooms(String room, long startTime, long endTime, long date)
+    {
+        this.room = room;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.date = date;
+    }
 
-	/**
-	 * Get the room
-	 * @return the room
-	 */
-	public String getRoom() {
-		return room;
-	}
+    /**
+     * getRoom Accessor method for the room.
+     * 
+     * @return Returns the room's name.
+     */
+    public String getRoom()
+    {
+        return room;
+    }
 
-	/**
-	 * Set the rooms
-	 * @param room the room to set
-	 */
-	public void setRoom(String room) {
-		this.room = room;
-	}
+    /**
+     * Mutator method for the room.
+     * 
+     * @param room
+     *            The name of the room to set.
+     */
+    public void setRoom(String room)
+    {
+        this.room = room;
+    }
 
-	/**
-	 * Get the start time
-	 * @return the startTime
-	 */
-	public long getStartTime() {
-		return startTime;
-	}
+    /**
+     * Accessor method for the availability's start time.
+     * 
+     * @return Returns the the start time for the availability.
+     */
+    public long getStartTime()
+    {
+        return startTime;
+    }
 
-	/**
-	 * Set the start time
-	 * @param startTime the startTime to set
-	 */
-	public void setStartTime(long startTime) {
-		this.startTime = startTime;
-	}
+    /**
+     * Mutator method for the availability's start time.
+     * 
+     * @param startTime
+     *            The start time for the availability to set.
+     */
+    public void setStartTime(long startTime)
+    {
+        this.startTime = startTime;
+    }
 
-	/**
-	 * Get the end time
-	 * @return the endTime
-	 */
-	public long getEndTime() {
-		return endTime;
-	}
+    /**
+     * Accessor method for the end time of the availability.
+     * 
+     * @return Returns the end time for the availability.
+     */
+    public long getEndTime()
+    {
+        return endTime;
+    }
 
-	/**
-	 * Set the end time
-	 * @param endTime the endTime to set
-	 */
-	public void setEndTime(long endTime) {
-		this.endTime = endTime;
-	}
+    /**
+     * Mutator method for the end time of the availability.
+     * 
+     * @param endTime
+     *            The end time of the availability to set.
+     * 
+     */
+    public void setEndTime(long endTime)
+    {
+        this.endTime = endTime;
+    }
 
-	/**
-	 * Get the date
-	 * @return the date
-	 */
-	public long getDate() {
-		return date;
-	}
+    /**
+     * Accessor method for the date of the availability.
+     * 
+     * @return Returns the date of the availability in long form.
+     */
+    public long getDate()
+    {
+        return date;
+    }
 
-	/**
-	 * Set the date
-	 * @param date the date to set
-	 */
-	public void setDate(long date) {
-		this.date = date;
-	}	
+    /**
+     * Mutator method for the date of the availability.
+     * 
+     * @param date
+     *            The date to set, in long form.
+     */
+    public void setDate(long date)
+    {
+        this.date = date;
+    }
 }
