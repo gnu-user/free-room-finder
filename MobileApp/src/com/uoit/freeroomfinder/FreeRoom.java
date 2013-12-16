@@ -45,9 +45,9 @@ import android.widget.TextView;
  * FreeRoom Child class of the FreeRoomFragment, containing methods, attributes, and control logic
  * for storing the main display content in the Free Room Finder.
  * 
- * @author Daniel Smullen
  * @author Joseph Heron
  * @author Jonathan Gillett
+ * @author Daniel Smullen
  * 
  */
 public class FreeRoom extends FreeRoomFragment
@@ -66,10 +66,12 @@ public class FreeRoom extends FreeRoomFragment
      * Stores shared preferences across the entire app.
      */
     private SharedPreferences sharedPrefs;
+    
     /**
      * Stores the current date and time, as a Date object.
      */
     private Date curDate;
+    
     /**
      * Stores a spinner object for selecting times by the hour.
      */
@@ -101,18 +103,6 @@ public class FreeRoom extends FreeRoomFragment
         // Required empty public constructor
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
-     * android.view.ViewGroup, android.os.Bundle)
-     */
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
-     * android.view.ViewGroup, android.os.Bundle)
-     */
     /*
      * (non-Javadoc)
      * 
@@ -171,11 +161,9 @@ public class FreeRoom extends FreeRoomFragment
                 try
                 {
                     d = DateTimeUtility.parseDate(datePicked);
-
                 }
                 catch (ParseException e)
                 {
-
                     e.printStackTrace();
                 }
 
@@ -190,17 +178,16 @@ public class FreeRoom extends FreeRoomFragment
                 int dd = c.get(Calendar.DAY_OF_MONTH);
 
                 DatePickerDialog alert = new DatePickerDialog(rootView.getContext(),
+                
                 /**
                  * Set up the listener for when the date is set from the custom spinner alert
                  * dialog.
                  */
                 new DatePickerDialog.OnDateSetListener()
                 {
-
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth)
                     {
-
                         // Parse the date - year, month, day.
                         datePicked = year + "-" + (monthOfYear + 1) + "-" + dayOfMonth;
                         TextView date = (TextView) rootView.findViewById(R.id.date);
@@ -213,17 +200,15 @@ public class FreeRoom extends FreeRoomFragment
                         }
                     }
                 }, yy, mm, dd);
-
+                
                 alert.show();
             }
-
         });
 
         // Add the search buttom.
         Button search = (Button) rootView.findViewById(R.id.search);
         search.setOnClickListener(new OnClickListener()
         {
-
             /*
              * (non-Javadoc)
              * 
@@ -245,13 +230,11 @@ public class FreeRoom extends FreeRoomFragment
                     // sure we use the actual current time rather than "Now" because that's invalid.
                     if (timeSpinner.getSelectedItem().toString().compareTo("Now") == 0)
                     {
-                        timePicked = DateTimeUtility.formatFullTime(DateTimeUtility
-                                .formatTime(curDate));
+                        timePicked = DateTimeUtility.formatFullTime(DateTimeUtility.formatTime(curDate));
                     }
                     else
                     {
-                        timePicked = DateTimeUtility.formatFullTime(timeSpinner.getSelectedItem()
-                                .toString());
+                        timePicked = DateTimeUtility.formatFullTime(timeSpinner.getSelectedItem().toString());
                     }
 
                     // Add the campus we've selected to the query.
@@ -276,7 +259,6 @@ public class FreeRoom extends FreeRoomFragment
         });
 
         return rootView;
-
     }
 
     /*
@@ -311,11 +293,6 @@ public class FreeRoom extends FreeRoomFragment
 
     /**
      * SearchTask Used to formulate searches within the external data provider.
-     * 
-     * @author Daniel Smullen
-     * @author Joseph Heron
-     * @author Jonathan Gillett
-     * 
      */
     public class SearchTask extends AsyncTask<Void, Void, Boolean>
     {
@@ -337,14 +314,7 @@ public class FreeRoom extends FreeRoomFragment
              * Get the list of available rooms and display the results
              */
             availableRooms.clear();
-            availableRooms = Request.searchRooms(timePicked, datePicked, campusPicked,
-                    durationPicked);
-
-            for (Rooms room : availableRooms)
-            {
-                System.out.println(room.getRoom() + ", " + room.getStartTime() + ", "
-                        + room.getEndTime());
-            }
+            availableRooms = Request.searchRooms(timePicked, datePicked, campusPicked, durationPicked);
             return true;
         }
 
@@ -385,8 +355,7 @@ public class FreeRoom extends FreeRoomFragment
         /**
          * setOnFinishedTaskListener Reroutes the task listener to the provided listener.
          * 
-         * @param listener
-         *            The listener to reroute the task listener to.
+         * @param listener The listener to reroute the task listener to.
          */
         public void setOnFinshedTaskListener(OnFinshedTaskListener listener)
         {

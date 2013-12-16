@@ -27,6 +27,11 @@ import android.support.v4.app.Fragment;
 /**
  * FreeRoomFragment General fragment class to check if the user has logged in. If not, the login
  * activity will be launched for a successful login.
+ * 
+ * @author Joseph Heron
+ * @author Jonathan Gillett
+ * @author Daniel Smullen
+ * 
  */
 public abstract class FreeRoomFragment extends Fragment
 {
