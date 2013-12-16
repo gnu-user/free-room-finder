@@ -1,0 +1,96 @@
+DESCRIPTIONS
+========================================
+
+signin_1.png
+    - The default sign in screen
+    - User is logging in with the test account "testing"
+
+signin_2.png
+    - User is logging in using the test account "testing"
+    - Login credentials authenication request made to REST API
+    - Dialog is shown as the REST request is done in a background thread
+
+signin_3.png
+    - User has selected the "reset" button
+    - Launches the mobile browser
+    - User can reset their CS club password using this online form
+
+signin_4.png
+    - User has selected "Register" button
+    - Launches mobile browser
+    - User can create a CS club account by requesting passphrase from executives
+
+search_1.png
+    - User is shown the search fragment
+    - Default time is the current time (now)
+    - Default date is current date (today)
+    - Default duration is 1 hour
+    - Default campus is the main campus (North Oshawa)
+
+search_2.png
+    - User's can select one of several campuses
+
+search_3.png
+    - User can select the date using a date picker dialog
+
+results_1.png
+    - The results are shown for the search request made
+    - The request for results is done using the REST API
+
+results_2.png
+    - User has selected UL1 to be booked from 1:00pm - 4:00pm
+
+
+bookings_1.png
+    - The UL1 booking is shown in the bookings fragment
+
+bookings_2.png
+    - User has done a long click to bring up the contextual menu of options
+    - User can do nothing (checkmark)
+    - User can share the booking (graph icon)
+    - User can delete booking (trash can)
+
+bookings_3.png
+    - User has selected to share booking
+    - Can share using email or messaging
+
+share_1.png
+    - User has selected to share booking using email
+    - An intent is executed to launch email client
+
+share_2.png
+    - User has selected to share booking using SMS
+    - An intent is executed to launch SMS client
+
+bookings_4.png
+    - User has deleted a booking
+
+
+settings_1.png
+    - The applications settings page
+    - There is the default, search categories, and feedback
+
+settings_2.png
+    - Users can change the max number of bookings shown
+
+settings_3.png
+    - Users can select the default campus
+
+settings_4.png
+    - Users can select the default duration
+
+settings_5.png
+    - Users can get the source code
+
+settings_6.png
+    - The application is open source (GPL V3) and on Github
+
+settings_7.png
+    - Users can contact the developers
+    - An intent is executed to launch email client
+
+bugsense.png
+    - Bugsense is used for app statistics and automatic bug reporting
+    - Useful in squashing bugs, getting accurate stats on users
+    - Results much more accurate than those from Google
+
