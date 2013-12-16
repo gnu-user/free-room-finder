@@ -23,6 +23,8 @@ package com.uoit.freeroomfinder;
 
 import java.util.Locale;
 
+import com.bugsense.trace.BugSenseHandler;
+
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.FragmentTransaction;
@@ -74,6 +76,12 @@ public class MainActivity extends FragmentActivity implements
 		setContentView(R.layout.activity_main);
 
 		sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+		
+		/* Start BugSense if enabled */
+        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("enable_bugsense", true))
+        {
+            BugSenseHandler.initAndStartSession(this, "6e25a944");
+        }
 		
 		//Set up the date time formatter
 		DateTimeUtility.setFormatLocale(sharedPrefs.getBoolean("army_clock", true),
