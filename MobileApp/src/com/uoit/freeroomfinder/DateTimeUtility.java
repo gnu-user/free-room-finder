@@ -26,29 +26,56 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-
 /**
- * A date time utility helper class to greatly simplify all of the date and 
- * time parsing and conversions needed.
+ * DateTimeUtility A utility helper class to greatly simplify all of the date and time parsing and
+ * conversions.
+ * 
+ * @author Joseph Heron
+ * @author Daniel Smullen
+ * @author Jonathan Gillett
  */
 public abstract class DateTimeUtility
 {
+    /**
+     * Stores the format for the 24 hour clock.
+     */
     private static final String ARMY_TIME = "kk:mm";
+    /**
+     * Stores the format for the 12 hour clock.
+     */
     private static final String NORMAL_TIME = "h:mm aa";
+    /**
+     * Stores the format for the full 24 hour clock.
+     */
     private static final String FULL_TIME = "kk:mm:ss";
+    /**
+     * Stores the format for dates.
+     */
     private static final String DATE = "yyyy-MM-dd";
 
+    /**
+     * Used to store simple date formats.
+     */
     private static SimpleDateFormat stf;
     private static SimpleDateFormat stfFull;
     private static SimpleDateFormat sdf;
 
+    /**
+     * Used to store the current locale (used in date and time formats).
+     */
     private static Locale locale;
+    /**
+     * Used to store whether or not to use the 24 hour clock.
+     */
     private static boolean notUseArmyClock;
 
     /**
-     * Set the preferred time format and the current locale
-     * @param notArmyClock Whether to use 12 hour or 24 hour format
-     * @param curLocale The current locale of the time.
+     * setFormatLocale Set the preferred time format and the current locale
+     * 
+     * @param notArmyClock
+     *            Determines whether to use 12 hour or 24 hour format.
+     * @param curLocale
+     *            The current locale for the time.
      */
     public static void setFormatLocale(boolean notArmyClock, Locale curLocale)
     {
@@ -68,8 +95,10 @@ public abstract class DateTimeUtility
     }
 
     /**
-     * Change time format
-     * @param notArmyClock Whether to use 12 hour clock or not
+     * setArmyClock Change the time format to 24 hour.
+     * 
+     * @param notArmyClock
+     *            Whether to use 12 hour clock or not.
      */
     public static void setArmyClock(boolean notArmyClock)
     {
@@ -89,9 +118,12 @@ public abstract class DateTimeUtility
     }
 
     /**
-     * Format the date
-     * @param date The date
-     * @return The formatted date
+     * formatDate Format the date to the correct format. Accepts Date objects.
+     * 
+     * @param date
+     *            The date, in Date type.
+     * 
+     * @return The formatted date.
      */
     public static String formatDate(Date date)
     {
@@ -99,9 +131,12 @@ public abstract class DateTimeUtility
     }
 
     /**
-     * Format the date
-     * @param date The date
-     * @return The formatted date
+     * formatDate Format the date to the correct format. Accepts long format.
+     * 
+     * @param date
+     *            The date, in long type.
+     * 
+     * @return The formatted date.
      */
     public static String formatDate(long date)
     {
@@ -109,9 +144,13 @@ public abstract class DateTimeUtility
     }
 
     /**
-     * Format the time
-     * @param date The date
-     * @return The formatted time
+     * formatTime Format the time to the correct format. Uses time values extracted from Date
+     * objects.
+     * 
+     * @param date
+     *            The time, in Date type.
+     * 
+     * @return The formatted time.
      */
     public static String formatTime(Date date)
     {
@@ -119,9 +158,12 @@ public abstract class DateTimeUtility
     }
 
     /**
-     * Format the time
-     * @param date The formatted date
-     * @return The formatted time
+     * formatFullTime Format the time, based on a string representation.
+     * 
+     * @param time
+     *            The time to format, as a string.
+     * 
+     * @return The formatted time.
      */
     public static String formatFullTime(String time) throws ParseException
     {
@@ -129,10 +171,16 @@ public abstract class DateTimeUtility
     }
 
     /**
-     * Parse the date
-     * @param date The formatted date
-     * @return The date
-     * @throws ParseException Parsing exception from the given string
+     * parseDate Parse the date, based on a string representation.
+     * 
+     * @param date
+     *            Accepts a formatted string representing a date.
+     * 
+     * @return The date, as a Date object.
+     * 
+     * @throws ParseException
+     *             Parsing exception from the given string. If the string does not conform to the
+     *             correct format, this will be thrown.
      */
     public static Date parseDate(String date) throws ParseException
     {
@@ -140,21 +188,33 @@ public abstract class DateTimeUtility
     }
 
     /**
-     * Parse the time
-     * @param time The formatted time
-     * @return The time
-     * @throws ParseException Parsing exception from the given string
+     * parseTime Parse the time, based on a string representation.
+     * 
+     * @param time
+     *            Accepts a formatted string representing a time.
+     * 
+     * @return The time, as an encoded Date object.
+     * 
+     * @throws ParseException
+     *             Parsing exception from the given string. If the string does not conform to the
+     *             correct format, this will be thrown.
      */
     public static Date parseTime(String time) throws ParseException
     {
         return stf.parse(time);
     }
-    
+
     /**
-     * Parse the time for the FULL_TIME format
-     * @param time The formatted time
-     * @return The time
-     * @throws ParseException Parsing exception from the given string
+     * parseFullTime Parse the time for the FULL_TIME format.
+     * 
+     * @param time
+     *            Accepts a formatted string representing the full time, down to the second.
+     * 
+     * @return The time, as an encoded Date object.
+     * 
+     * @throws ParseException
+     *             Parsing exception from the given string. If the string does not conform to the
+     *             correct format, this will be thrown.
      */
     public static Date parseFullTime(String time) throws ParseException
     {
