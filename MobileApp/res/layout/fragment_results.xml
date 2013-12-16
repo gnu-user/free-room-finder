@@ -26,9 +26,7 @@
             android:id="@+id/TableLayout1"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:divider="@color/MidnightBlue"
-            android:orientation="horizontal"
-            android:showDividers="middle|beginning" >
+            android:orientation="horizontal" >
 
             <TableRow
                 android:id="@+id/table_header"

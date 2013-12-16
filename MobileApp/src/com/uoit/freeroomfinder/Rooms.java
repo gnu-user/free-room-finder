@@ -61,6 +61,28 @@ public class Rooms
         this.endTime = endTime;
         this.date = date;
     }
+	private long id;
+	private String room;
+	private long startTime;
+	private long endTime;
+	private long date;
+	
+	/**
+	 * Create a new room booking
+	 * @param id The room id
+	 * @param room The room's name
+	 * @param startTime The start time for the booking
+	 * @param endTime The end time for the booking
+	 * @param date The date of the booking
+	 */
+	public Rooms(long id, String room, long startTime, long endTime, long date)
+	{
+		this.id = id;
+		this.room = room;
+		this.startTime = startTime;
+		this.endTime = endTime;
+		this.date = date;
+	}
 
     /**
      * getRoom Accessor method for the room.
@@ -146,4 +168,27 @@ public class Rooms
     {
         this.date = date;
     }
+	/**
+	 * Set the date
+	 * @param date the date to set
+	 */
+	public void setDate(long date) {
+		this.date = date;
+	}
+
+	/**
+	 * Get the id
+	 * @return the id
+	 */
+	public long getId() {
+		return id;
+	}
+
+	/**
+	 * Set the id
+	 * @param id the id to set
+	 */
+	public void setId(long id) {
+		this.id = id;
+	}	
 }

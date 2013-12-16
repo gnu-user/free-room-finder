@@ -83,6 +83,68 @@ public class Results extends FreeRoomFragment implements OnFinshedTaskListener
      * Default constructor.
      */
     public Results()
+	private static RadioButton checked = null;
+	private static int indexOfChecked = 0;
+	private static boolean isNotChecked = true;
+	
+	private static Button book;
+	
+	private LayoutInflater inflater;
+	private ViewGroup container;
+	private TableLayout tl;
+	
+	private TableRow header;
+	
+	public static ArrayList<Rooms> results;
+	
+	public Results() {}
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		
+		super.onCreateView(inflater, container, savedInstanceState);
+		
+	    results = FreeRoom.availableRooms;
+		
+		View rootView = inflater.inflate(R.layout.fragment_results,
+				container, false);
+		
+		this.inflater = inflater;
+		this.container = container;
+		
+		tl = (TableLayout)rootView.findViewById(R.id.TableLayout1);
+		
+		book = (Button)rootView.findViewById(R.id.book);
+		
+		book.setEnabled(false);
+		
+		book.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				
+				//Redundancy check
+				if(indexOfChecked >= 0 && FreeRoom.availableRooms.size() > 0)
+				{
+					//Add to db
+					DatabaseInterface dbi = new DatabaseInterface(Results.this.getActivity().getBaseContext());
+					dbi.insertBooking(results.get(indexOfChecked));
+
+					
+					QueryTask task = new QueryTask();
+					task.setOnFinshedTaskListener((RoomsBooked)MainActivity
+							.switchTabs(MainActivity.ROOMS_BOOKED_TAB));
+					task.execute(Results.this.getActivity().getBaseContext());
+				}
+			}
+		});
+		header = (TableRow)tl.findViewById(R.id.table_header);
+		
+		return rootView;
+	}
+	
+	public void onFinishedTaskListener()
     {
         // Not implemented.
     }
