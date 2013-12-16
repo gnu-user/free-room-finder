@@ -30,9 +30,9 @@ import retrofit.http.Path;
 /**
  * Request An abstract class for formulating requests to the external web data.
  * 
- * @author Daniel Smullen
  * @author Joseph Heron
  * @author Jonathan Gillett
+ * @author Daniel Smullen
  * 
  */
 public abstract class Request
@@ -44,11 +44,6 @@ public abstract class Request
 
     /**
      * Credentials A static class representing the JSON encoded login credentials.
-     * 
-     * @author Joseph Heron
-     * @author Jonathan Gillett
-     * @author Daniel Smullen
-     * 
      */
     private static class Credentials
     {
@@ -60,11 +55,6 @@ public abstract class Request
 
     /**
      * Room A static class representing the JSON encoded rooms.
-     * 
-     * @author Daniel Smullen
-     * @author Joseph Heron
-     * @author Jonathan Gillett
-     * 
      */
     private static class Room
     {
@@ -72,10 +62,12 @@ public abstract class Request
          * The room name and number.
          */
         String room;
+        
         /**
          * The availability start time.
          */
         String starttime;
+        
         /**
          * The availability end time.
          */
@@ -84,11 +76,6 @@ public abstract class Request
 
     /**
      * LoginCredentials A REST API interface for getting login credentials
-     * 
-     * @author Jonathan Gillett
-     * @author Daniel Smullen
-     * @author Joseph Heron
-     * 
      */
     private static interface LoginCredentials
     {
@@ -100,11 +87,6 @@ public abstract class Request
 
     /**
      * AvailableRooms A REST API interface for searching for rooms
-     * 
-     * @author Daniel Smullen
-     * @author Jonathan Gillett
-     * @author Joseph Heron
-     * 
      */
     private static interface AvailableRooms
     {
@@ -117,16 +99,13 @@ public abstract class Request
     /**
      * validateCredentials Validates the login credentials of the user.
      * 
-     * @param username
-     *            The user's user name.
-     * @param password
-     *            The user's password.
+     * @param username The user's user name.
+     * @param password The user's password.
      * @return Returns true if the credentials are valid, false otherwise.
      */
     public static boolean validateCredentials(String username, String password)
     {
         Credentials credentials = new Credentials();
-
         RestAdapter restAdapter = new RestAdapter.Builder().setServer(API_URL).build();
 
         try
@@ -152,15 +131,10 @@ public abstract class Request
     /**
      * searchRooms A simplified interface to search for the rooms using the REST API.
      * 
-     * @param time
-     *            The specified time that a room is needed.
-     * 
-     * @param date
-     *            The specified date that a room is needed.
-     * @param campus
-     *            The campus the room is located in.
-     * @param duration
-     *            The length of time the room is needed for.
+     * @param time The specified time that a room is needed.
+     * @param date The specified date that a room is needed.
+     * @param campus The campus the room is located in.
+     * @param duration The length of time the room is needed for.
      * 
      * @return Returns the list of available rooms that match the query.
      */

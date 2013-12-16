@@ -24,9 +24,9 @@ package com.uoit.freeroomfinder;
 /**
  * Rooms Stores an encoded group of available room bookings.
  * 
- * @author Daniel Smullen
  * @author Joseph Heron
  * @author Jonathan Gillett
+ * @author Daniel Smullen
  * 
  */
 public class Rooms
