@@ -1,8 +1,8 @@
 <?php
 /*
- *  Free Room Finder Website
+ *  Free Room Finder
  *
- *  Copyright (C) 2013 Wesley Unwin, Jonathan Gillett, and Joseph Heron
+ *  Copyright (C) 2013 Jonathan Gillett and Joseph Heron
  *  All rights reserved.
  *
  *  This program is free software: you can redistribute it and/or modify

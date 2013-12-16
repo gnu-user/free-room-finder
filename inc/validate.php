@@ -1,6 +1,6 @@
 <?php
 /*
- *  Free Room Finder Website
+ *  Free Room Finder
  *
  *  Copyright (C) 2013 Joseph Heron and Jonathan Gillett
  *  All rights reserved.

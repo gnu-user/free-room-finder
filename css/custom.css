@@ -1,5 +1,5 @@
 /*
- *  Free Room Finder Website
+ *  Free Room Finder
  *
  *  Copyright (C) 2013 Jonathan Gillett and Joseph Heron
  *  All rights reserved.

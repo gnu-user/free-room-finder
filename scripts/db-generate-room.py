@@ -429,7 +429,7 @@ con = None
 user = 'jon'
 passwd = 'test123'
 domain = 'localhost'
-db_name = 'test'
+db_name = 'free_room_finder'
 
 
 # Current month, year semester
