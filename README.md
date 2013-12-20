@@ -61,6 +61,10 @@ for the Python code, [phpDocumentor](http://www.phpdoc.org/) for the PHP source 
 Copyright (Really Copyleft)
 ---------------------------
 
+The Free Room Finder mobile application, scripts, and other source files where the 
+copyright notice is indicated, are licensed under the 
+[GNU General Public License, Version 3](http://www.gnu.org/licenses/gpl.html).
+
 The Free Room Finder Website uses the [GNU Affero General Public License, Version 3]
 (http://www.gnu.org/licenses/agpl-3.0.html) to ensure that the source code for the 
 website is also provided. This prevents a loop-hole that exists in the GPL where a 
