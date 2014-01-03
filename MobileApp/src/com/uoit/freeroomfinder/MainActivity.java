@@ -104,18 +104,17 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        
+        // Start BugSense if enabled
+        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("enable_bugsense", true))
+        {
+            BugSenseHandler.initAndStartSession(MainActivity.this, "6e25a944");
+        }
+        
         setContentView(R.layout.activity_main);
         
         // Grab the shared preferences.
         sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-
-        /**
-         * Start BugSense if enabled
-         */
-        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("enable_bugsense", true))
-        {
-            BugSenseHandler.initAndStartSession(this, "6e25a944");
-        }
 
         // Set up the date time formatter.
         DateTimeUtility.setFormatLocale(sharedPrefs.getBoolean("army_clock", true), this
@@ -155,7 +154,6 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
             actionBar.addTab(actionBar.newTab().setText(mSectionsPagerAdapter.getPageTitle(i))
                     .setTabListener(this));
         }
-
     }
 
     /**
