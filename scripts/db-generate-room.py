@@ -117,7 +117,8 @@ def store_course_data(con, course_data):
                     print "COURSE TERM:", course_data[idx_key]['term'][0]
                     print "COURSE LEVEL:", course_data[idx_key]['level']
                     print "TEACHER NAME:", course_data[idx_key]['teacher_name']
-                    print "CAMPUS:", course_data[idx_key]['campus']
+                    #print "CAMPUS:", course_data[idx_key]['campus']
+                    print "COURSE DATA:", course_data[idx_key]
 
                     print "CAPACITY:", course_data[idx_key]['capacity']
                     print "REGISTERED:", course_data[idx_key]['registered']
